@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="http://code.jquery.com/jquery-latest.js"></script>
+<script type="text/javascript">
+//게시판 목록
+function test(){
+	//event.preventDefault();
+	//$("#test").show();
+	var content;
+	$.ajax({
+		type : "GET",
+		url : "http://localhost:80/main/search/kakaomap/keyword",
+		success : function(result){	
+			alert("로그"+result);
+			content = "<b>경도:"+result.items_1.x+"</b><br></br>"+"<b>위도:"+result.items_1.y+"</b><br></br>";
+			$("#test").html(content);
+		}
+	});	
+	
+}
+
+</script>
+</head>
+
+<body>
+<input type="button" id="testbtn" value="글목록" onClick="test()"/>
+
+
+
+<div id="test">
+<b>반환값은?</b>
+</div>
+
+
+</body>
+</html>
