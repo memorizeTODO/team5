@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 	<script>
-		location.href="http://localhost/main/test";
+		location.href="http://localhost/go/testview";
 	</script>
 </head>
 <body>

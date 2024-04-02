@@ -11,6 +11,7 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.Map;
 
 public class URLlib {
 	private HttpURLConnection urlConnection;
@@ -27,14 +28,14 @@ public class URLlib {
 		setURL();
 		setURLConnection();
 	}
-	URLlib(String url,HashMap<String,String> properties){//url 값과 get방식 호출을 위한 인자인 properties를 토대로 URL클래스의 인스턴스를 생성
+	URLlib(String url,Map<String,String> properties){//url 값과 get방식 호출을 위한 인자인 properties를 토대로 URL클래스의 인스턴스를 생성
 		setURLbuilder(url,properties);
 		setURL();
 		System.out.println(urlBuilder.toString());
 		setURLConnection();
 	}
 	
-	URLlib(String url,HashMap<String,String> properties,HashMap<String,String> headers){//url 값과 get방식 호출을 위한 인자인 properties를 토대로 URL클래스의 인스턴스를 생성
+	URLlib(String url,Map<String,String> properties,Map<String,String> headers){//url 값과 get방식 호출을 위한 인자인 properties를 토대로 URL클래스의 인스턴스를 생성
 		setURLbuilder(url,properties);
 		setURL();
 		System.out.println(urlBuilder.toString());
@@ -46,14 +47,14 @@ public class URLlib {
 		urlBuilder = new StringBuilder(url); 
 	}
 	
-	void setURLbuilder(String url,HashMap<String,String>properties) { //문자열 형식의 url과 get방식으로 넘겨줄 인자들(key,value)을 urlBuilder의 요소로 추가
+	void setURLbuilder(String url,Map<String,String>properties) { //문자열 형식의 url과 get방식으로 넘겨줄 인자들(key,value)을 urlBuilder의 요소로 추가
 		urlBuilder = new StringBuilder(url);
 		
 		setURLBuilderProperties(properties);
 		
 	}
 	
-	void setURLBuilderProperties(HashMap<String,String>properties) { //urlBuilder에 get방식으로 넘겨줄 인자들(key,value)을 요소로 추가
+	void setURLBuilderProperties(Map<String,String>properties) { //urlBuilder에 get방식으로 넘겨줄 인자들(key,value)을 요소로 추가
 		if(urlBuilder==null|| urlBuilder.length()==0|| properties==null||properties.isEmpty()==true) { //요청을 보낼 url값이 먼저 저장되있지 않거나 하면 값 저장 안함
 			return;
 		}
@@ -138,7 +139,7 @@ public class URLlib {
 	void setRequestContentType(String contentType) {//urlConnection의 요청에 대한 응답의 콘텐츠 타입 지정 
 		urlConnection.setRequestProperty("Content-type", "application/"+contentType);
 	}
-	void setRequestHeaders(HashMap<String,String> headers) {
+	void setRequestHeaders(Map<String,String> headers) {
 		if (headers==null||headers.isEmpty()==true) { //헤더가 비어있으면 수행 안함
 			return;
 		}

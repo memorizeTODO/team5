@@ -36,7 +36,7 @@ import org.springframework.web.servlet.view.RedirectView;
 public class TestController {
 	
 	enum WeatherValue {
-        PTY, REH, RN1, T1H, UUU, VEC, VVV, WSD
+        
     }
 	
     @RequestMapping("test1")
@@ -403,7 +403,7 @@ public class TestController {
     	
     	}
             
-        @RequestMapping("test")
+        @RequestMapping("go/testview")
         private RedirectView test5() {
         	  RedirectView redirectView = new RedirectView();
               redirectView.setUrl("http://localhost:8080/views/test.html");
@@ -428,7 +428,6 @@ public class TestController {
             headers.put("Authorization","KakaoAK adacc2024f0537f8eb428ee10db1dc20");//api의key값(카카오는 headers에,공공데이터는 params에)
             
     		URLlib urlCon = null;
-            InputStream stream = null;
             String result = null;
 
     	
@@ -515,10 +514,170 @@ public class TestController {
             }
         	
             return resItems;
-
+            
             
         }
+        private void findWeatherCondition(String wc,String returnVal) {
+        	if (wc==null|| wc=="") {
+        		return;
+        	}
+        	if(wc.indexOf("맑")!=-1) {
+            	returnVal="C1";
+            }else if(wc.indexOf("흐림")!=-1 || wc.indexOf("흐리고")!=-1) {
+            	returnVal="C2";
+            }else if(wc.indexOf("구름많")!=-1) {
+            	returnVal="C3";
+            }
+        }
         
+        private void findWeatherConditionDetail(String wcd,String returnVal) {
+        	if (wcd==null || wcd=="") {
+        		return;
+        	}
+        	
+        	if(wcd.indexOf("비")!=-1) { //'비' 라는 문자를 찾았을때
+        		if (wcd.length()!=0 ) {
+        			returnVal+="/";
+        		}
+            	returnVal+="D1";
+            }
+        	if(wcd.indexOf("눈")!=-1) { //'눈' 이라는 문자를 찾았을때
+        		if (wcd.length()!=0 ) {
+        			returnVal+="/";
+        		}
+            	returnVal+="D2";
+            }
+        	if(wcd.indexOf("소나기")!=-1) { //'소나기' 라는 문자를 찾았을때
+        		if (wcd.length()!=0 ) {
+        			returnVal+="/";
+        		}
+            	returnVal+="D3";
+            }
+        }
+        
+        @RequestMapping("get/weather")// 샘플용 코드, tmFc값 문서보고 잘 세팅할 것    
+        private Map<String,Object> getWeather() {
+        	
+            // 변수 설정
+        	
+        	
+        	Map<String,Object> formattedDataMap = new HashMap<String,Object>(); // db로 보낼 데이터맵
+        	
+        	
+        	Map<String,String> params=new HashMap<String,String>();// get방식으로 요청 보낼 파라미터 모음
+        	//
+        	
+            String apiurl = "http://apis.data.go.kr/1360000/MidFcstInfoService/getMidLandFcst";
+            params.put("serviceKey","qB0RB3NhMOOhDD8j/0UaO514AWZMty+bIyJTvHYiWvIGRa0+W0MH0tZ/9QlcJw/BG1Sdu4J98qBpn7PucDdSUg==");// 본인 서비스 키 입력
+            params.put("numOfRows","10" );
+            params.put("regId","11B00000" );
+            params.put("tmFc","202404020600" );
+            params.put("pageNo","1" );
+            params.put("dataType", "JSON");
+            
+         
+            
+    		
+            
+            URLlib urlCon = null;
+           
+            String result = null;
+
+    	
+            try {        
+            	urlCon=new URLlib(apiurl,params); // api 주소, 파라미터(get), 헤더 값을 넣어 httpURLConnection 객체 할당
+          
+            	//urlCon.setRequestContentType("json");// 응답받고자하는 콘텐츠 타입 지정
+            	urlCon.setRequestMethod("GET");// get방식으로 요청하도록 세팅
+            	
+                urlCon.getNetworkConnection();// 요청 실행
+                urlCon.readStreamToString(); // 받아온 응답을 문자열로 저장
+                result = urlCon.getResult(); // 응답 문자열을 가져옴
+               
+            } catch(IOException e) {
+                e.printStackTrace();
+            } finally {
+                urlCon.disconnect();
+            }
+
+    		/*
+    		 * String urlStr = callBackUrl + "serviceKey=" + serviceKey + "&dataType=" +
+    		 * dataType + "&base_date=" + baseDate + "&base_time=" + baseTime +
+    		 * "&beach_num=" + beachNum;
+    		 */
+
+            
+            	
+                // 받으려는 타입
+                
+
+                
+            String filePath = "c:\\Temp\\weather.json";
+            
+            
+            try {
+             FileWriter fileWriter = new FileWriter(filePath);
+             fileWriter.write(result);
+             
+             fileWriter.close();
+            } catch (IOException e) {
+             // TODO Auto-generated catch block
+             e.printStackTrace();
+            }
+            
+             
+            
+            try {
+                JSONObject jsonObject = new JSONObject(result);
+
+                // Example: Accessing specific values
+                
+                JSONObject response = jsonObject.getJSONObject("response");
+                
+                JSONObject body = response.getJSONObject("body");
+                JSONObject items = body.getJSONObject("items");
+                JSONObject item = items.getJSONArray("item").getJSONObject(0);                   
+                
+                String rnStAm;
+                String rnStPm;
+                String wfAm; 
+			    String wfPm;
+			    
+        		String wcA="";
+        		String wcdA="";
+        		String wcP="";
+        		String wcdP="";
+			    
+				
+                //for(int i=0; i<item.length();i++) {
+                	for(int j=3; j<=7;j++) {
+                		
+                		rnStAm = Integer.toString(item.getInt("rnSt"+j+"Am"));
+    				    rnStPm = Integer.toString(item.getInt("rnSt"+j+"Pm"));
+    				    formattedDataMap.put("rp"+j,rnStAm+"|"+rnStPm); //3~7일 오전|오후 강수확률 일괄 수집
+    				    
+    				    
+                        wfAm = item.getString("wf"+j+"Am");                            
+                        findWeatherCondition(wfAm,wcA);
+                        findWeatherConditionDetail(wfAm,wcdA);
+                  
+    				    wfPm = item.getString("wf"+j+"Pm"); 
+                        findWeatherCondition(wfPm,wcP);
+                        findWeatherConditionDetail(wfPm,wcdP);
+                        
+                        formattedDataMap.put("wc"+j,wcA+"|"+wcP);//3~7일 오전|오후 기상상태(맑음,흐림,구름많음) 일괄 수집
+                        formattedDataMap.put("wcd"+j,wcdA+"|"+wcdP);//3~7일 오전|오후 상세기상상태(비/눈/소나기) 일괄 수집
+    				    
+                	}
+               // }
+                
+                System.out.println(formattedDataMap.toString());
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        	return formattedDataMap;
+        }
        
         
 
