@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+    </head>
+    <body>
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+        />
+        <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/datepicker.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+
+        <header 
+            class="fixed flex justify-between p-5 w-full bg-white z-50"
+        >
+            <div>
+                <span class="text-4xl text-[#74cfca] font-bold">CAMP</span> <span class="text-2xl">*</span> <span class="text-4xl text-[#74cfca] font-bold">SCORE</span>
+            </div>
+        <div class="flex justify-start">   
+            <div date-rangepicker date="sysdate" class="flex items-center relative">
+                <div class="relative">
+                  <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+
+                  </div>
+                  <div>
+                  <input name="start" inline-datepicker datepicker-format="mm/dd/yyyy" type="text" class="bg-gray-50 border rounded-l-lg border-gray-300 text-gray-900 text-sm
+                                                          focus:ring-blue-500 focus:border-blue-500 
+                                                            block w-full ps-10 p-2.5  
+                                                        " 
+                            placeholder="">
+                        </input>
+                </div>         
+                </div>
+                <div class="relative">
+                  <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                  </div>
+                  <input name="end" type="text"  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 
+                                                        focus:border-blue-500 block w-full ps-10 p-2.5" 
+                            placeholder="">
+              </div>
+              <div>
+                <input name="지역" type="text" class="bg-gray-50 border rounded-r-lg border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 
+                focus:border-blue-500 block w-full ps-10 p-2.5">
+            </div> 
+            
+              </div>
+              <div class= "flex relative items-center">   
+                <button id="headerSearchButton" type="submit" onclick="search()" class="bg-[#eeeeee] hover:bg-[#dddddd] 
+                                                                w-10 h-10    rounded-full
+                                                                ">
+                    <svg viewBox="-5 -5  36 36" fill="none" xmlns="http://www.w3.org/2000/svg" class="">
+                        <path d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z"
+                        stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                                        </svg> 
+                </button>
+            </div>
+        </div>                                                                 
+            <div>
+                <button class="bg-[#eeeeee] hover:bg-[#dddddd] w-full h-full px-10 rounded-lg">로그인</button>
+            </div>
+        </header>
+
+        <div class="pt-20 z-10">    
+            <!-- 이미지 슬라이드 / 검색 -->
+            <div>
+                <div class="swiper">
+                    <swiper-container class="mySwiper" pagination="true" pagination-clickable="true" navigation="true" space-between="0"
+                    centered-slides="true" autoplay-delay="2500" autoplay-disable-on-interaction="false ">
+                        <swiper-slide>
+                            <img src="images/gapyung67.png">
+                        </swiper-slide>
+                        <swiper-slide>
+                            <img src="images/gapyung67.png">
+                        </swiper-slide>
+                        <swiper-slide>
+                            <img src="images/gapyung67.png">
+                        </swiper-slide>
+                        <swiper-slide>
+                            <img src="images/gapyung67.png">
+                        </swiper-slide>
+                        <swiper-slide>
+                            <img src="images/gapyung67.png">
+                        </swiper-slide>
+                        <swiper-slide>
+                            <img src="images/gapyung67.png">
+                        </swiper-slide>
+                        <swiper-slide>
+                            <img src="images/gapyung67.png">
+                        </swiper-slide>
+                        <swiper-slide>
+                            <img src="images/gapyung67.png">
+                        </swiper-slide>
+                        <swiper-slide>
+                            <img src="images/gapyung67.png">
+                        </swiper-slide>
+                    </swiper-container>
+                </div>
+              
+
+                <div class="relative w-4/5 -translate-y-1/2 h-48 mx-auto bg-[#ffffff] border-2 border-black-100 z-30 flex justify-start py-10 ">
+                    <div class="flex items-center relative pl-5">
+                        <input type="search" id="campNameSearch" class="bg-[#E8E8E8] rounded-lg text-gray-900 text-md 
+                        focus:ring-blue-500 focus:border-blue-500 
+                          block ps-10 p-8 text-left w-80"
+                          placeholder="이름">
+                    </div>
+                    <div date-rangepicker class="flex items-center relative pl-10 w-96">
+                        <div class="relative ">
+                          <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                          </div>
+                          <input id="startDate" name="start" type="text" class="bg-[#E8E8E8] rounded-l-lg text-gray-900 text-sm 
+                                                                  focus:ring-blue-500 focus:border-blue-500 
+                                                                    block w-full ps-10 p-8 text-right " 
+                                    placeholder="날짜">
+                        </div>
+                        <div class="relative ">
+                          <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                          </div>
+                          <input id="endDate" name="end" type="text" class="bg-[#E8E8E8] rounded-r-lg  text-gray-900 text-sm  focus:ring-blue-500 
+                                                                focus:border-blue-500 block w-full ps-10 p-8 text-left" 
+                                    placeholder="날짜">
+                      </div>
+                    </div>   
+                    <div class="flex items-center relative">
+                        <div class="relative flex pl-5">   
+                                <select id="campingRegion" name="지역" type="text" class="bg-[#E8E8E8] rounded-lg  
+                                 border  border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 
+                                focus:border-blue-500 block w-30 ps-10 p-8 dark:bg-gray-700"
+                                            placeholder="지역">
+                                            <option selected>지역</option>
+                                            <option value="gyeonggi">경기도</option>
+                                            <option value="gangwon">강원도</option>
+                                            <option value="chungcheongnam">충청남도</option>
+                                            <option value="chungcheongbuk">충청북도</option>
+                                            <option value="jeollanam">전라남도</option>
+                                            <option value="jeollabuk">전라북도</option>
+                                            <option value="gyeongsangnam">경상남도</option>
+                                            <option value="gyeongsangbuk">경상북도</option>
+                                            <option value="jeju">제주</option>
+                                 </select>             
+                            </div>  
+                        <div class="relative pl-5 flex">  
+                            <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none"></div>
+                                <select id="campingType" name="종류" type="text" class="bg-[#E8E8E8] rounded-lg
+                                  border  border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 
+                                focus:border-blue-500 block w-30 ps-10 p-8 
+                                            placeholder="종류">
+                                            <option selected>종류</option>
+                                            <option value="camp">캠핑</option>
+                                            <option value="caravan">카라반</option>
+                                            <option value="car">차박</option>
+                                            <option value="gramping">글램핑</option>
+                                </select>              
+                                </div>
+                    </div>
+                    <div class= "pl-5 flex relative items-center ">   
+                    <button type="submit" onclick="search()" class="bg-[#eeeeee] hover:bg-[#dddddd] 
+                                                                     w-20 h-20 rounded-full
+                                                                    ">
+                        <svg viewBox="-5 -5  36 36" fill="none" xmlns="http://www.w3.org/2000/svg" class="">
+                            <path d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z"
+                            stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                                            </svg>                                              
+                        
+                    </button>
+                     
+                </div>   
+                     </div>       
+                           
+                </div>
+            </div>
+
+        </div>
+     
+
+        
+            <!-- 날씨 -->
+            <div class="relative w-full">
+                <div class="flex  h-96 w-10/12 mx-auto bg-[#ffffff] border-2 border-black-100 z-30 flex py-5 rounded-lg px-5">
+                            <div class="flex flex-col  h-full w-40 bg-[#ffffff] block border border-gray-300 mr-5">
+                             <label for="" class="block mb-2 text-md font-bold text-gray-900 dark:text-white pl-11 pt-5">4.02 화</label>
+                                <div class="w-8 h-5 pt-5">
+                                    <img src="images/sunny.png">
+                                </div>
+                        
+                            
+                                
+                            </div>
+                            <div class="flex h-full w-40 bg-[#ffffff] block border border-gray-300 mr-5 ">
+                                
+                              
+                            </div>
+                            <div class="flex  h-full w-40 bg-[#ffffff] block border border-gray-300 mr-5">
+                                
+                             
+                            </div>
+                            <div class="flex  h-full w-40 bg-[#ffffff] block border border-gray-300 mr-5">
+                                
+                              
+                            </div>
+                            <div class="flex  h-full w-40 bg-[#ffffff] block border border-gray-300 mr-5">
+                                
+                                
+                            </div>
+                            <div class="flex  h-full w-40 bg-[#ffffff] block border border-gray-300 mr-5">
+                                
+                               
+                            </div>
+                            <div class="flex relative h-full  w-40 bg-[#ffffff] block border border-gray-300 mr-5">
+                                
+                                
+                            </div>
+                </div>
+            </div>
+            <!-- 추천 캠핑장 / 추천 관광지 -->
+            <div class>
+                <label for="recmdCamp" class="justify-start block mb-2 text-4xl font-bold text-gray-900 dark:text-white pt-10">추천 캠핑장</label>
+                <div class="grid md:grid-cols-4 gap-4 px-20 ">
+                    <div>
+                        <img class="h-auto max-w-full rounded-lg" src="images/gapyung67.webp" alt="">
+                        <label for="campExp1" class="text-center block mb-2 text-md  font-bold text-gray-900 dark:text-white px-10 py-5">가평67캠핑장</label>
+                    </div>
+                    <div>
+                        <img class="h-auto max-w-full rounded-lg" src="images/camp2.webp" alt="">
+                        <label for="campExp1" class="text-center block mb-2 text-md  font-bold text-gray-900 dark:text-white px-10 py-5">가평67캠핑장</label>
+                    </div>
+                    <div>
+                        <img class="h-auto max-w-full rounded-lg" src="images/camp3.webp.jpg" alt="">
+                        <label for="campExp1" class="text-center block mb-2 text-md  font-bold text-gray-900 dark:text-white px-10 py-5">가평67캠핑장</label>
+                    </div>
+                    <div>
+                        <img class="h-auto max-w-full rounded-lg" src="images/camp4.webp" alt="">
+                        <label for="campExp1" class="text-center block mb-2 text-md  font-bold text-gray-900 dark:text-white px-10 py-5">가평67캠핑장</label>
+                    </div>
+                </div>
+             <div>
+                    <label for="recmdTour" class="block mb-2 text-4xl font-bold text-gray-900 dark:text-white px-10 pt-40 py-5" >추천 관광지</label>
+                    <div class="grid md:grid-cols-4 gap-4 px-20">
+                        <div>
+                            <img class="h-auto max-w-full rounded-lg" src="images/tour1.jpg" alt="">
+                        </div>
+                        <div>
+                            <img class="h-auto max-w-full rounded-lg" src="images/tour2.bmp" alt="">
+                        </div>
+                        <div>
+                            <img class="h-auto max-w-full rounded-lg" src="images/tour3.jpg" alt="">
+                        </div>
+                        <div>
+                            <img class="h-auto max-w-full rounded-lg" src="images/tour4.jpg" alt="">
+                        </div>
+                    </div>     
+            </div>
+        </div>
+        <script>
+            function campdate() {
+               
+            const startdate = document.getElementById("startDate").value;
+            const enddate = document.getElementById("endDate").value;  
+
+            }
+            function search() {
+               
+               const campname = document.getElementById("campNameSearch").value;
+               const campregion = document.getElementById("campingRegion").value;
+               const camptype = document.getElementById("campingType").value; 
+               alert(campname);
+               }
+
+        </script>
+    </body>
+</html>
