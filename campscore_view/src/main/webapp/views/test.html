@@ -38,16 +38,49 @@ function test1(){
 			// jsonObj의 키와 값을 이용하여 Map에 항목을 추가합니다.
 			
 			content = "<table border=1>";
+			
 			content += "<tr>";
 			for(var i=3;i<=7;i++ ){
 				content+= "<th>"+"강수확률"+i+"</th>";
 			}
 			content += "</tr>";
+			
 			content += "<tr>";
 			for(var i=3;i<=7;i++ ){
 				content+= "<td>"+map.get("rp"+i)+"</td>";
 			}
 			content += "</tr>";
+			
+			content += "<tr>";
+			for(var i=3;i<=7;i++ ){
+				content+= "<th>"+"온도"+i+"</th>";
+			}
+			content += "</tr>";
+			
+			content += "<tr>";
+			for(var i=3;i<=7;i++ ){
+				content+= "<td>"+map.get("tp"+i)+"</td>";
+			}
+			content += "</tr>";
+			
+			content += "<tr>";
+			for(var i=3;i<=7;i++ ){
+				content+= "<th>"+"기상상태"+i+"</th>";
+			}
+			content += "</tr>";
+			
+			content += "<tr>";
+			for(var i=3;i<=7;i++ ){
+				var wcd="";
+				if (map.get("wcd"+i)=="|"){
+					wcd="없음";
+				}else{
+					wcd=map.get("wcd"+i);
+				}
+				content+= "<td>"+map.get("wc"+i)+"("+wcd+")"+"</td>";
+			}
+			content += "</tr>";
+			
 			content += "</table>";
 			$("#test").html(content);
 		}
