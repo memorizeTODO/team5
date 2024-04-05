@@ -14,6 +14,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
@@ -32,10 +33,14 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import com.team5.campscore.utilities.WeatherDataExtractor;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import com.team5.campscore.model.Weather;
 import com.team5.campscore.service.*;
 
@@ -531,6 +536,7 @@ public class TestController {
             
         }
         
+       
         
         
        // @RequestMapping("insert/weather")// 샘플용 코드, tmFc값 문서보고 잘 세팅할 것  
@@ -579,6 +585,8 @@ public class TestController {
             }
         	return returnVal;
         }
+        
+        
         
 private Map<String,String>  getWeatherWC(String rcode) {
         	
@@ -821,7 +829,7 @@ private Map<String,String>  getWeatherWC(String rcode) {
         	return formattedDataMap;
         }
 
-        @RequestMapping("get/weather")// 샘플용 코드, tmFc값 문서보고 잘 세팅할 것  
+        // 샘플용 코드, tmFc값 문서보고 잘 세팅할 것  
         private Map<String, Map<String, String>> getWeather(){
         	
         	Map<String,Map<String,String>> weatherMaps=new HashMap<String,Map<String,String>>();
@@ -861,6 +869,9 @@ private Map<String,String>  getWeatherWC(String rcode) {
         	
         	return weatherMaps;
         }
+        
+        
+        
         @RequestMapping("insert/weather")
         private int insertWeather() {
         	int returnVal=1;
@@ -954,6 +965,44 @@ private Map<String,String>  getWeatherWC(String rcode) {
         		e.printStackTrace();
         		returnVal=0;
         	}
+        	
+        	return returnVal;
+        }
+        
+        @RequestMapping("get/weather")
+        public Map<String,Map<String,String>> getWeatherToView(){
+        	Map<String,Map<String,String>> returnVal= new HashMap<String,Map<String,String>>();
+        	Gson gson = new Gson();
+        	List<Weather> wList= new ArrayList<Weather>();
+        	wList = weatherService.getWeather();
+        	
+        	for(Weather w : wList) {
+        		ObjectMapper objectMapper = new ObjectMapper();
+
+        		// DTO 객체를 Map으로 변환
+        		Map<String, String> item = objectMapper.convertValue(w, new TypeReference<Map<String, String>>() {});
+        		if(w.getRcode().equals("11B00000")) {
+        			returnVal.put("item0",item);
+        		}else if(w.getRcode().equals("11C10000")) {
+        			returnVal.put("item0",item);
+        		}else if(w.getRcode().equals("11C20000")) {
+        			returnVal.put("item0",item);
+        		}else if(w.getRcode().equals("11D10000")) {
+        			returnVal.put("item0",item);
+        		}else if(w.getRcode().equals("11H10000")) {
+        			returnVal.put("item0",item);
+        		}else if(w.getRcode().equals("11H20000")) {
+        			returnVal.put("item0",item);
+        		}else if(w.getRcode().equals("11F10000")) {
+        			returnVal.put("item0",item);
+        		}else if(w.getRcode()=="11F20000") {
+        			returnVal.put("item0",item);
+        		}else {
+        			return null;
+        		}
+        		
+        	}
+        	
         	
         	return returnVal;
         }

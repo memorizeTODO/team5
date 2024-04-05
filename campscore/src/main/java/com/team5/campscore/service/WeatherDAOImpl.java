@@ -1,5 +1,7 @@
 package com.team5.campscore.service;
 
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,5 +22,12 @@ public class WeatherDAOImpl implements WeatherDAO {
 		dao.insertWeather(w);
 		
 		return 1;
-	};
+	}
+	
+	public List<Weather> getWeather() {
+		List<Weather> wList= new ArrayList<Weather>();
+		wList = dao.getWeather();
+		return wList;
+		
+	}
 }

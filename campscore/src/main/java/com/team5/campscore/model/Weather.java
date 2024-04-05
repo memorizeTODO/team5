@@ -11,9 +11,9 @@ import lombok.Setter;
 //@Setter
 @Alias("weather")
 public class Weather {
-	private String rcode;
+	
 	public String getRcode() {
-		return rcode;
+		return this.rcode;
 	}
 	public void setRcode(String rcode) {
 		this.rcode = rcode;
@@ -216,6 +216,7 @@ public class Weather {
 	public void setRp7(String rp7) {
 		this.rp7 = rp7;
 	}
+	private String rcode;
 	private String addr;
 	private String tp0;
 	private String tp1;

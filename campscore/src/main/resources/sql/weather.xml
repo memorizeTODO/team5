@@ -11,5 +11,9 @@
 			#{rp0},#{rp1},#{rp2},#{rp3},#{rp4},#{rp5},#{rp6},#{rp7})
 	</insert>
 	
+	<select id="getWeather" returnType="weather">
+		select * from weather
+	</select>
+	
 		
 </mapper>
