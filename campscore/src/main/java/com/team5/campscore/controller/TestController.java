@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
+import com.team5.campscore.utilities.CampingCategoryExtrator;
 import com.team5.campscore.utilities.WeatherDataExtractor;
 
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ import java.text.SimpleDateFormat;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
+import com.team5.campscore.model.Camping;
 import com.team5.campscore.model.Weather;
 import com.team5.campscore.service.*;
 
@@ -50,8 +52,124 @@ public class TestController {
 	@Autowired
 	WeatherDAOImpl weatherService;
 	@Autowired
+	CampingDAOImpl campingService;
 	
-	
+	@RequestMapping("insert/camping")
+	public void kkkMethod() {
+		Map<String,String> params=new HashMap<String,String>();
+		Map<String,String> headers=new HashMap<String,String>();
+		String apiurl = "https://dapi.kakao.com/v2/local/search/keyword.json";
+        params.put("queary", "캠핑장" );
+		
+        headers.put("Authorization", "KakaoAK b7baa172e22384ab24cfb4895259eef5");
+       
+        URLlib urlCon = null;
+        String result = null;
+        
+        int cnt=1;
+        boolean isEnd=false;
+        while(true) {
+	        try {        
+	           params.put("page", Integer.toString(cnt) );
+	           urlCon=new URLlib(apiurl,params,headers); // api 주소, 파라미터(get), 헤더 값을 넣어 httpURLConnection 객체 할당
+	      
+	           //urlCon.setRequestContentType("json");// 응답받고자하는 콘텐츠 타입 지정
+	           urlCon.setRequestMethod("GET");// get방식으로 요청하도록 세팅
+	       
+	            urlCon.getNetworkConnection();// 요청 실행
+	            urlCon.readStreamToString(null); // 받아온 응답을 문자열로 저장
+	            result = urlCon.getResult(); // 응답 문자열을 가져옴
+	            
+	            
+	            
+	           
+	        } catch(IOException e) {
+	            e.printStackTrace();
+	        } finally {
+	            urlCon.disconnect();
+	        }
+	        
+	        try {
+                JSONObject jsonObject = new JSONObject(result);
+
+                // Example: Accessing specific values
+                
+                JSONArray documents = jsonObject.getJSONArray("documents");
+                JSONObject metaData =  jsonObject.getJSONObject("meta");
+                
+                isEnd=metaData.getBoolean("is_end");
+                	
+                CampingCategoryExtrator cce= new CampingCategoryExtrator();
+                Map<String,String> categoryMap;
+                
+                if(documents==null) {
+                	break; //캠핑장들에 대한 정보가 없다면 while 중단
+                }
+                
+                for(int i=0;i<documents.length();i++) {
+                	
+                	
+                	JSONObject item = documents.getJSONObject(i);
+                	
+                	categoryMap=cce.findCampingCategoryData(item.getString("category_name"));
+                	if(categoryMap.get("category2")==null || !categoryMap.get("category2").equals("야영,캠핑장")) {
+                		continue; //카테고리가
+                	}
+                	
+                			
+                	Camping camping= new Camping();
+                	
+                	camping.setPlaceId(item.getString("placeId"));
+                	camping.setPlaceName(item.getString("place_name"));
+                	camping.setAddressName(item.getString("address_name"));
+                	camping.setRoadAddressName(item.getString("road_address_name"));
+                	camping.setPlaceUrl(item.getString("place_url"));
+                	camping.setPlaceImg("");
+                	camping.setPlaceLong(item.getDouble("x"));
+                	camping.setPlaceLat(item.getDouble("y"));
+                	camping.setPlaceCategoryDetail(categoryMap.get("category3"));
+                	
+                	
+                	campingService.insertCamping(camping);
+                	
+                	/*System.out.println("camp_id: " + camp_id);
+    				System.out.println("camp_name: " +camp_name); 
+    				System.out.println("camp_address name: " +camp_address name); 
+    				System.out.println("camp_ road address name: " +camp_ road address name); 
+    				System.out.println("camp_url: " +camp_url); 
+    				System.out.println("camp_imgl: " +camp_img); 
+    				System.out.println("camp_lat: " +camp_lat); 
+    				System.out.println("camp_long: " +camp_long); */
+                	
+                }
+               
+				
+                
+               
+
+				
+                
+
+				
+			
+				 
+				 
+
+                // You can similarly access other values as needed
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+	       
+			
+			
+	        cnt++;
+	        
+	        if (isEnd==true) {
+	            break;
+	        }
+        }
+	}
 	
     @RequestMapping("test1")
 	public void testMethod() {
@@ -972,7 +1090,7 @@ private Map<String,String>  getWeatherWC(String rcode) {
         @RequestMapping("get/weather")
         public Map<String,Map<String,String>> getWeatherToView(){
         	Map<String,Map<String,String>> returnVal= new HashMap<String,Map<String,String>>();
-        	Gson gson = new Gson();
+        	
         	List<Weather> wList= new ArrayList<Weather>();
         	wList = weatherService.getWeather();
         	
