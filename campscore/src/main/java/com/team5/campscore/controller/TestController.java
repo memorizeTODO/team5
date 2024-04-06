@@ -27,11 +27,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.team5.campscore.utilities.CampingCategoryExtrator;
+import com.team5.campscore.utilities.PlaceIdMapBuilder;
 import com.team5.campscore.utilities.WeatherDataExtractor;
 
 import java.util.ArrayList;
@@ -56,119 +58,121 @@ public class TestController {
 	
 	@RequestMapping("insert/camping")
 	public void kkkMethod() {
-		Map<String,String> params=new HashMap<String,String>();
-		Map<String,String> headers=new HashMap<String,String>();
-		String apiurl = "https://dapi.kakao.com/v2/local/search/keyword.json";
-        params.put("query", "캠핑장" );
 		
-        headers.put("Authorization", "KakaoAK adacc2024f0537f8eb428ee10db1dc20");
+		String apiurl = "https://dapi.kakao.com/v2/local/search/keyword.json";
+        String query= "캠핑장";
+		
        
         URLlib urlCon = null;
         String result = null;
         
-        int cnt=1;
-        boolean isEnd=false;
-        while(true) {
-	        try {        
-	           params.put("page", Integer.toString(cnt) );
-	           urlCon=new URLlib(apiurl,params,headers); // api 주소, 파라미터(get), 헤더 값을 넣어 httpURLConnection 객체 할당
-	      
-	           //urlCon.setRequestContentType("json");// 응답받고자하는 콘텐츠 타입 지정
-	           urlCon.setRequestMethod("GET");// get방식으로 요청하도록 세팅
-	       
-	            urlCon.getNetworkConnection();// 요청 실행
-	            urlCon.readStreamToString("UTF8"); // 받아온 응답을 문자열로 저장
-	            result = urlCon.getResult(); // 응답 문자열을 가져옴
-	            
-	            
-	            
-	           
-	        } catch(IOException e) {
-	            e.printStackTrace();
-	        } finally {
-	            urlCon.disconnect();
-	        }
-	        
-	        try {
-                JSONObject jsonObject = new JSONObject(result);
-
-                // Example: Accessing specific values
-                
-                JSONArray documents = jsonObject.getJSONArray("documents");
-                JSONObject metaData =  jsonObject.getJSONObject("meta");
-                
-                isEnd=metaData.getBoolean("is_end");
-                	
-                CampingCategoryExtrator cce= new CampingCategoryExtrator();
-                Map<String,String> categoryMap;
-                
-                if(documents==null) {
-                	break; //캠핑장들에 대한 정보가 없다면 while 중단
-                }
-                
-                for(int i=0;i<documents.length();i++) {
-                	
-                	
-                	JSONObject item = documents.getJSONObject(i);
-                	
-                	categoryMap=cce.findCampingCategoryData(item.getString("category_name"));
-                	if(categoryMap.get("category2")==null || !categoryMap.get("category2").equals("야영,캠핑장")) {
-                		continue; //카테고리가
-                	}
-                	
-                			
-                	Camping camping= new Camping();
-                	
-                	camping.setPlaceId(item.getString("id"));
-                	camping.setPlaceName(item.getString("place_name"));
-                	camping.setAddressName(item.getString("address_name"));
-                	camping.setRoadAddressName(item.getString("road_address_name"));
-                	camping.setPlaceUrl(item.getString("place_url"));
-                	camping.setPlaceImg("");
-                	System.out.println(item.getDouble("x"));
-                	camping.setPlaceLong(item.getDouble("x"));
-                	System.out.println(item.getDouble("y"));
-                	camping.setPlaceLat(item.getDouble("y"));
-                	camping.setPlaceCategoryDetail(categoryMap.get("category3"));
-                	
-                	
-                	campingService.insertCamping(camping);
-                	
-                	/*System.out.println("camp_id: " + camp_id);
-    				System.out.println("camp_name: " +camp_name); 
-    				System.out.println("camp_address name: " +camp_address name); 
-    				System.out.println("camp_ road address name: " +camp_ road address name); 
-    				System.out.println("camp_url: " +camp_url); 
-    				System.out.println("camp_imgl: " +camp_img); 
-    				System.out.println("camp_lat: " +camp_lat); 
-    				System.out.println("camp_long: " +camp_long); */
-                	
-                }
-               
-				
-                
-               
-
-				
-                
-
-				
-			
-				 
-				 
-
-                // You can similarly access other values as needed
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-	       
-			
-			
-	        cnt++;
-	        
-	        if (isEnd==true) {
-	            break;
+        
+        
+        PlaceIdMapBuilder pidMapBuilder= new PlaceIdMapBuilder();
+        Map<String,String> pidMap = pidMapBuilder.getPlaceIdMap();
+        Map<String,String> checkDuplicateId=new HashMap<String,String>();
+        
+        for(String key:pidMap.keySet()) {
+        	boolean isEnd=false;
+        	int cnt=1;
+	        while(isEnd!=true) {
+	        	
+	        	
+		        try { 
+		           Map<String,String> params=new HashMap<String,String>();
+		    	   Map<String,String> headers=new HashMap<String,String>();
+		    	   params.put("query", pidMap.get(key)+" 캠핑장" );
+		           headers.put("Authorization", "KakaoAK adacc2024f0537f8eb428ee10db1dc20");
+		        	
+		           params.put("page", Integer.toString(cnt) );
+		           urlCon=new URLlib(apiurl,params,headers); // api 주소, 파라미터(get), 헤더 값을 넣어 httpURLConnection 객체 할당
+		      
+		           //urlCon.setRequestContentType("json");// 응답받고자하는 콘텐츠 타입 지정
+		           urlCon.setRequestMethod("GET");// get방식으로 요청하도록 세팅
+		       
+		            urlCon.getNetworkConnection();// 요청 실행
+		            urlCon.readStreamToString("UTF8"); // 받아온 응답을 문자열로 저장
+		            result = urlCon.getResult(); // 응답 문자열을 가져옴
+		            
+		            
+		            
+		           
+		        } catch(IOException e) {
+		            e.printStackTrace();
+		        } finally {
+		            urlCon.disconnect();
+		        }
+		        
+		        try {
+	                JSONObject jsonObject = new JSONObject(result);
+	
+	                // Example: Accessing specific values
+	                
+	                JSONArray documents = jsonObject.getJSONArray("documents");
+	                JSONObject metaData =  jsonObject.getJSONObject("meta");
+	                
+	                isEnd=metaData.getBoolean("is_end");
+	                System.out.println(isEnd);
+	                	
+	                CampingCategoryExtrator cce= new CampingCategoryExtrator();
+	                Map<String,String> categoryMap;
+	                
+	                if(documents==null) {
+	                	System.out.println("errorType="+jsonObject.getString("errorType"));
+	                	continue;
+	                }
+	                
+	                for(int i=0;i<documents.length();i++) {
+	                	
+	                	
+	                	JSONObject item = documents.getJSONObject(i);
+	                	
+	                	categoryMap=cce.findCampingCategoryData(item.getString("category_name"));
+	                	if(categoryMap.get("category2")==null || !categoryMap.get("category2").equals("야영,캠핑장")) {
+	                		continue; 
+	                	}
+	                	
+	                			
+	                	Camping camping= new Camping();
+	                	
+	                	camping.setPlaceId(item.getString("id"));
+	                	if(checkDuplicateId.get(camping.getPlaceId())!=null) {
+	                		continue;
+	                	}
+	                	camping.setPlaceName(item.getString("place_name"));
+	                	camping.setAddressName(item.getString("address_name"));
+	                	camping.setRoadAddressName(item.getString("road_address_name"));
+	                	camping.setPlaceUrl(item.getString("place_url"));
+	                	camping.setPlaceImg("");
+	                	System.out.println(item.getDouble("x"));
+	                	camping.setPlaceLong(item.getDouble("x"));
+	                	System.out.println(item.getDouble("y"));
+	                	camping.setPlaceLat(item.getDouble("y"));
+	                	camping.setPlaceCategoryDetail(categoryMap.get("category3"));
+	                	
+	                	
+	                	campingService.insertCamping(camping);
+	                	
+	                	/*System.out.println("camp_id: " + camp_id);
+	    				System.out.println("camp_name: " +camp_name); 
+	    				System.out.println("camp_address name: " +camp_address name); 
+	    				System.out.println("camp_ road address name: " +camp_ road address name); 
+	    				System.out.println("camp_url: " +camp_url); 
+	    				System.out.println("camp_imgl: " +camp_img); 
+	    				System.out.println("camp_lat: " +camp_lat); 
+	    				System.out.println("camp_long: " +camp_long); */
+	                	checkDuplicateId.put(item.getString("id"), item.getString("id"));
+	                }
+	                // You can similarly access other values as needed
+	                Thread.sleep(1000);//1초간 휴식
+	            } catch (Exception e) {
+	                e.printStackTrace();
+	            }
+		        cnt++;
+		        
+		        if (isEnd==true||cnt==46) {
+		            break;
+		        }
 	        }
         }
 	}
@@ -970,7 +974,10 @@ private Map<String,String>  getWeatherWC(String rcode) {
 			 * rcodeMap.put("item"+(i++),"11H20603");//경남
 			 * rcodeMap.put("item"+(i++),"11F10201");//전북
 			 * rcodeMap.put("item"+i,"11F20503");//전남
-			 */			         	
+			 * 
+			 */
+        	
+        	
         	for ( String key : rcodeMap.keySet() ) {
         		weatherMap = new HashMap<String,String>();
         		if(key.equals("item0")!=true) {
@@ -990,6 +997,11 @@ private Map<String,String>  getWeatherWC(String rcode) {
         	return weatherMaps;
         }
         
+//        @RequestMapping("search/siteList/{page}")
+//        ResponseEntity<Map<String, Object>> searchlist(@PathVariable("page") int page){
+//        	
+//        	return new ResponseEntity<>(map, HttpStatus.OK);
+//        }
         
         
         @RequestMapping("insert/weather")
