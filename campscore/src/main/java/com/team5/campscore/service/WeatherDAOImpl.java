@@ -25,9 +25,9 @@ public class WeatherDAOImpl implements WeatherDAO {
 	}
 	
 	public List<Weather> getWeather() {
-		List<Weather> wList= new ArrayList<Weather>();
-		wList = dao.getWeather();
-		return wList;
+		
+		 
+		return dao.getWeather();
 		
 	}
 }

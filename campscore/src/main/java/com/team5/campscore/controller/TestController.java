@@ -59,9 +59,9 @@ public class TestController {
 		Map<String,String> params=new HashMap<String,String>();
 		Map<String,String> headers=new HashMap<String,String>();
 		String apiurl = "https://dapi.kakao.com/v2/local/search/keyword.json";
-        params.put("queary", "캠핑장" );
+        params.put("query", "캠핑장" );
 		
-        headers.put("Authorization", "KakaoAK b7baa172e22384ab24cfb4895259eef5");
+        headers.put("Authorization", "KakaoAK adacc2024f0537f8eb428ee10db1dc20");
        
         URLlib urlCon = null;
         String result = null;
@@ -77,7 +77,7 @@ public class TestController {
 	           urlCon.setRequestMethod("GET");// get방식으로 요청하도록 세팅
 	       
 	            urlCon.getNetworkConnection();// 요청 실행
-	            urlCon.readStreamToString(null); // 받아온 응답을 문자열로 저장
+	            urlCon.readStreamToString("UTF8"); // 받아온 응답을 문자열로 저장
 	            result = urlCon.getResult(); // 응답 문자열을 가져옴
 	            
 	            
@@ -119,13 +119,15 @@ public class TestController {
                 			
                 	Camping camping= new Camping();
                 	
-                	camping.setPlaceId(item.getString("placeId"));
+                	camping.setPlaceId(item.getString("id"));
                 	camping.setPlaceName(item.getString("place_name"));
                 	camping.setAddressName(item.getString("address_name"));
                 	camping.setRoadAddressName(item.getString("road_address_name"));
                 	camping.setPlaceUrl(item.getString("place_url"));
                 	camping.setPlaceImg("");
+                	System.out.println(item.getDouble("x"));
                 	camping.setPlaceLong(item.getDouble("x"));
+                	System.out.println(item.getDouble("y"));
                 	camping.setPlaceLat(item.getDouble("y"));
                 	camping.setPlaceCategoryDetail(categoryMap.get("category3"));
                 	

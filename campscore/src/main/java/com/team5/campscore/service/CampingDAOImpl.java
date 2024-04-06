@@ -12,10 +12,10 @@ public class CampingDAOImpl  implements CampingDAO {
 	CampingDAO dao;
 	
 	public int insertCamping(Camping camping)  {
-		int returnVal=0;
 		
-		returnVal=dao.insertCamping(camping);
 		
-		return returnVal;
+		dao.insertCamping(camping);
+		
+		return 1;
 	}
 }

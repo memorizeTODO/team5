@@ -9,6 +9,7 @@ import lombok.Setter;
 
 //@Getter
 //@Setter
+@Data
 @Alias("weather")
 public class Weather {
 	
