@@ -72,6 +72,8 @@ public class TestController {
         Map<String,String> pidMap = pidMapBuilder.getPlaceIdMap();
         Map<String,String> checkDuplicateId=new HashMap<String,String>();
         
+        
+        
         for(String key:pidMap.keySet()) {
         	boolean isEnd=false;
         	int cnt=1;
