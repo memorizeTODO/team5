@@ -57,7 +57,7 @@ public class TestController {
 	CampingDAOImpl campingService;
 	
 	@RequestMapping("insert/camping")
-	public void kkkMethod() {
+	public void insertCamping() {
 		
 		String apiurl = "https://dapi.kakao.com/v2/local/search/keyword.json";
         String query= "캠핑장";
@@ -65,14 +65,10 @@ public class TestController {
        
         URLlib urlCon = null;
         String result = null;
-        
-        
-        
+       
         PlaceIdMapBuilder pidMapBuilder= new PlaceIdMapBuilder();
         Map<String,String> pidMap = pidMapBuilder.getPlaceIdMap();
         Map<String,String> checkDuplicateId=new HashMap<String,String>();
-        
-        
         
         for(String key:pidMap.keySet()) {
         	boolean isEnd=false;
