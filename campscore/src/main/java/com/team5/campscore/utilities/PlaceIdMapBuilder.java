@@ -7,7 +7,7 @@ public class PlaceIdMapBuilder {
 	Map<String,String> placeIdMap;
 	public PlaceIdMapBuilder(){
 		placeIdMap = new HashMap<String,String>();
-		placeIdMap.put("11A00101","백령도");
+		placeIdMap.put("11A00101","백령");
 		placeIdMap.put("11B10101","서울");
 		placeIdMap.put("11B10102","과천");
 		placeIdMap.put("11B10103","광명");
@@ -40,7 +40,7 @@ public class PlaceIdMapBuilder {
 		placeIdMap.put("11B20611","안성");
 		placeIdMap.put("11B20612","용인");
 		placeIdMap.put("11B20701","이천");
-		placeIdMap.put("11B20702","광주");
+		placeIdMap.put("11B20702","경기 광주");
 		placeIdMap.put("11B20703","여주");
 		placeIdMap.put("11C10101","충주");
 		placeIdMap.put("11C10102","진천");
@@ -85,7 +85,7 @@ public class PlaceIdMapBuilder {
 		placeIdMap.put("11D20201","대관령");
 		placeIdMap.put("11D20301","태백");
 		placeIdMap.put("11D20401","속초");
-		placeIdMap.put("11D20402","고성");
+		placeIdMap.put("11D20402","강원 고성");
 		placeIdMap.put("11D20403","양양");
 		placeIdMap.put("11D20501","강릉");
 		placeIdMap.put("11D20601","동해");
@@ -118,7 +118,7 @@ public class PlaceIdMapBuilder {
 		placeIdMap.put("11F20403","고흥");
 		placeIdMap.put("11F20404","보성");
 		placeIdMap.put("11F20405","순천시");
-		placeIdMap.put("11F20501","광주");
+		placeIdMap.put("11F20501","광주광역시");
 		placeIdMap.put("11F20502","장성");
 		placeIdMap.put("11F20503","나주");
 		placeIdMap.put("11F20504","담양");
@@ -169,7 +169,7 @@ public class PlaceIdMapBuilder {
 		placeIdMap.put("11H20401","통영");
 		placeIdMap.put("11H20402","사천");
 		placeIdMap.put("11H20403","거제");
-		placeIdMap.put("11H20404","고성");
+		placeIdMap.put("11H20404","경남 고성");
 		placeIdMap.put("11H20405","남해");
 		placeIdMap.put("11H20501","함양");
 		placeIdMap.put("11H20502","거창");

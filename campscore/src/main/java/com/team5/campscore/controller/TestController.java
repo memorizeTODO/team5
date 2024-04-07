@@ -3,12 +3,17 @@ package com.team5.campscore.controller;
 import org.jsoup.*;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.modelmapper.ModelMapper;
+
+
 
 import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -17,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.beanutils.BeanUtils;
+import org.apache.ibatis.annotations.Mapper;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +34,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -44,10 +50,12 @@ import java.text.SimpleDateFormat;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.team5.campscore.model.Camping;
 import com.team5.campscore.model.Weather;
 import com.team5.campscore.service.*;
 
+import org.apache.commons.beanutils.BeanUtils;
 @RestController
 @RequestMapping("/")
 public class TestController {
@@ -56,13 +64,67 @@ public class TestController {
 	@Autowired
 	CampingDAOImpl campingService;
 	
+	@Mapper
+	@GetMapping(value ="getListByRegion")
+	ResponseEntity<Map<String, Map<String, Object>>> getCampingToViewByRegion(@RequestParam Map<String,String> params){
+		int page; 
+		String region=null;
+		if(params.get("page")==null) {
+			page=1;
+		}else{
+			try {
+				page=Integer.parseInt(params.get("page"));
+				
+			}
+			catch (NumberFormatException e) {
+				page=1;
+			}
+		}
+		if(params.get("region")!=null) {
+			region=params.get("region");
+			
+		}else {
+			//rcode가 없을때 넘겨줄 함수 호출해야함
+		}
+		int start = (page-1)*10 + 1;
+		
+		System.out.println("region="+region);
+		
+		Map<String, Map<String, Object>> campingMaps= new HashMap<String, Map<String, Object>>();
+		List<Camping> campingList;
+		campingList=campingService.getCampingListByRegion(start,region);
+		
+	
+		for(int i=0;i<campingList.size();i++) {
+			Map<String, Object> campingMap = new HashMap<String, Object>();
+			
+			try {
+				BeanUtils.populate(campingMap, BeanUtils.describe(campingList.get(i)));
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NoSuchMethodException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			System.out.println(campingMap.toString());
+			
+			System.out.println(campingMap.get("placeId"));
+			
+			campingMaps.put("item"+i,campingMap);
+		}
+		
+		return new ResponseEntity<>(campingMaps, HttpStatus.OK);
+	}
+	
 	@RequestMapping("insert/camping")
 	public void insertCamping() {
 		
 		String apiurl = "https://dapi.kakao.com/v2/local/search/keyword.json";
-        String query= "캠핑장";
-		
-       
+
         URLlib urlCon = null;
         String result = null;
        
@@ -80,6 +142,7 @@ public class TestController {
 		           Map<String,String> params=new HashMap<String,String>();
 		    	   Map<String,String> headers=new HashMap<String,String>();
 		    	   params.put("query", pidMap.get(key)+" 캠핑장" );
+		    	   params.put("category_group_code", "AD5");
 		           headers.put("Authorization", "KakaoAK adacc2024f0537f8eb428ee10db1dc20");
 		        	
 		           params.put("page", Integer.toString(cnt) );
@@ -539,6 +602,8 @@ public class TestController {
     	
     	}
             
+            
+            
         @RequestMapping("go/testview")
         private RedirectView test5() {
         	  RedirectView redirectView = new RedirectView();
@@ -762,12 +827,13 @@ private Map<String,String>  getWeatherWC(String rcode) {
             	//urlCon.setRequestContentType("json");// 응답받고자하는 콘텐츠 타입 지정
             	urlCon.setRequestMethod("GET");// get방식으로 요청하도록 세팅
             	
-            	for(int i=0;i<3;i++) {
-            		isSuccess=urlCon.getNetworkConnection();// 요청 실행
-            		if (isSuccess==true) {
-            			break;
-            		}
-            	}// 요청 실행
+            	
+            	isSuccess=urlCon.getNetworkConnection();// 요청 실행
+            	
+            	if(isSuccess==false) {
+            		return null;
+            	}
+           
                 urlCon.readStreamToString("EUC-KR"); // 받아온 응답을 문자열로 저장
                 result = urlCon.getResult(); // 응답 문자열을 가져옴
                
@@ -892,12 +958,11 @@ private Map<String,String>  getWeatherWC(String rcode) {
             	//urlCon.setRequestContentType("json");;// 응답받고자하는 콘텐츠 타입 지정
             	urlCon.setRequestMethod("GET");// get방식으로 요청하도록 세팅
             	
-            	for(int i=0;i<3;i++) {
-            		isSuccess=urlCon.getNetworkConnection();// 요청 실행
-            		if (isSuccess==true) {
-            			break;
-            		}
-            	}// 요청 실행
+            	isSuccess=urlCon.getNetworkConnection();// 요청 실행
+            	
+            	if(isSuccess==false) {
+            		return null;
+            	}
                 urlCon.readStreamToString("EUC-KR"); // 받아온 응답을 문자열로 저장
                 result = urlCon.getResult(); // 응답 문자열을 가져옴
                
@@ -963,17 +1028,15 @@ private Map<String,String>  getWeatherWC(String rcode) {
         	Map<String,String> rcodeMap = new HashMap<String,String>();
         	int i = 0;
         	rcodeMap.put("item"+(i++),"11B20503");//경기11B
+			rcodeMap.put("item"+(i++),"11C10303");//충북11C1
+			rcodeMap.put("item"+(i++),"11C20303");//충남11C2
+			rcodeMap.put("item"+(i++),"11D10302");//강원11D
+			rcodeMap.put("item"+(i++),"11H10502");//경북
+			rcodeMap.put("item"+(i++),"11H20603");//경남
+			rcodeMap.put("item"+(i++),"11F10201");//전북
+			rcodeMap.put("item"+i,"11F20503");//전남
+			 
 			
-			/*
-			 * rcodeMap.put("item"+(i++),"11C10303");//충북11C1
-			 * rcodeMap.put("item"+(i++),"11C20303");//충남11C2
-			 * rcodeMap.put("item"+(i++),"11D10302");//강원11D
-			 * rcodeMap.put("item"+(i++),"11H10502");//경북
-			 * rcodeMap.put("item"+(i++),"11H20603");//경남
-			 * rcodeMap.put("item"+(i++),"11F10201");//전북
-			 * rcodeMap.put("item"+i,"11F20503");//전남
-			 * 
-			 */
         	
         	
         	for ( String key : rcodeMap.keySet() ) {
@@ -1010,84 +1073,11 @@ private Map<String,String>  getWeatherWC(String rcode) {
         	
         	weatherMaps=getWeather();
         	for(String key : weatherMaps.keySet()) {
-        	Weather weatherDTO = new Weather(); 
-        	System.out.println(weatherMaps.get(key).toString());
+        		Weather weatherDTO = new Weather(); 
+        		System.out.println(weatherMaps.get(key).toString());
         		Map<String, String> weatherMap = weatherMaps.get(key);
-        		for(String innerKey:weatherMap.keySet()) {
-        			switch(innerKey) {
-        				case "rcode": 
-        					weatherDTO.setRcode(weatherMap.get(innerKey)); break;
-        				case "addr": 
-        					weatherDTO.setAddr(weatherMap.get(innerKey)); break;
-        				case "wc0": 
-        					weatherDTO.setWc0(weatherMap.get(innerKey)); break;
-        				case "wc1": 
-        					weatherDTO.setWc1(weatherMap.get(innerKey)); break;
-        				case "wc2": 
-        					weatherDTO.setWc2(weatherMap.get(innerKey)); break;
-        				case "wc3": 
-        					weatherDTO.setWc3(weatherMap.get(innerKey)); break;
-        				case "wc4": 
-        					weatherDTO.setWc4(weatherMap.get(innerKey)); break;
-        				case "wc5": 
-        					weatherDTO.setWc5(weatherMap.get(innerKey)); break;
-        				case "wc6": 
-        					weatherDTO.setWc6(weatherMap.get(innerKey)); break;
-        				case "wc7": 
-        					weatherDTO.setWc7(weatherMap.get(innerKey)); break;
-        				case "wcd0": 
-        					weatherDTO.setWcd0(weatherMap.get(innerKey)); break;
-        				case "wcd1": 
-        					weatherDTO.setWcd1(weatherMap.get(innerKey)); break;
-        				case "wcd2": 
-        					weatherDTO.setWcd2(weatherMap.get(innerKey)); break;
-        				case "wcd3": 
-        					weatherDTO.setWcd3(weatherMap.get(innerKey)); break;
-        				case "wcd4": 
-        					weatherDTO.setWcd4(weatherMap.get(innerKey)); break;
-        				case "wcd5": 
-        					weatherDTO.setWcd5(weatherMap.get(innerKey)); break;
-        				case "wcd6": 
-        					weatherDTO.setWcd6(weatherMap.get(innerKey)); break;
-        				case "wcd7": 
-        					weatherDTO.setWcd7(weatherMap.get(innerKey)); break;
-        				case "rp0": 
-        					weatherDTO.setRp0(weatherMap.get(innerKey)); break;
-        				case "rp1": 
-        					weatherDTO.setRp1(weatherMap.get(innerKey)); break;
-        				case "rp2": 
-        					weatherDTO.setRp2(weatherMap.get(innerKey)); break;
-        				case "rp3": 
-        					weatherDTO.setRp3(weatherMap.get(innerKey)); break;
-        				case "rp4": 
-        					weatherDTO.setRp4(weatherMap.get(innerKey)); break;
-        				case "rp5": 
-        					weatherDTO.setRp5(weatherMap.get(innerKey)); break;
-        				case "rp6": 
-        					weatherDTO.setRp6(weatherMap.get(innerKey)); break;
-        				case "rp7": 
-        					weatherDTO.setRp7(weatherMap.get(innerKey)); break;
-        				case "tp0": 
-        					weatherDTO.setTp0(weatherMap.get(innerKey)); break;
-        				case "tp1": 
-        					weatherDTO.setTp1(weatherMap.get(innerKey)); break;
-        				case "tp2": 
-        					weatherDTO.setTp2(weatherMap.get(innerKey)); break;
-        				case "tp3": 
-        					weatherDTO.setTp3(weatherMap.get(innerKey)); break;
-        				case "tp4": 
-        					weatherDTO.setTp4(weatherMap.get(innerKey)); break;
-        				case "tp5": 
-        					weatherDTO.setTp5(weatherMap.get(innerKey)); break;
-        				case "tp6": 
-        					weatherDTO.setTp6(weatherMap.get(innerKey)); break;
-        				case "tp7": 
-        					weatherDTO.setTp7(weatherMap.get(innerKey)); break;
-        			
-        			
-        			}
-        			
-        		}
+        		BeanUtils.populate(weatherDTO, weatherMap);
+        		System.out.println( weatherDTO.getRcode());
         	
         	weatherService.insertWeather(weatherDTO);
         	}
@@ -1099,37 +1089,33 @@ private Map<String,String>  getWeatherWC(String rcode) {
         	return returnVal;
         }
         
+        
         @RequestMapping("get/weather")
-        public Map<String,Map<String,String>> getWeatherToView(){
-        	Map<String,Map<String,String>> returnVal= new HashMap<String,Map<String,String>>();
+        public Map<String,Map<String,Object>> getWeatherToView(){
+        	Map<String,Map<String,Object>> returnVal= new HashMap<String,Map<String,Object>>();
         	
-        	List<Weather> wList= new ArrayList<Weather>();
-        	wList = weatherService.getWeather();
+        	Map<String,Object> weatherMap= new HashMap<String,Object>(); 
+        	List<Weather> wList = weatherService.getWeather();
         	
-        	for(Weather w : wList) {
-        		ObjectMapper objectMapper = new ObjectMapper();
-
-        		// DTO 객체를 Map으로 변환
-        		Map<String, String> item = objectMapper.convertValue(w, new TypeReference<Map<String, String>>() {});
-        		if(w.getRcode().equals("11B00000")) {
-        			returnVal.put("item0",item);
-        		}else if(w.getRcode().equals("11C10000")) {
-        			returnVal.put("item0",item);
-        		}else if(w.getRcode().equals("11C20000")) {
-        			returnVal.put("item0",item);
-        		}else if(w.getRcode().equals("11D10000")) {
-        			returnVal.put("item0",item);
-        		}else if(w.getRcode().equals("11H10000")) {
-        			returnVal.put("item0",item);
-        		}else if(w.getRcode().equals("11H20000")) {
-        			returnVal.put("item0",item);
-        		}else if(w.getRcode().equals("11F10000")) {
-        			returnVal.put("item0",item);
-        		}else if(w.getRcode()=="11F20000") {
-        			returnVal.put("item0",item);
-        		}else {
-        			return null;
-        		}
+        	for(int i=0;i<wList.size();i++ ) {
+        		try {
+    				BeanUtils.populate(weatherMap, BeanUtils.describe(wList.get(i)));
+    				System.out.println(weatherMap.toString());
+    				
+    				returnVal.put("item"+i, weatherMap);
+    			} catch (IllegalAccessException e) {
+    				// TODO Auto-generated catch block
+    				e.printStackTrace();
+    				continue;
+    			} catch (InvocationTargetException e) {
+    				// TODO Auto-generated catch block
+    				e.printStackTrace();
+    				continue;
+    			} catch (NoSuchMethodException e) {
+    				// TODO Auto-generated catch block
+    				e.printStackTrace();
+    				continue;
+    			}
         		
         	}
         	

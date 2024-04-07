@@ -44,9 +44,12 @@ dependencies {
 	
 	// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
 	implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.0'
+	// https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils
 	implementation 'commons-beanutils:commons-beanutils:1.9.4'
+
 	// https://mvnrepository.com/artifact/com.google.code.gson/gson
 	implementation 'com.google.code.gson:gson:2.10.1'
+	implementation 'org.modelmapper:modelmapper:2.4.2'
 	
 }
 

@@ -9,6 +9,8 @@
 	</insert>
 	
 	
-	
-		
+	<select id="getCampingListByRegion" resultType="camping">
+		select * from camping where addressName like concat('%', #{region}, '%') order by addressName asc, roadAddressName asc limit #{start},10 
+	</select>
+
 </mapper>
