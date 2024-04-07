@@ -13,7 +13,7 @@
 		SELECT placeId,placeName,COALESCE(roadAddressName, addressName) AS addressName ,placeUrl,placeImg,placeLong,placelat 
 		FROM camping
 		WHERE COALESCE(roadAddressName, addressName) LIKE concat('%', #{region}, '%')  
-		order by asc limit #{start},10;
+		order by COALESCE(roadAddressName, addressName) limit #{start},10;
 		
 		
 	</select>
