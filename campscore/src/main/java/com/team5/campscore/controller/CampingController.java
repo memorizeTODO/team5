@@ -161,8 +161,8 @@ public class CampingController {
 	                			
 	                	Camping camping= new Camping();
 	                	
-	                	camping.setPlaceId(item.getString("id"));
-	                	if(checkDuplicateId.get(camping.getPlaceId())!=null) {
+	                	camping.setPlaceID(item.getString("id"));
+	                	if(checkDuplicateId.get(camping.getPlaceID())!=null) {
 	                		continue;
 	                	}
 	                	camping.setPlaceName(item.getString("place_name"));
