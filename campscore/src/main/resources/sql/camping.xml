@@ -10,12 +10,11 @@
 	
 	
 	<select id="getCampingListByRegion" resultType="camping">
-		SELECT placeID,placeName,COALESCE(roadAddressName, addressName) AS addressName ,placeUrl,placeImg,placeLong,placelat,placeCategoryDetail 
+		SELECT placeID,placeName,COALESCE(roadAddressName, addressName) AS addressName ,placeUrl,placeImg,placeLong,placeLat,placeCategoryDetail 
 		FROM camping
 		WHERE COALESCE(roadAddressName, addressName) LIKE concat('%', #{region}, '%')  
 		order by addressName limit #{start},10;
-		
-		like '%rcode%'
+	
 	</select>
 
 </mapper>
