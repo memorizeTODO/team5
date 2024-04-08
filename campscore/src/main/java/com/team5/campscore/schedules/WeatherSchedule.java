@@ -9,14 +9,23 @@ import com.team5.campscore.tools.WeatherTools;
 
 @Component
 public class WeatherSchedule {
-	@Autowired
-	WeatherDAOImpl weatherService;
 
 	@Scheduled(cron = "0 1/10 6 * * *")
-	public void updateWeatherScheduleAt6() {
+	public void autoUpdateScheduleAt6() {
 		WeatherTools wTools = new WeatherTools();
-		//wTools
-		//updateWeatherAPItoDB()
+		wTools.updateWeather();
+	}
+	
+	@Scheduled(cron = "0 0 0 * * *")
+	public void autoUpdateScheduleAt0() {
+		int result=0;
+		while(result==0) {
+			WeatherTools wTools = new WeatherTools();
+			result=wTools.updateWeatherMoveUpDate();
+			if(result!=0) {
+				break;
+			}
+		}
 	}
 	
 }

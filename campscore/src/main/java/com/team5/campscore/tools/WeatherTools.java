@@ -264,7 +264,7 @@ public class WeatherTools {
     }
 
     // 샘플용 코드, tmFc값 문서보고 잘 세팅할 것  
-    public Map<String, Map<String, String>> getWeather(){
+    public Map<String, Map<String, String>> getWeatherAPI(){
     	
     	Map<String,Map<String,String>> weatherMaps=new HashMap<String,Map<String,String>>();
     	Map<String,String>weatherMap= new HashMap<String,String>();
@@ -305,27 +305,7 @@ public class WeatherTools {
     	return weatherMaps;
     }
     
-    public void updateWeatherAPItoDB(){
-    	Map<String,Map<String,String>> weatherMaps;
-
-    	try {
-        	
-        	weatherMaps=getWeather();	
-        	
-	    	for(String key : weatherMaps.keySet()) {
-	    		WeatherDTO weatherDTO = new WeatherDTO(); 
-	    		System.out.println(weatherMaps.get(key).toString());
-	    		Map<String, String> weatherMap = weatherMaps.get(key);
-	    		BeanUtils.populate(weatherDTO, weatherMap);
-	    		
-	    		weatherService.insertWeather(weatherDTO);
-	    	}
-	    	}catch(Exception e) {
-	    		e.printStackTrace();
-	 
-    	}
-   
-    }
+  
     
     public int updateWeatherMoveUpDate() { // 일자별 날씨 데이터들의 n일 후 날씨 컬럼들을 하루가 지날때마다 앞쪽으로 당겨주는 메소드 
     	
@@ -367,14 +347,17 @@ public class WeatherTools {
 			} catch (IllegalAccessException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				result=0;
 				continue;
 			} catch (InvocationTargetException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				result=0;
 				continue;
 			} catch (NoSuchMethodException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				result=0;
 				continue;
 			}
     	
@@ -387,13 +370,13 @@ public class WeatherTools {
     	Map<String,Map<String,String>> weatherMaps;
     	try {
         	
-        	weatherMaps=getWeather();
+        	weatherMaps=getWeatherAPI();
 	    	for (String key : weatherMaps.keySet()) {
 	    		WeatherDTO weatherDTO = new WeatherDTO(); 
-	    		System.out.println(weatherMaps.get(key).toString());
+	    		//System.out.println(weatherMaps.get(key).toString());
 	    		Map<String, String> weatherMap = weatherMaps.get(key);
 	    		BeanUtils.populate(weatherDTO, weatherMap);
-	    		System.out.println( weatherDTO.getRcode());
+	    		//System.out.println( weatherDTO.getRcode());
 	    	
 	    		result=weatherService.insertWeather(weatherDTO);
 	    		System.out.println(result);
@@ -411,7 +394,7 @@ public class WeatherTools {
     	Map<String,Map<String,String>> weatherMaps;
     	try {
     	
-    	weatherMaps= getWeather();
+    	weatherMaps= getWeatherAPI();
     	for(String key : weatherMaps.keySet()) {
     		WeatherDTO weatherDTO = new WeatherDTO(); 
     		System.out.println(weatherMaps.get(key).toString());
