@@ -31,7 +31,7 @@ public class CampingController {
 	CampingDAOImpl campingService;
 	
 	@Mapper
-	@GetMapping(value ="getListByRegion")
+	@GetMapping(value ="get/campinglist")
 	ResponseEntity<Map<String, Map<String, Object>>> getCampingToViewByRegion(@RequestParam Map<String,String> params){
 		int page; 
 		String region= "";
