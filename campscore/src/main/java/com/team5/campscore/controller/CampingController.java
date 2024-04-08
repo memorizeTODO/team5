@@ -78,7 +78,7 @@ public class CampingController {
 			}
 			System.out.println(campingMap.toString());
 			
-			System.out.println(campingMap.get("placeId"));
+			System.out.println(campingMap.get("placeID"));
 			
 			campingMaps.put("item"+i,campingMap);
 		}
