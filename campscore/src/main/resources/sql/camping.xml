@@ -5,7 +5,7 @@
 
 	<!-- 글작성 -->
 	<insert id="insertCamping" parameterType="camping">
-		insert into Camping values(#{placeId},#{placeName},#{addressName},#{roadAddressName},#{placeUrl},#{placeImg},#{placeLat},#{placeLong},#{placeCategoryDetail})
+		insert into camping values(#{placeId},#{placeName},#{addressName},#{roadAddressName},#{placeUrl},#{placeImg},#{placeLat},#{placeLong},#{placeCategoryDetail})
 	</insert>
 	
 	

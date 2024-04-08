@@ -8,11 +8,11 @@ import lombok.Data;
 @Alias("camping")
 public class Camping {
   
-	public String getPlaceId() {
-	return placeId;
+	public String getPlaceID() {
+	return placeID;
 	}
-	public void setPlaceId(String placeId) {
-		this.placeId = placeId;
+	public void setPlaceID(String placeId) {
+		this.placeID = placeID;
 	}
 	public String getPlaceName() {
 		return placeName;
@@ -56,7 +56,7 @@ public class Camping {
 	public void setPlaceLong(double placeLong) {
 		this.placeLong = placeLong;
 	}
-	private String placeId;
+	private String placeID;
 	private String placeName;
 	private String addressName;
 	private String roadAddressName;
