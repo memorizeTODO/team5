@@ -10,6 +10,7 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
 import java.net.URLEncoder;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -137,7 +138,7 @@ public class URLlib {
 		}
 	}
 	void setRequestContentType(String contentType) {//urlConnection의 요청에 대한 응답의 콘텐츠 타입 지정 
-		urlConnection.setRequestProperty("Content-type", "application/"+contentType);
+		urlConnection.setRequestProperty("Content-type", contentType);
 	}
 	void setRequestHeaders(Map<String,String> headers) {
 		if (headers==null||headers.isEmpty()==true) { //헤더가 비어있으면 수행 안함
@@ -163,22 +164,44 @@ public class URLlib {
 	}
 	
 	
-	void getNetworkConnection() throws IOException { // 세팅완료된 urlConnection객체의 메소드를 통해 요청을 하여 서버로부터 응답을 받아와 urlConnection 객체 안의 inputstream 객체에 저장 
-        urlConnection.setConnectTimeout(3000);
-        urlConnection.setReadTimeout(3000);
-        urlConnection.setDoInput(true);//서버의 응답을 inputStream으로 받겠다는 뜻
-
-        if(urlConnection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-            throw new IOException("HTTP error code : " + urlConnection.getResponseCode());
-        }
-
+	boolean getNetworkConnection() throws IOException { // 세팅완료된 urlConnection객체의 메소드를 통해 요청을 하여 서버로부터 응답을 받아와 urlConnection 객체 안의 inputstream 객체에 저장 
+        
+		
+        try {
+        	for(int i=0;i<5;i++) {
+	        	urlConnection.setConnectTimeout(300000);
+	            urlConnection.setReadTimeout(300000);
+	            urlConnection.setDoInput(true);//서버의 응답을 inputStream으로 받겠다는 뜻
+	
+	            if(urlConnection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+	            	if (i!=4) {
+	            		continue;
+	            	}
+	                throw new IOException("HTTP error code : " + urlConnection.getResponseCode());
+	                
+	            }else {
+	            	break;
+	            }
+        	}
+        	Thread.sleep(2000);
         resInputStream = urlConnection.getInputStream();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			
+			e.printStackTrace();
+			return false;
+		}
+        return true;
     }
 	
-	void readStreamToString() throws IOException{
+	void readStreamToString(String encoding) throws IOException{
         StringBuilder result = new StringBuilder();
-
-        BufferedReader br = new BufferedReader(new InputStreamReader(this.resInputStream, "UTF-8"));
+        BufferedReader br;
+        if(encoding!=null) {
+        	br = new BufferedReader(new InputStreamReader(this.resInputStream,encoding));
+        }else {
+        	br = new BufferedReader(new InputStreamReader(this.resInputStream));
+        }
 
         String readLine;
         while((readLine = br.readLine()) != null) {

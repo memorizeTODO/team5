@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.team5.campscore.dao.CampingDAO">
+
+	<!-- 글작성 -->
+	<insert id="insertCamping" parameterType="camping">
+		insert into camping values(#{placeID},#{placeName},#{addressName},#{roadAddressName},#{placeUrl},#{placeImg},#{placeLat},#{placeLong},#{placeCategoryDetail})
+	</insert>
+	
+	
+	<select id="getCampingListByRegion" resultType="camping">
+		SELECT placeID,placeName,COALESCE(roadAddressName, addressName) AS addressName ,placeUrl,placeImg,placeLong,placeLat,placeCategoryDetail 
+		FROM camping
+		WHERE COALESCE(roadAddressName, addressName) LIKE concat('%', #{region}, '%')  
+		order by addressName limit #{start},10;
+	
+	</select>
+
+</mapper>

@@ -3,45 +3,65 @@ package com.team5.campscore.controller;
 import org.jsoup.*;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
+import org.modelmapper.ModelMapper;
+
+
 
 import java.io.BufferedReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
+import com.team5.campscore.utilities.CampingCategoryExtrator;
+import com.team5.campscore.utilities.PlaceIdMapBuilder;
+import com.team5.campscore.utilities.WeatherDataExtractor;
+
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.team5.campscore.model.Camping;
+import com.team5.campscore.model.Weather;
+import com.team5.campscore.service.*;
 
+import org.apache.commons.beanutils.BeanUtils;
 @RestController
 @RequestMapping("/")
 public class TestController {
+	@Autowired
+	WeatherDAOImpl weatherService;
 	
-	enum WeatherValue {
-        
-    }
 	
     @RequestMapping("test1")
 	public void testMethod() {
@@ -407,12 +427,14 @@ public class TestController {
     	
     	}
             
-        @RequestMapping("go/testview")
-        private RedirectView test5() {
-        	  RedirectView redirectView = new RedirectView();
-              redirectView.setUrl("http://localhost:8080/views/test.html");
-              return redirectView;
-        }
+            
+            
+            @RequestMapping("go/testview")
+            private RedirectView test5() {
+            	  RedirectView redirectView = new RedirectView();
+                  redirectView.setUrl("http://localhost:8080/views/test.html");
+                  return redirectView;
+            }
         
         
         @RequestMapping("main/search/kakaomap/keyword")//  
@@ -433,16 +455,20 @@ public class TestController {
             
     		URLlib urlCon = null;
             String result = null;
-
+            boolean isSuccess=false;
     	
             try {        
             	urlCon=new URLlib(apiurl,params,headers); // api 주소, 파라미터(get), 헤더 값을 넣어 httpURLConnection 객체 할당
           
-            	urlCon.setRequestContentType("json");// 응답받고자하는 콘텐츠 타입 지정
+            	urlCon.setRequestContentType("application/json");// 응답받고자하는 콘텐츠 타입 지정
             	urlCon.setRequestMethod("GET");// get방식으로 요청하도록 세팅
-            	
-                urlCon.getNetworkConnection();// 요청 실행
-                urlCon.readStreamToString(); // 받아온 응답을 문자열로 저장
+            	for(int i=0;i<3;i++) {
+            		isSuccess=urlCon.getNetworkConnection();// 요청 실행
+            		if (isSuccess==true) {
+            			break;
+            		}
+            	}
+                urlCon.readStreamToString("UTF-8"); // 받아온 응답을 문자열로 저장
                 result = urlCon.getResult(); // 응답 문자열을 가져옴
                
             } catch(IOException e) {
@@ -521,6 +547,15 @@ public class TestController {
             
             
         }
+        
+       
+        
+        
+       // @RequestMapping("insert/weather")// 샘플용 코드, tmFc값 문서보고 잘 세팅할 것  
+       // private int getWeatherToDB(String rcode){
+        	
+        	
+       // }
         private String findWeatherCondition(String wc) {
         	if (wc==null|| wc.equals("")) {
         		return "";
@@ -563,263 +598,16 @@ public class TestController {
         	return returnVal;
         }
         
-        @RequestMapping("get/weather")// 샘플용 코드, tmFc값 문서보고 잘 세팅할 것  
-        private Map<String,Object> getWeatherToView(){
-        	
-        	Map<String,Object> weatherMap=new HashMap<String,Object>();
-        	
-        	Map<String,Object> weatherWCMap;
-        	Map<String,Object> weatherTPMap;
-
-        	weatherWCMap=getWeatherWC();
-        	weatherTPMap=getWeatherTP();
-        	
-        	weatherMap.putAll(weatherWCMap);
-        	weatherMap.putAll(weatherTPMap);
-        	
-        	return weatherMap;
-        }
         
-        private Map<String,Object> getWeatherWC() {
-        	
-            // 변수 설정
-
-        	Map<String,Object> formattedDataMap = new HashMap<String,Object>(); // db로 보낼 데이터맵
-        	
-        	//***날짜가져오는 알고리즘 -> 함수화 필요
-        	Date date =new Date();
-        	SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-        	String tmFc="";
-        	if(Integer.parseInt(new SimpleDateFormat("yyyyMMddHH").format(date))
-        			>= Integer.parseInt(sdf.format(date)+"06")) {
-        		
-        		tmFc=sdf.format(date)+"0600"; 
-        	}else {
-        		// 캘린더를 이용해서 하루 전 6시를 yyyyMMdd0600과 같은 양식으로 문자열을 만들어야함
-        	}
-        	//
-        	
-        	//오늘 새벽 6시 자료를
-        	
-        	
-        	Map<String,String> params=new HashMap<String,String>();// get방식으로 요청 보낼 파라미터 모음
-        	//
-        	
-        	String apiurl = "http://apis.data.go.kr/1360000/MidFcstInfoService/getMidLandFcst";
-            params.put("serviceKey","qB0RB3NhMOOhDD8j/0UaO514AWZMty+bIyJTvHYiWvIGRa0+W0MH0tZ/9QlcJw/BG1Sdu4J98qBpn7PucDdSUg==");// 본인 서비스 키 입력
-            params.put("numOfRows","10" );
-            params.put("regId","11B00000" );
-            params.put("tmFc",tmFc );
-            params.put("pageNo","1" );
-            params.put("dataType", "JSON");
-           
-            URLlib urlCon = null;
-           
-            String result = null;
-
-    	
-            try {        
-            	urlCon=new URLlib(apiurl,params); // api 주소, 파라미터(get), 헤더 값을 넣어 httpURLConnection 객체 할당
-          
-            	//urlCon.setRequestContentType("json");// 응답받고자하는 콘텐츠 타입 지정
-            	urlCon.setRequestMethod("GET");// get방식으로 요청하도록 세팅
-            	
-                urlCon.getNetworkConnection();// 요청 실행
-                urlCon.readStreamToString(); // 받아온 응답을 문자열로 저장
-                result = urlCon.getResult(); // 응답 문자열을 가져옴
-               
-            } catch(IOException e) {
-                e.printStackTrace();
-            } finally {
-                urlCon.disconnect();
-            }
-
-              
-            String filePath = "c:\\Temp\\weatherWC.json";
-            
-            
-			
-			  try { FileWriter fileWriter = new FileWriter(filePath);
-			  		fileWriter.write(result);
-			  
-			  		fileWriter.close(); 
-			  		} catch (IOException e) { 
-			  			e.printStackTrace(); 
-			  		}
-
-            try {
-                JSONObject jsonObject = new JSONObject(result);
-
-                // Example: Accessing specific values
-                
-                JSONObject response = jsonObject.getJSONObject("response");
-                
-                JSONObject body = response.getJSONObject("body");
-                JSONObject items = body.getJSONObject("items");
-                JSONObject item = items.getJSONArray("item").getJSONObject(0);                   
-                
-                String rpAm;
-                String rpPm;
-                String wfAm; 
-			    String wfPm;
-			    
-        		String wcA="";
-        		String wcdA="";
-        		String wcP="";
-        		String wcdP="";
-			    
-				
-                //for(int i=0; i<item.length();i++) {
-                	for(int j=3; j<=7;j++) {
-                		
-                		wcA="";
-                		wcdA="";
-                		wcP="";
-                		wcdP="";
-                		
-                		rpAm = Integer.toString(item.getInt("rnSt"+j+"Am"));
-    				    rpPm = Integer.toString(item.getInt("rnSt"+j+"Pm"));
-    				    formattedDataMap.put("rp"+j,rpAm+"|"+rpPm); //3~7일 오전|오후 강수확률 일괄 수집
-    				    
-    				    
-                        wfAm = item.getString("wf"+j+"Am");   
-                        System.out.println(wfAm);
-                        wcA = findWeatherCondition(wfAm);
-                        wcdA = findWeatherConditionDetail(wfAm);
-                        System.out.println(wcA+"|"+wcdA);
-                  
-    				    wfPm = item.getString("wf"+j+"Pm"); 
-    				    wcP = findWeatherCondition(wfPm);
-    				    wcdP = findWeatherConditionDetail(wfPm);
-                        
-                        formattedDataMap.put("wc"+j,wcA+"|"+wcP);//3~7일 오전|오후 기상상태(맑음,흐림,구름많음) 일괄 수집
-                        formattedDataMap.put("wcd"+j,wcdA+"|"+wcdP);//3~7일 오전|오후 상세기상상태(비/눈/소나기) 일괄 수집
-                        
-                        
-                        
-                        
-                        String test[];
-                        test=((String)(formattedDataMap.get("wcd"+j))).split("\\|");// '|'가 정규식에서 메타문자 역할이라 이스케이프 문자'\\'뒤에 써야함
-                        System.out.println(test.length);
-                        test=((String)(formattedDataMap.get("wc"+j))).split("\\|");// '|'가 정규식에서 메타문자 역할이라 이스케이프 문자'\\'뒤에 써야함
-                        System.out.println(test.length+","+test[0]);
-    				    
-                	}
-               // }
-        	
-            
-            System.out.println(formattedDataMap.toString());
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        	return formattedDataMap;
-        	
-        	
-        	//
-        }
         
-        public Map<String,Object> getWeatherTP(){
-        	// 변수 설정
 
-        	Map<String,Object> formattedDataMap = new HashMap<String,Object>(); // db로 보낼 데이터맵
-        	
-        	//***날짜가져오는 알고리즘 -> 함수화 필요
-        	Date date =new Date();
-        	SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-        	String tmFc="";
-        	if(Integer.parseInt(new SimpleDateFormat("yyyyMMddHH").format(date))
-        			>= Integer.parseInt(sdf.format(date)+"06")) {
-        		
-        		tmFc=sdf.format(date)+"0600"; 
-        	}else {
-        		// 캘린더를 이용해서 하루 전 6시를 yyyyMMdd0600과 같은 양식으로 문자열을 만들어야함
-        	}
-        	//
-        	
-        	//오늘 새벽 6시 자료를
-        	
-        	
-        	Map<String,String> params=new HashMap<String,String>();// get방식으로 요청 보낼 파라미터 모음
-        	//
-        	
-        	String apiurl = "http://apis.data.go.kr/1360000/MidFcstInfoService/getMidTa";
-            params.put("serviceKey","qB0RB3NhMOOhDD8j/0UaO514AWZMty+bIyJTvHYiWvIGRa0+W0MH0tZ/9QlcJw/BG1Sdu4J98qBpn7PucDdSUg==");// 본인 서비스 키 입력
-            params.put("numOfRows", "10");
-            params.put("regId", "11B00000");
-            params.put("tmFc", tmFc);
-            params.put("pageNo", "1");
-            params.put("dataType", "JSON");
-           
-            URLlib urlCon = null;
-            String result = null;
-
-    	
-            try {        
-            	urlCon=new URLlib(apiurl,params); // api 주소, 파라미터(get), 헤더 값을 넣어 httpURLConnection 객체 할당
-          
-            	//urlCon.setRequestContentType("json");// 응답받고자하는 콘텐츠 타입 지정
-            	urlCon.setRequestMethod("GET");// get방식으로 요청하도록 세팅
-            	
-                urlCon.getNetworkConnection();// 요청 실행
-                urlCon.readStreamToString(); // 받아온 응답을 문자열로 저장
-                result = urlCon.getResult(); // 응답 문자열을 가져옴
-               
-            } catch(IOException e) {
-                e.printStackTrace();
-            } finally {
-                urlCon.disconnect();
-            }
-
-              
-            String filePath = "c:\\Temp\\weatherTP.json";
-            
-            
-			
-			  try { FileWriter fileWriter = new FileWriter(filePath);
-			  		fileWriter.write(result);
-			  
-			  		fileWriter.close(); 
-			  		} catch (IOException e) { 
-			  			e.printStackTrace(); 
-			  		}
-
-            try {
-                JSONObject jsonObject = new JSONObject(result);
-
-                // Example: Accessing specific values
-                
-                JSONObject response = jsonObject.getJSONObject("response");
-                
-                JSONObject body = response.getJSONObject("body");
-                JSONObject items = body.getJSONObject("items");
-                JSONObject item = items.getJSONArray("item").getJSONObject(0);                   
-
-        		
-        		String tpMin="";
-        		String tpMax="";
-
-                //for(int i=0; i<item.length();i++) {
-                	for(int j=3; j<=7;j++) {
-                		
-                		tpMin="";
-                		tpMax="";
-
-                		tpMin = Float.toString(item.getFloat("taMin"+j));
-    				    tpMax = Float.toString(item.getFloat("taMax"+j));
-    				    formattedDataMap.put("tp"+j,tpMin+"|"+tpMax); //3~7일 최저|최고 온도 일괄 수집  
-                	}
-               // }
-        	
-            
-            System.out.println(formattedDataMap.toString());
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        	return formattedDataMap;
-        }
+        
+        
+        
+        
        
+        	
+        	
         
 
                    
