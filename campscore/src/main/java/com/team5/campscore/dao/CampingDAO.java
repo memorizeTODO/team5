@@ -11,5 +11,5 @@ import com.team5.campscore.model.Camping;
 @Mapper
 public interface CampingDAO {
 	public int insertCamping(Camping c); 
-	public List<Camping> getCampingListByRegion(@Param("start")int start, @Param("region")String region);
+	public List<Camping> getCampingListByRegion(@Param("start")int start, @Param("region")String region,);
 }

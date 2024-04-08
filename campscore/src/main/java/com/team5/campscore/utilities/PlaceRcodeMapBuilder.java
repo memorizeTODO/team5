@@ -3,9 +3,9 @@ package com.team5.campscore.utilities;
 import java.util.Map;
 import java.util.HashMap;
 
-public class PlaceIdMapBuilder {
+public class PlaceRcodeMapBuilder {
 	Map<String,String> placeIdMap;
-	public PlaceIdMapBuilder(){
+	public PlaceRcodeMapBuilder(){
 		placeIdMap = new HashMap<String,String>();
 		placeIdMap.put("11A00101","백령");
 		placeIdMap.put("11B10101","서울");
@@ -183,7 +183,7 @@ public class PlaceIdMapBuilder {
 		placeIdMap.put("11H20704","하동");
 
 	}
-	public Map<String,String> getPlaceIdMap(){
+	public Map<String,String> getPlaceRcodeMap(){
 		return placeIdMap;
 	}
 }

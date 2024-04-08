@@ -15,5 +15,35 @@
 		select * from weather
 	</select>
 	
+	<update id="updateWeather" parameterType="weather">
+		update weather 
+		set 
+			tp0 = #{tp0},
+			tp1 = #{tp1},
+			tp2 = #{tp2},
+			tp3 = #{tp3},
+			tp4 = #{tp4},
+			tp5 = #{tp5},
+			tp6 = #{tp6},
+			tp7 = #{tp7},
+			wc0 = #{wc0},
+			wc1 = #{wc1},
+			wc2 = #{wc2},
+			wc3 = #{wc3},
+			wc4 = #{wc4},
+			wc5 = #{wc5},
+			wc6 = #{wc6},
+			wc7 = #{wc7},
+			wcd0 = #{wcd0},
+			wcd1 = #{wcd1},
+			wcd2 = #{wcd2},
+			wcd3 = #{wcd3},
+			wcd4 = #{wcd4},
+			wcd5 = #{wcd5},
+			wcd6 = #{wcd6},
+			wcd7 = #{wcd7},
+		where rcode=#{rcode}
+		
+	</update>
 		
 </mapper>

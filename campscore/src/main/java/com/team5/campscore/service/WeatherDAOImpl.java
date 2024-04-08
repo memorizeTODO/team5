@@ -30,4 +30,9 @@ public class WeatherDAOImpl implements WeatherDAO {
 		return dao.getWeather();
 		
 	}
+	public int updateWeather(Weather w) {
+		dao.updateWeather(w);
+	
+		return 1;
+	}
 }

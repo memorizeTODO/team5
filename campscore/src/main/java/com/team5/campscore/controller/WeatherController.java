@@ -372,13 +372,80 @@ public class WeatherController {
     	return returnVal;
     }
     
+    public void updateWeatherMoveUpDate() { // 일자별 날씨 데이터들의 n일 후 날씨 컬럼들을 하루가 지날때마다 앞쪽으로 당겨주는 메소드 
+    	
+    	//Map<String,Map<String,String>> weatherMaps;
+    	//weatherMaps=getWeather();
+    	List<Weather> getWList = weatherService.getWeather();//수정을 위해 db로 부터 받아온 데이터를 담은 날씨 dto들이 담긴 list
+    	Map<String,String> getWMap;//수정을 위해 db로 부터 받아온 데이터를 담은 날씨 dto를 변환시켜 저장할 map
+    	Map<String,String> insWMap;// db로 수정 요청을 보내는데 사용할 dto를 변환시켜 저장할 map
+    	Weather getW; // 수정을 위해 db로 부터 받아온 데이터를 담은 날씨 dto
+    	Weather insW; // db로 수정 요청을 보내는데 사용할 dto
+    	
+    	
+    	for(int i=0;i<getWList.size();i++) {
+    		getW = getWList.get(i);
+    		insW = new Weather();
+    		getWMap= new HashMap<String,String>();
+    		insWMap= new HashMap<String,String>();
+    		try {
+				BeanUtils.populate(getWMap, BeanUtils.describe(getW));
+				for(int j = 7; j > 0; j--) {
+					String val1=getWMap.get("wc"+j);
+					if(val1.equals(null)) {val1="N/A";}
+					insWMap.put("wc"+(j-1), val1); //ex:7일자 데이터를 6일자에
+					String val2= getWMap.get("wcd"+j);
+					if(val2.equals(null)) {val2="N/A";}
+					insWMap.put("wcd"+(j-1), val2);
+					String val3= getWMap.get("tp"+j);
+					if(val3.equals(null)) {val3="N/A";}
+					insWMap.put("tp"+(j-1),val3);
+					if(j==7) { //7일차의 경우 자정~6시까지 빈 값으로 있어야함 
+						insWMap.put("wc" + j,"N/A");
+						insWMap.put("wcd" + j,"N/A");
+						insWMap.put("tp" + j,"N/A");
+					}
+					BeanUtils.populate(insW, insWMap);
+					weatherService.updateWeather(insW);
+				}	
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				continue;
+			} catch (InvocationTargetException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				continue;
+			} catch (NoSuchMethodException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				continue;
+			}
+    	
+    	}
+    	
+    }
     public void updateWeather() {
-    	Map<String,Object> weatherMap= new HashMap<String,Object>();
+    	int returnVal=1;
     	Map<String,Map<String,String>> weatherMaps;
+    	try {
+    	
     	weatherMaps=getWeather();
-    	List<Weather> wList = weatherService.getWeather();
+    	for(String key : weatherMaps.keySet()) {
+    		Weather weatherDTO = new Weather(); 
+    		System.out.println(weatherMaps.get(key).toString());
+    		Map<String, String> weatherMap = weatherMaps.get(key);
+    		BeanUtils.populate(weatherDTO, weatherMap);
+    		System.out.println( weatherDTO.getRcode());
     	
+    	weatherService.insertWeather(weatherDTO);
+    	}
+    	}catch(Exception e) {
+    		e.printStackTrace();
+    		returnVal=0;
+    	}
     	
+    	return returnVal;
     }
     
 }

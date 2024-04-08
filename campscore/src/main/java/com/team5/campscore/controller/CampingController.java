@@ -21,7 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.team5.campscore.model.Camping;
 import com.team5.campscore.service.CampingDAOImpl;
 import com.team5.campscore.utilities.CampingCategoryExtrator;
-import com.team5.campscore.utilities.PlaceIdMapBuilder;
+
+import com.team5.campscore.utilities.PlaceRcodeMapBuilder;
 
 @RestController
 @RequestMapping("/")
@@ -93,11 +94,11 @@ public class CampingController {
         URLlib urlCon = null;
         String result = null;
        
-        PlaceIdMapBuilder pidMapBuilder= new PlaceIdMapBuilder();
-        Map<String,String> pidMap = pidMapBuilder.getPlaceIdMap();
+        PlaceRcodeMapBuilder prMapBuilder= new PlaceRcodeMapBuilder();
+        Map<String,String> prMap = prMapBuilder.getPlaceRcodeMap();
         Map<String,String> checkDuplicateId=new HashMap<String,String>();
         
-        for(String key:pidMap.keySet()) {
+        for(String key:prMap.keySet()) {
         	boolean isEnd=false;
         	int cnt=1;
 	        while(isEnd!=true) {
@@ -106,7 +107,7 @@ public class CampingController {
 		        try { 
 		           Map<String,String> params=new HashMap<String,String>();
 		    	   Map<String,String> headers=new HashMap<String,String>();
-		    	   params.put("query", pidMap.get(key)+" 캠핑장" );
+		    	   params.put("query", prMap.get(key)+" 캠핑장" );
 		    	   params.put("category_group_code", "AD5");
 		           headers.put("Authorization", "KakaoAK adacc2024f0537f8eb428ee10db1dc20");
 		        	

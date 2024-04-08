@@ -5,17 +5,17 @@
 
 	<!-- 글작성 -->
 	<insert id="insertCamping" parameterType="camping">
-		insert into camping values(#{placeId},#{placeName},#{addressName},#{roadAddressName},#{placeUrl},#{placeImg},#{placeLat},#{placeLong},#{placeCategoryDetail})
+		insert into camping values(#{placeID},#{placeName},#{addressName},#{roadAddressName},#{placeUrl},#{placeImg},#{placeLat},#{placeLong},#{placeCategoryDetail})
 	</insert>
 	
 	
 	<select id="getCampingListByRegion" resultType="camping">
-		SELECT placeId,placeName,COALESCE(roadAddressName, addressName) AS addressName ,placeUrl,placeImg,placeLong,placelat,placeCategoryDetail 
+		SELECT placeID,placeName,COALESCE(roadAddressName, addressName) AS addressName ,placeUrl,placeImg,placeLong,placelat,placeCategoryDetail 
 		FROM camping
 		WHERE COALESCE(roadAddressName, addressName) LIKE concat('%', #{region}, '%')  
-		order by COALESCE(roadAddressName, addressName) limit #{start},10;
+		order by addressName limit #{start},10;
 		
-		
+		like '%rcode%'
 	</select>
 
 </mapper>
