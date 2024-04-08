@@ -34,7 +34,9 @@ public class CampingController {
 	@GetMapping(value ="getListByRegion")
 	ResponseEntity<Map<String, Map<String, Object>>> getCampingToViewByRegion(@RequestParam Map<String,String> params){
 		int page; 
-		String region=null;
+		String region= "";
+		String sortType = "place_name"; 
+		String order = "asc";
 		if(params.get("page")==null) {
 			page=1;
 		}else{
@@ -48,17 +50,33 @@ public class CampingController {
 		}
 		if(params.get("region")!=null) {
 			region=params.get("region");
-			
-		}else {
-			//rcode가 없을때 넘겨줄 함수 호출해야함
 		}
+		if(params.get("sort")!=null) {
+			switch(params.get("sort")) {
+				case "place_name": case "weather_score":
+					sortType = params.get("sort_type");
+			}
+			
+		}
+		
+		if(params.get("order")!=null) {
+			switch(params.get("order")) {
+				case "asc":	case "desc":
+					order=params.get("order");
+			}
+			
+		}
+		
+		
+		
+		
 		int start = (page-1)*10 + 1;
 		
 		System.out.println("region="+region);
 		
 		Map<String, Map<String, Object>> campingMaps= new HashMap<String, Map<String, Object>>();
 		List<Camping> campingList;
-		campingList=campingService.getCampingListByRegion(start,region);
+		campingList=campingService.getCampingListByRegion(start,region,sortType,order);
 		
 	
 		for(int i=0;i<campingList.size();i++) {

@@ -10,10 +10,10 @@
 	
 	
 	<select id="getCampingListByRegion" resultType="camping">
-		SELECT placeID,placeName,COALESCE(roadAddressName, addressName) AS addressName ,placeUrl,placeImg,placeLong,placeLat,placeCategoryDetail 
+		SELECT place_id,place_name,COALESCE(road_address_name, address_name) AS address_name ,place_url,place_img,place_long,place_lat,place_category_detail 
 		FROM camping
-		WHERE COALESCE(roadAddressName, addressName) LIKE concat('%', #{region}, '%')  
-		order by addressName limit #{start},10;
+		WHERE COALESCE(road_address_name, address_name) LIKE concat('%', #{region}, '%')  
+		order by #{sort_type} #{order} limit #{start},10;
 	
 	</select>
 

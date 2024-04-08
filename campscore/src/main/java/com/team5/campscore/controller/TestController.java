@@ -39,7 +39,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.team5.campscore.utilities.CampingCategoryExtrator;
-import com.team5.campscore.utilities.PlaceIdMapBuilder;
 import com.team5.campscore.utilities.WeatherDataExtractor;
 
 import java.util.ArrayList;
