@@ -339,41 +339,30 @@ public class WeatherController {
     }
     
     
-    @RequestMapping("get/weather")
-    public Map<String,Map<String,Object>> getWeatherToView(){
-    	Map<String,Map<String,Object>> returnVal= new HashMap<String,Map<String,Object>>();
-    	
-    	Map<String,Object> weatherMap= new HashMap<String,Object>(); 
-    	List<Weather> wList = weatherService.getWeather();
-    	
-    	for(int i=0;i<wList.size();i++ ) {
-    		try {
-				BeanUtils.populate(weatherMap, BeanUtils.describe(wList.get(i)));
-				System.out.println(weatherMap.toString());
-				
-				returnVal.put("item"+i, weatherMap);
-			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				continue;
-			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				continue;
-			} catch (NoSuchMethodException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				continue;
-			}
-    		
+    
+    public void updateWeatherAPItoDB(){
+    	Map<String,Map<String,String>> weatherMaps;
+     
+    	weatherMaps=getWeather();	
+    	try {
+	    	for(String key : weatherMaps.keySet()) {
+	    		Weather weatherDTO = new Weather(); 
+	    		System.out.println(weatherMaps.get(key).toString());
+	    		Map<String, String> weatherMap = weatherMaps.get(key);
+	    		BeanUtils.populate(weatherDTO, weatherMap);
+	    		
+	    		weatherService.insertWeather(weatherDTO);
+	    	}
+	    	}catch(Exception e) {
+	    		e.printStackTrace();
+	 
     	}
-    	
-    	
-    	return returnVal;
+   
     }
     
-    public void updateWeatherMoveUpDate() { // 일자별 날씨 데이터들의 n일 후 날씨 컬럼들을 하루가 지날때마다 앞쪽으로 당겨주는 메소드 
+    public int updateWeatherMoveUpDate() { // 일자별 날씨 데이터들의 n일 후 날씨 컬럼들을 하루가 지날때마다 앞쪽으로 당겨주는 메소드 
     	
+    	int result = 1;
     	//Map<String,Map<String,String>> weatherMaps;
     	//weatherMaps=getWeather();
     	List<Weather> getWList = weatherService.getWeather();//수정을 위해 db로 부터 받아온 데이터를 담은 날씨 dto들이 담긴 list
@@ -406,7 +395,7 @@ public class WeatherController {
 						insWMap.put("tp" + j,"N/A");
 					}
 					BeanUtils.populate(insW, insWMap);
-					weatherService.updateWeather(insW);
+					result = weatherService.updateWeather(insW);
 				}	
 			} catch (IllegalAccessException e) {
 				// TODO Auto-generated catch block
@@ -423,10 +412,11 @@ public class WeatherController {
 			}
     	
     	}
+    	return result;
     	
     }
-    public void updateWeather() {
-    	int returnVal=1;
+    public int updateWeather() {
+    	int result = 1;
     	Map<String,Map<String,String>> weatherMaps;
     	try {
     	
@@ -438,14 +428,15 @@ public class WeatherController {
     		BeanUtils.populate(weatherDTO, weatherMap);
     		System.out.println( weatherDTO.getRcode());
     	
-    	weatherService.insertWeather(weatherDTO);
+    		result=weatherService.insertWeather(weatherDTO);
+    		System.out.println(result);
     	}
     	}catch(Exception e) {
     		e.printStackTrace();
-    		returnVal=0;
+    		System.out.println(result);
     	}
     	
-    	return returnVal;
+    	return result;
     }
     
 }
