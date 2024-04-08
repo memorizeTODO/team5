@@ -39,6 +39,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.team5.campscore.utilities.CampingCategoryExtrator;
+import com.team5.campscore.utilities.URLlib;
 import com.team5.campscore.utilities.WeatherDataExtractor;
 
 import java.util.ArrayList;
@@ -50,8 +51,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.team5.campscore.model.Camping;
-import com.team5.campscore.model.Weather;
+import com.team5.campscore.model.CampingDTO;
+import com.team5.campscore.model.WeatherDTO;
 import com.team5.campscore.service.*;
 
 import org.apache.commons.beanutils.BeanUtils;

@@ -9,7 +9,7 @@ import lombok.Data;
 
 @Data
 @Alias("camping")
-public class Camping {
+public class CampingDTO {
   
 	public String getPlaceID() {
 	return placeID;

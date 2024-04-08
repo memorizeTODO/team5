@@ -18,11 +18,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.team5.campscore.model.Camping;
+import com.team5.campscore.model.CampingDTO;
 import com.team5.campscore.service.CampingDAOImpl;
 import com.team5.campscore.utilities.CampingCategoryExtrator;
 
 import com.team5.campscore.utilities.PlaceRcodeMapBuilder;
+import com.team5.campscore.utilities.URLlib;
 
 @RestController
 @RequestMapping("/")
@@ -75,7 +76,7 @@ public class CampingController {
 		System.out.println("region="+region);
 		
 		Map<String, Map<String, Object>> campingMaps= new HashMap<String, Map<String, Object>>();
-		List<Camping> campingList;
+		List<CampingDTO> campingList;
 		campingList=campingService.getCampingListByRegion(start,region,sortType,order);
 		
 	
@@ -178,7 +179,7 @@ public class CampingController {
 	                	}
 	                	
 	                			
-	                	Camping camping= new Camping();
+	                	CampingDTO camping= new CampingDTO();
 	                	
 	                	camping.setPlaceID(item.getString("id"));
 	                	if(checkDuplicateId.get(camping.getPlaceID())!=null) {

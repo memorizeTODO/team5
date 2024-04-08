@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.team5.campscore.dao.WeatherDAO;
-import com.team5.campscore.model.Weather;
+import com.team5.campscore.model.WeatherDTO;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,7 +19,7 @@ public class WeatherDAOImpl implements WeatherDAO {
 	@Autowired
 	WeatherDAO dao;
 	
-	public int insertWeather(Weather w) {
+	public int insertWeather(WeatherDTO w) {
 	    try {
 	        // insert 쿼리 실행
 	        int result = dao.insertWeather(w);
@@ -30,13 +30,13 @@ public class WeatherDAOImpl implements WeatherDAO {
 	    }
 	}
 	
-	public List<Weather> getWeather() {
+	public List<WeatherDTO> getWeather() {
 		
 		 
 		return dao.getWeather();
 		
 	}
-	public int updateWeather(Weather w) {
+	public int updateWeather(WeatherDTO w) {
 	
 		return dao.updateWeather(w);
 	}

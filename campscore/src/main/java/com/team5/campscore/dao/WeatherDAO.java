@@ -5,11 +5,11 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.team5.campscore.model.Weather;
+import com.team5.campscore.model.WeatherDTO;
 
 @Mapper
 public interface WeatherDAO {
-	public int insertWeather(Weather w); 
-	public int updateWeather(Weather w);
-	public List<Weather> getWeather();
+	public int insertWeather(WeatherDTO w); 
+	public int updateWeather(WeatherDTO w);
+	public List<WeatherDTO> getWeather();
 }
