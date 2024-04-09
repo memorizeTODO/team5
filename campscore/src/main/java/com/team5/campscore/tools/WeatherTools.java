@@ -271,10 +271,10 @@ public class WeatherTools {
     // 샘플용 코드, tmFc값 문서보고 잘 세팅할 것  
     @RequestMapping("getWeatherAPI")
     public void getWeatherAPIc() {
-    	getWeatherAPI("202404090600");
+    	getWeatherAPIList("202404090600");
     }
     
-    public Map<String, Map<String, String>> getWeatherAPI(String tmfc_data){
+    public Map<String, Map<String, String>> getWeatherAPIList(String tmfc_data){
     	
     	Map<String,Map<String,String>> weatherMaps=new HashMap<String,Map<String,String>>();
     	Map<String,String>weatherMap= new HashMap<String,String>();
@@ -401,7 +401,7 @@ public class WeatherTools {
     	Map<String,Map<String,String>> weatherMaps;
     	try {
         	
-        	weatherMaps=getWeatherAPI(tmfc_data);
+        	weatherMaps=getWeatherAPIList(tmfc_data);
 	    	for (String key : weatherMaps.keySet()) {
 	    		WeatherDTO weatherDTO = new WeatherDTO(); 
 	    		//System.out.println(weatherMaps.get(key).toString());
@@ -426,7 +426,7 @@ public class WeatherTools {
     	Map<String,Map<String,String>> weatherMaps;
     	try {
     	
-    	weatherMaps= getWeatherAPI(tmfc_data);
+    	weatherMaps= getWeatherAPIList(tmfc_data);
     	for(String key : weatherMaps.keySet()) {
     		WeatherDTO weatherDTO = new WeatherDTO(); 
     		System.out.println(weatherMaps.get(key).toString());
