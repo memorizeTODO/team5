@@ -12,7 +12,7 @@ public class WeatherSchedule {
 	@Autowired
 	private WeatherTools wTools;
 
-	@Scheduled(cron = "5 26 13 * * *")
+	@Scheduled(cron = "5 0 14 * * *")
 	public void autoUpdateScheduleAt6() {
 		
 		wTools.updateWeather("202404060600");

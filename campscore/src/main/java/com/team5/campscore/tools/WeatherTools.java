@@ -333,16 +333,15 @@ public class WeatherTools {
 					String val3= (String)getWMap.get("tp"+j);
 					if(val3==null) {val3="N/A";}
 					insWMap.put("tp"+(j-1),val3);
-					if(j==7) { //7일차의 경우 자정~6시까지 빈 값으로 있어야함 
-						insWMap.put("wc" + j,"N/A");
-						insWMap.put("wcd" + j,"N/A");
-						insWMap.put("tp" + j,"N/A");
-					}
-				}	
-					BeanUtils.populate(insW, insWMap);
 					
-					System.out.println("result="+insW.getRcode());
-					result = weatherService.updateWeather(insW);
+				}	
+				insWMap.put("wc7","N/A");
+				insWMap.put("wcd7","N/A");
+				insWMap.put("tp7" ,"N/A");
+				BeanUtils.populate(insW, insWMap);
+					
+				System.out.println("result="+insW.getRcode());
+				result = weatherService.updateWeather(insW);
 					
 			} catch (IllegalAccessException e) {
 				// TODO Auto-generated catch block
