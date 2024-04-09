@@ -13,8 +13,12 @@
 			#{rp0},#{rp1},#{rp2},#{rp3},#{rp4},#{rp5},#{rp6},#{rp7})
 	</insert>
 	
-	<select id="getWeather" resultType="weather">
+	<select id="getWeatherList" resultType="weather">
 		select * from weather
+	</select>
+	
+	<select id="getWeather" parameterType="String" resultType="weather">
+		select * from weather where addr=#{region}
 	</select>
 	
 	<update id="updateWeather" parameterType="weather">

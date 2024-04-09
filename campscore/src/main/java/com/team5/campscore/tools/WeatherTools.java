@@ -61,29 +61,30 @@ public class WeatherTools {
         URLlib urlCon = null;
         String result = null;
         boolean isSuccess=false;
-	
-        try {        
-        	urlCon=new URLlib(apiurl,params); // api 주소, 파라미터(get), 헤더 값을 넣어 httpURLConnection 객체 할당
-      
-        	//urlCon.setRequestContentType("json");// 응답받고자하는 콘텐츠 타입 지정
-        	urlCon.setRequestMethod("GET");// get방식으로 요청하도록 세팅
-        	
-        	
-        	isSuccess=urlCon.getNetworkConnection();// 요청 실행
-        	
-        	if(isSuccess==false) {
-        		return null;
-        	}
-       
-            urlCon.readStreamToString("EUC-KR"); // 받아온 응답을 문자열로 저장
-            result = urlCon.getResult(); // 응답 문자열을 가져옴
-           
-        } catch(IOException e) {
-            e.printStackTrace();
-        } finally {
-            urlCon.disconnect();
+        
+        for (int i =0; i<3;i++) {
+	        try {        
+	        	urlCon=new URLlib(apiurl,params); // api 주소, 파라미터(get), 헤더 값을 넣어 httpURLConnection 객체 할당
+	      
+	        	//urlCon.setRequestContentType("json");// 응답받고자하는 콘텐츠 타입 지정
+	        	urlCon.setRequestMethod("GET");// get방식으로 요청하도록 세팅
+	        	
+	        	
+	        	isSuccess=urlCon.getNetworkConnection();// 요청 실행
+	        	
+	        	if(isSuccess==true) {
+	        		break;
+	        	}
+	       
+	            urlCon.readStreamToString("EUC-KR"); // 받아온 응답을 문자열로 저장
+	            result = urlCon.getResult(); // 응답 문자열을 가져옴
+	           
+	        } catch(IOException e) {
+	            e.printStackTrace();
+	        } finally {
+	            urlCon.disconnect();
+	        }
         }
-
           
         String filePath = "c:\\Temp\\weatherWC.json";
         
@@ -181,25 +182,26 @@ public class WeatherTools {
         URLlib urlCon = null;
         String result = null;
         boolean isSuccess=false;
-	
-        try {        
-        	urlCon=new URLlib(apiurl,params); // api 주소, 파라미터(get), 헤더 값을 넣어 httpURLConnection 객체 할당
-      
-        	//urlCon.setRequestContentType("json");;// 응답받고자하는 콘텐츠 타입 지정
-        	urlCon.setRequestMethod("GET");// get방식으로 요청하도록 세팅
-        	
-        	isSuccess=urlCon.getNetworkConnection();// 요청 실행
-        	
-        	if(isSuccess==false) {
-        		return null;
-        	}
-            urlCon.readStreamToString("EUC-KR"); // 받아온 응답을 문자열로 저장
-            result = urlCon.getResult(); // 응답 문자열을 가져옴
-           
-        }  catch(IOException e) {
-            e.printStackTrace();
-        } finally {
-            urlCon.disconnect();
+        for (int i =0; i<3;i++) {
+	        try {        
+	        	urlCon=new URLlib(apiurl,params); // api 주소, 파라미터(get), 헤더 값을 넣어 httpURLConnection 객체 할당
+	      
+	        	//urlCon.setRequestContentType("json");;// 응답받고자하는 콘텐츠 타입 지정
+	        	urlCon.setRequestMethod("GET");// get방식으로 요청하도록 세팅
+	        	
+	        	isSuccess=urlCon.getNetworkConnection();// 요청 실행
+	        	
+	        	if(isSuccess==true) {
+	        		break;
+	        	}
+	            urlCon.readStreamToString("EUC-KR"); // 받아온 응답을 문자열로 저장
+	            result = urlCon.getResult(); // 응답 문자열을 가져옴
+	           
+	        }  catch(IOException e) {
+	            e.printStackTrace();
+	        } finally {
+	            urlCon.disconnect();
+	        }
         }
 
           
@@ -246,6 +248,10 @@ public class WeatherTools {
     }
 
     // 샘플용 코드, tmFc값 문서보고 잘 세팅할 것  
+    @RequestMapping("getWeatherAPI")
+    public void getWeatherAPIc() {
+    	getWeatherAPI("202404090600");
+    }
     
     public Map<String, Map<String, String>> getWeatherAPI(String tmfc_data){
     	
@@ -304,7 +310,7 @@ public class WeatherTools {
     	int result = 1;
     	//Map<String,Map<String,String>> weatherMaps;
     	//weatherMaps=getWeather();
-    	List<WeatherDTO> getWList = weatherService.getWeather();//수정을 위해 db로 부터 받아온 데이터를 담은 날씨 dto들이 담긴 list
+    	List<WeatherDTO> getWList = weatherService.getWeatherList();//수정을 위해 db로 부터 받아온 데이터를 담은 날씨 dto들이 담긴 list
     	Map<String,Object> getWMap;//수정을 위해 db로 부터 받아온 데이터를 담은 날씨 dto를 변환시켜 저장할 map
     	Map<String,Object> tmpWMap;//수정을 위해 db로 부터 받아온 데이터를 담은 날씨 dto를 변환시켜 저장할 map
     	Map<String,Object> insWMap;// db로 수정 요청을 보내는데 사용할 dto를 변환시켜 저장할 map
@@ -333,16 +339,15 @@ public class WeatherTools {
 					String val3= (String)getWMap.get("tp"+j);
 					if(val3==null) {val3="N/A";}
 					insWMap.put("tp"+(j-1),val3);
-					if(j==7) { //7일차의 경우 자정~6시까지 빈 값으로 있어야함 
-						insWMap.put("wc" + j,"N/A");
-						insWMap.put("wcd" + j,"N/A");
-						insWMap.put("tp" + j,"N/A");
-					}
-				}	
-					BeanUtils.populate(insW, insWMap);
 					
-					System.out.println("result="+insW.getRcode());
-					result = weatherService.updateWeather(insW);
+				}	
+				insWMap.put("wc7","N/A");
+				insWMap.put("wcd7","N/A");
+				insWMap.put("tp7" ,"N/A");
+				BeanUtils.populate(insW, insWMap);
+					
+				System.out.println("result="+insW.getRcode());
+				result = weatherService.updateWeather(insW);
 					
 			} catch (IllegalAccessException e) {
 				// TODO Auto-generated catch block
