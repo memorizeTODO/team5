@@ -35,10 +35,15 @@ public class WeatherDAOImpl implements WeatherDAO {
 	    return result;
 	}
 	
-	public List<WeatherDTO> getWeather() {
+	public List<WeatherDTO> getWeatherList() {
 		
 		 
-		return dao.getWeather();
+		return dao.getWeatherList();
+		
+	}
+	public WeatherDTO getWeather(String region) {
+
+		return dao.getWeather(region);
 		
 	}
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)

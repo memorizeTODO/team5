@@ -168,23 +168,18 @@ public class URLlib {
         
 		
         try {
-        	for(int i=0;i<5;i++) {
+        	
 	        	urlConnection.setConnectTimeout(300000);
 	            urlConnection.setReadTimeout(300000);
 	            urlConnection.setDoInput(true);//서버의 응답을 inputStream으로 받겠다는 뜻
 	
 	            if(urlConnection.getResponseCode() != HttpURLConnection.HTTP_OK) {
-	            	if (i!=4) {
-	            		continue;
-	            	}
-	                throw new IOException("HTTP error code : " + urlConnection.getResponseCode());
+	            	
+	            	throw new IOException("HTTP error code : " + urlConnection.getResponseCode());
 	                
-	            }else {
-	            	break;
 	            }
-        	}
-        	Thread.sleep(2000);
-        resInputStream = urlConnection.getInputStream();
+	            resInputStream = urlConnection.getInputStream();
+	      
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			

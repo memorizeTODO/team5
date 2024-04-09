@@ -11,5 +11,6 @@ import com.team5.campscore.model.WeatherDTO;
 public interface WeatherDAO {
 	public int insertWeather(WeatherDTO w); 
 	public int updateWeather(WeatherDTO w);
-	public List<WeatherDTO> getWeather();
+	public WeatherDTO getWeather(String region);
+	public List<WeatherDTO> getWeatherList();
 }
