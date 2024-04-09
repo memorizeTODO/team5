@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.team5.campscore.service.WeatherDAOImpl;
+
 import com.team5.campscore.tools.WeatherTools;
 
 @Component
@@ -12,12 +12,9 @@ public class WeatherSchedule {
 	@Autowired
 	private WeatherTools wTools;
 
-	@Scheduled(cron = "5 53 14 * * *")
+	@Scheduled(cron = "0 0 6 * * *")
 	public void autoUpdateScheduleAt6() {
-		
-		
-		wTools.updateWeather("202404090600");
-		
+		wTools.updateWeather(null);
 	}
 	
 	@Scheduled(cron = "0 0 0 * * *")

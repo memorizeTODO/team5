@@ -72,12 +72,14 @@ public class WeatherTools {
 	        	
 	        	isSuccess=urlCon.getNetworkConnection();// 요청 실행
 	        	
-	        	if(isSuccess==true) {
-	        		break;
-	        	}
+	        	
 	       
 	            urlCon.readStreamToString("EUC-KR"); // 받아온 응답을 문자열로 저장
 	            result = urlCon.getResult(); // 응답 문자열을 가져옴
+	            
+	            if(isSuccess==true) {
+	        		break;
+	        	}
 	           
 	        } catch(IOException e) {
 	            e.printStackTrace();
@@ -86,18 +88,16 @@ public class WeatherTools {
 	        }
         }
           
-        String filePath = "c:\\Temp\\weatherWC.json";
-        
-        
-		
-		  try { FileWriter fileWriter = new FileWriter(filePath);
-		  		fileWriter.write(result);
-		  
-		  		fileWriter.close(); 
-		  		} catch (IOException e) { 
-		  			e.printStackTrace(); 
-		  		}
-
+		/*
+		 * String filePath = "c:\\Temp\\weatherWC.json";
+		 * 
+		 * 
+		 * 
+		 * try { FileWriter fileWriter = new FileWriter(filePath);
+		 * fileWriter.write(result);
+		 * 
+		 * fileWriter.close(); } catch (IOException e) { e.printStackTrace(); }
+		 */
         try {
         	WeatherDataExtractor w= new WeatherDataExtractor();
         	Map<String,String>dataMapAM= new HashMap<String,String>();
@@ -112,16 +112,36 @@ public class WeatherTools {
         	
         	int cntAM = 3;
         	int cntPM = 3;
-        	for(int i = 0; i<=10;i++) {
+        	String dataAM="";
+        	String dataPM="";
+        	for(int i = 0; i<10;i++) {
         		if(i%2==0) {
-        			dataMapAM.put("wcAM"+cntAM, w.splitLineWC(lines[cntAM]).get("wc"));
-        			dataMapAM.put("wcdAM"+cntAM, w.splitLineWC(lines[cntAM]).get("wcd"));
-        			dataMapAM.put("rpAM"+cntAM, w.splitLineWC(lines[cntAM]).get("rp"));
+        			dataAM= w.splitLineWC(lines[i]).get("wc");
+        			if(dataAM==null) {dataAM="";}
+        			dataMapAM.put("wcAM"+cntAM, dataAM);
+        			
+        			dataAM= w.splitLineWC(lines[i]).get("wcd");
+        			if(dataAM==null) {dataAM="";}
+        			dataMapAM.put("wcdAM"+cntAM, dataAM);
+        			
+        			dataAM= w.splitLineWC(lines[i]).get("rp");
+        			if(dataAM==null) {dataAM="";}
+        			dataMapAM.put("rpAM"+cntAM, dataAM);
+        			
         			cntAM++;
         		}else {
-        			dataMapPM.put("wcPM"+cntPM, w.splitLineWC(lines[cntPM]).get("wc"));
-        			dataMapPM.put("wcdPM"+cntPM, w.splitLineWC(lines[cntPM]).get("wcd"));
-        			dataMapPM.put("rpPM"+cntPM, w.splitLineWC(lines[cntPM]).get("rp"));
+        			dataPM= w.splitLineWC(lines[i]).get("wc");
+        			if(dataPM==null) {dataPM="";}
+        			dataMapPM.put("wcPM"+cntPM, dataPM);
+        			
+        			dataPM= w.splitLineWC(lines[i]).get("wcd");
+        			if(dataPM==null) {dataPM="";}
+        			dataMapPM.put("wcdPM"+cntPM, dataPM);
+        			
+        			dataPM= w.splitLineWC(lines[i]).get("rp");
+        			if(dataPM==null) {dataPM="";}
+        			dataMapPM.put("rpPM"+cntPM, dataPM);
+        			
         			cntPM++;
         		}
         	}
@@ -191,12 +211,13 @@ public class WeatherTools {
 	        	
 	        	isSuccess=urlCon.getNetworkConnection();// 요청 실행
 	        	
-	        	if(isSuccess==true) {
-	        		break;
-	        	}
+	        	
 	            urlCon.readStreamToString("EUC-KR"); // 받아온 응답을 문자열로 저장
 	            result = urlCon.getResult(); // 응답 문자열을 가져옴
 	           
+	            if(isSuccess==true) {
+	        		break;
+	        	}
 	        }  catch(IOException e) {
 	            e.printStackTrace();
 	        } finally {
@@ -250,10 +271,10 @@ public class WeatherTools {
     // 샘플용 코드, tmFc값 문서보고 잘 세팅할 것  
     @RequestMapping("getWeatherAPI")
     public void getWeatherAPIc() {
-    	getWeatherAPI("202404090600");
+    	getWeatherAPIList("202404090600");
     }
     
-    public Map<String, Map<String, String>> getWeatherAPI(String tmfc_data){
+    public Map<String, Map<String, String>> getWeatherAPIList(String tmfc_data){
     	
     	Map<String,Map<String,String>> weatherMaps=new HashMap<String,Map<String,String>>();
     	Map<String,String>weatherMap= new HashMap<String,String>();
@@ -336,13 +357,17 @@ public class WeatherTools {
 					String val2= (String)getWMap.get("wcd"+j);
 					if(val2==null) {val2="N/A";}
 					insWMap.put("wcd"+(j-1), val2);
-					String val3= (String)getWMap.get("tp"+j);
+					String val3= (String)getWMap.get("rp"+j);
 					if(val3==null) {val3="N/A";}
-					insWMap.put("tp"+(j-1),val3);
+					insWMap.put("rp"+(j-1), val3);
+					String val4= (String)getWMap.get("tp"+j);
+					if(val4==null) {val4="N/A";}
+					insWMap.put("tp"+(j-1),val4);
 					
 				}	
 				insWMap.put("wc7","N/A");
 				insWMap.put("wcd7","N/A");
+				insWMap.put("rp7","N/A");
 				insWMap.put("tp7" ,"N/A");
 				BeanUtils.populate(insW, insWMap);
 					
@@ -376,7 +401,7 @@ public class WeatherTools {
     	Map<String,Map<String,String>> weatherMaps;
     	try {
         	
-        	weatherMaps=getWeatherAPI(tmfc_data);
+        	weatherMaps=getWeatherAPIList(tmfc_data);
 	    	for (String key : weatherMaps.keySet()) {
 	    		WeatherDTO weatherDTO = new WeatherDTO(); 
 	    		//System.out.println(weatherMaps.get(key).toString());
@@ -401,7 +426,7 @@ public class WeatherTools {
     	Map<String,Map<String,String>> weatherMaps;
     	try {
     	
-    	weatherMaps= getWeatherAPI(tmfc_data);
+    	weatherMaps= getWeatherAPIList(tmfc_data);
     	for(String key : weatherMaps.keySet()) {
     		WeatherDTO weatherDTO = new WeatherDTO(); 
     		System.out.println(weatherMaps.get(key).toString());

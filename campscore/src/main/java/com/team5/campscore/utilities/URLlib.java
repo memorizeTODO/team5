@@ -175,7 +175,8 @@ public class URLlib {
 	
 	            if(urlConnection.getResponseCode() != HttpURLConnection.HTTP_OK) {
 	            	
-	            	throw new IOException("HTTP error code : " + urlConnection.getResponseCode());
+	            	System.out.println("HTTP error code : " + urlConnection.getResponseCode());
+	            	return false;
 	                
 	            }
 	            resInputStream = urlConnection.getInputStream();
