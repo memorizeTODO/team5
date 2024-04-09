@@ -8,22 +8,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.team5.campscore.dao.CampingDAO;
-import com.team5.campscore.model.Camping;
+import com.team5.campscore.model.CampingDTO;
 
 @Service
 public class CampingDAOImpl  implements CampingDAO {
 	@Autowired
 	CampingDAO dao;
 	
-	public int insertCamping(Camping camping)  {
+	public int insertCamping(CampingDTO camping)  {
 		int returnValue = 1;
 		
 		returnValue=dao.insertCamping(camping);
 		
 		return returnValue;
 	}
-	public List<Camping> getCampingListByRegion(int start, String region) {
+	public List<CampingDTO> getCampingListByRegion(int start, String region, String sortType, String order) {
 		
-		return dao.getCampingListByRegion(start,region);
+		return dao.getCampingListByRegion(start,region,sortType,order);
 	};
 }

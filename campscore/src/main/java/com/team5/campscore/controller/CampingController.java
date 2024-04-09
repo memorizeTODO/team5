@@ -18,10 +18,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.team5.campscore.model.Camping;
+import com.team5.campscore.model.CampingDTO;
 import com.team5.campscore.service.CampingDAOImpl;
 import com.team5.campscore.utilities.CampingCategoryExtrator;
-import com.team5.campscore.utilities.PlaceIdMapBuilder;
+
+import com.team5.campscore.utilities.PlaceRcodeMapBuilder;
+import com.team5.campscore.utilities.URLlib;
 
 @RestController
 @RequestMapping("/")
@@ -30,10 +32,12 @@ public class CampingController {
 	CampingDAOImpl campingService;
 	
 	@Mapper
-	@GetMapping(value ="getListByRegion")
+	@GetMapping(value ="get/campinglist")
 	ResponseEntity<Map<String, Map<String, Object>>> getCampingToViewByRegion(@RequestParam Map<String,String> params){
 		int page; 
-		String region=null;
+		String region= "";
+		String sortType = "place_name"; 
+		String order = "asc";
 		if(params.get("page")==null) {
 			page=1;
 		}else{
@@ -47,17 +51,33 @@ public class CampingController {
 		}
 		if(params.get("region")!=null) {
 			region=params.get("region");
-			
-		}else {
-			//rcode가 없을때 넘겨줄 함수 호출해야함
 		}
+		if(params.get("sort")!=null) {
+			switch(params.get("sort")) {
+				case "place_name": case "weather_score":
+					sortType = params.get("sort_type");
+			}
+			
+		}
+		
+		if(params.get("order")!=null) {
+			switch(params.get("order")) {
+				case "asc":	case "desc":
+					order=params.get("order");
+			}
+			
+		}
+		
+		
+		
+		
 		int start = (page-1)*10 + 1;
 		
 		System.out.println("region="+region);
 		
 		Map<String, Map<String, Object>> campingMaps= new HashMap<String, Map<String, Object>>();
-		List<Camping> campingList;
-		campingList=campingService.getCampingListByRegion(start,region);
+		List<CampingDTO> campingList;
+		campingList=campingService.getCampingListByRegion(start,region,sortType,order);
 		
 	
 		for(int i=0;i<campingList.size();i++) {
@@ -77,7 +97,7 @@ public class CampingController {
 			}
 			System.out.println(campingMap.toString());
 			
-			System.out.println(campingMap.get("placeId"));
+			System.out.println(campingMap.get("placeID"));
 			
 			campingMaps.put("item"+i,campingMap);
 		}
@@ -93,11 +113,11 @@ public class CampingController {
         URLlib urlCon = null;
         String result = null;
        
-        PlaceIdMapBuilder pidMapBuilder= new PlaceIdMapBuilder();
-        Map<String,String> pidMap = pidMapBuilder.getPlaceIdMap();
+        PlaceRcodeMapBuilder prMapBuilder= new PlaceRcodeMapBuilder();
+        Map<String,String> prMap = prMapBuilder.getPlaceRcodeMap();
         Map<String,String> checkDuplicateId=new HashMap<String,String>();
         
-        for(String key:pidMap.keySet()) {
+        for(String key:prMap.keySet()) {
         	boolean isEnd=false;
         	int cnt=1;
 	        while(isEnd!=true) {
@@ -106,7 +126,7 @@ public class CampingController {
 		        try { 
 		           Map<String,String> params=new HashMap<String,String>();
 		    	   Map<String,String> headers=new HashMap<String,String>();
-		    	   params.put("query", pidMap.get(key)+" 캠핑장" );
+		    	   params.put("query", prMap.get(key)+" 캠핑장" );
 		    	   params.put("category_group_code", "AD5");
 		           headers.put("Authorization", "KakaoAK adacc2024f0537f8eb428ee10db1dc20");
 		        	
@@ -159,7 +179,7 @@ public class CampingController {
 	                	}
 	                	
 	                			
-	                	Camping camping= new Camping();
+	                	CampingDTO camping= new CampingDTO();
 	                	
 	                	camping.setPlaceID(item.getString("id"));
 	                	if(checkDuplicateId.get(camping.getPlaceID())!=null) {

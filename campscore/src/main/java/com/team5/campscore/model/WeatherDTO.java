@@ -11,7 +11,7 @@ import lombok.Setter;
 //@Setter
 @Data
 @Alias("weather")
-public class Weather {
+public class WeatherDTO {
 	
 	public String getRcode() {
 		return this.rcode;

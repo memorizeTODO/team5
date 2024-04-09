@@ -2,16 +2,19 @@ package com.team5.campscore.model;
 
 import org.apache.ibatis.type.Alias;
 
+//import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+//import com.fasterxml.jackson.databind.annotation.JsonNaming;
+
 import lombok.Data;
 
 @Data
 @Alias("camping")
-public class Camping {
+public class CampingDTO {
   
 	public String getPlaceID() {
 	return placeID;
 	}
-	public void setPlaceID(String placeId) {
+	public void setPlaceID(String placeID) {
 		this.placeID = placeID;
 	}
 	public String getPlaceName() {
