@@ -5,7 +5,9 @@
 
 	<!-- 글작성 -->
 	<insert id="insertWeather" parameterType="weather">
-		insert into weather values(#{rcode},#{addr},#{tp0},#{tp1},#{tp2},#{tp3},#{tp4},#{tp5},#{tp6},#{tp7},
+		insert into weather values(
+			#{rcode},#{addr},
+			#{tp0},#{tp1},#{tp2},#{tp3},#{tp4},#{tp5},#{tp6},#{tp7},
 			#{wc0},#{wc1},#{wc2},#{wc3},#{wc4},#{wc5},#{wc6},#{wc7},
 			#{wcd0},#{wcd1},#{wcd2},#{wcd3},#{wcd4},#{wcd5},#{wcd6},#{wcd7},
 			#{rp0},#{rp1},#{rp2},#{rp3},#{rp4},#{rp5},#{rp6},#{rp7})
@@ -18,24 +20,82 @@
 	<update id="updateWeather" parameterType="weather">
 		update weather 
 		set 
-			tp3 = #{tp3},
-			tp4 = #{tp4},
-			tp5 = #{tp5},
-			tp6 = #{tp6},
-			tp7 = #{tp7},
+			<if test="tp0 != null">
+             tp0 = #{tp0},
+        	</if>
+			<if test="tp1 != null">
+             tp1 = #{tp1},
+        	</if>
+			<if test="tp2 != null">
+             tp2 = #{tp2},
+        	</if>
+			<if test="tp3 != null">
+             tp3 = #{tp3},
+        	</if>
+			<if test="tp4 != null">
+             tp4 = #{tp4},
+        	</if>
+			<if test="tp5 != null">
+             tp5 = #{tp5},
+        	</if>
+			<if test="tp6 != null">
+             tp6 = #{tp6},
+        	</if>
+			<if test="tp7 != null">
+             tp7 = #{tp7},
+        	</if>
 			
-			wc3 = #{wc3},
-			wc4 = #{wc4},
-			wc5 = #{wc5},
-			wc6 = #{wc6},
-			wc7 = #{wc7},
 			
-			wcd3 = #{wcd3},
-			wcd4 = #{wcd4},
-			wcd5 = #{wcd5},
-			wcd6 = #{wcd6},
-			wcd7 = #{wcd7},
-		where rcode=#{rcode}
+			<if test="wc0 != null">
+             wc0 = #{wc0},
+        	</if>
+			<if test="wc1 != null">
+             wc1 = #{wc1},
+        	</if>
+			<if test="wc2 != null">
+             wc2 = #{wc2},
+        	</if>
+			<if test="wc3 != null">
+             wc3 = #{wc3},
+        	</if>
+			<if test="wc4 != null">
+             wc4 = #{wc4},
+        	</if>
+			<if test="wc5 != null">
+             wc5 = #{wc5},
+        	</if>
+			<if test="wc6 != null">
+             wc6 = #{wc6},
+        	</if>
+			<if test="wc7 != null">
+             wc7 = #{wc7},
+        	</if>
+			
+			<if test="wcd0 != null">
+             wcd0 = #{wcd0},
+        	</if>
+			<if test="wc1 != null">
+             wcd1 = #{wcd1},
+        	</if>
+			<if test="wc2 != null">
+             wcd2 = #{wcd2},
+        	</if>
+			<if test="wc3 != null">
+             wcd3 = #{wcd3},
+        	</if>
+			<if test="wc4 != null">
+             wcd4 = #{wcd4},
+        	</if>
+			<if test="wc5 != null">
+             wcd5 = #{wcd5},
+        	</if>
+			<if test="wc6 != null">
+             wcd6 = #{wcd6},
+        	</if>
+			<if test="wc7 != null">
+             wcd7 = #{wcd7}
+        	</if>
+		where rcode = #{rcode}
 		
 	</update>
 		

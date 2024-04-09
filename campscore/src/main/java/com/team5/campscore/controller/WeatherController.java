@@ -35,6 +35,7 @@ public class WeatherController {
 
     	for(int i=0;i<wList.size();i++ ) {
     		try {
+    			weatherMap= new HashMap<String,Object>();
 				BeanUtils.populate(weatherMap, BeanUtils.describe(wList.get(i)));
 				System.out.println(weatherMap.toString());
 

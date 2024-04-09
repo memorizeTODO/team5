@@ -9,23 +9,26 @@ import com.team5.campscore.tools.WeatherTools;
 
 @Component
 public class WeatherSchedule {
+	@Autowired
+	private WeatherTools wTools;
 
-	@Scheduled(cron = "0 1/10 6 * * *")
+	@Scheduled(cron = "5 26 13 * * *")
 	public void autoUpdateScheduleAt6() {
-		WeatherTools wTools = new WeatherTools();
-		wTools.updateWeather();
+		
+		wTools.updateWeather("202404060600");
+		wTools.updateWeatherMoveUpDate();
+		wTools.updateWeather("202404070600");
+		wTools.updateWeatherMoveUpDate();
+		wTools.updateWeather("202404080600");
+		wTools.updateWeatherMoveUpDate();
+		wTools.updateWeather("202404090600");
+		
 	}
 	
 	@Scheduled(cron = "0 0 0 * * *")
-	public void autoUpdateScheduleAt0() {
-		int result=0;
-		while(result==0) {
-			WeatherTools wTools = new WeatherTools();
-			result=wTools.updateWeatherMoveUpDate();
-			if(result!=0) {
-				break;
-			}
-		}
+	public void autoUpdateScheduleAt0() {	
+		wTools.updateWeatherMoveUpDate();
+			
 	}
 	
 }
