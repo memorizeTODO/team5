@@ -72,12 +72,14 @@ public class WeatherTools {
 	        	
 	        	isSuccess=urlCon.getNetworkConnection();// 요청 실행
 	        	
-	        	if(isSuccess==true) {
-	        		break;
-	        	}
+	        	
 	       
 	            urlCon.readStreamToString("EUC-KR"); // 받아온 응답을 문자열로 저장
 	            result = urlCon.getResult(); // 응답 문자열을 가져옴
+	            
+	            if(isSuccess==true) {
+	        		break;
+	        	}
 	           
 	        } catch(IOException e) {
 	            e.printStackTrace();
@@ -86,18 +88,16 @@ public class WeatherTools {
 	        }
         }
           
-        String filePath = "c:\\Temp\\weatherWC.json";
-        
-        
-		
-		  try { FileWriter fileWriter = new FileWriter(filePath);
-		  		fileWriter.write(result);
-		  
-		  		fileWriter.close(); 
-		  		} catch (IOException e) { 
-		  			e.printStackTrace(); 
-		  		}
-
+		/*
+		 * String filePath = "c:\\Temp\\weatherWC.json";
+		 * 
+		 * 
+		 * 
+		 * try { FileWriter fileWriter = new FileWriter(filePath);
+		 * fileWriter.write(result);
+		 * 
+		 * fileWriter.close(); } catch (IOException e) { e.printStackTrace(); }
+		 */
         try {
         	WeatherDataExtractor w= new WeatherDataExtractor();
         	Map<String,String>dataMapAM= new HashMap<String,String>();
@@ -191,12 +191,13 @@ public class WeatherTools {
 	        	
 	        	isSuccess=urlCon.getNetworkConnection();// 요청 실행
 	        	
-	        	if(isSuccess==true) {
-	        		break;
-	        	}
+	        	
 	            urlCon.readStreamToString("EUC-KR"); // 받아온 응답을 문자열로 저장
 	            result = urlCon.getResult(); // 응답 문자열을 가져옴
 	           
+	            if(isSuccess==true) {
+	        		break;
+	        	}
 	        }  catch(IOException e) {
 	            e.printStackTrace();
 	        } finally {
