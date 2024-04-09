@@ -99,9 +99,6 @@ public class SightTools {
 	                	JSONObject item = documents.getJSONObject(i);
 	                	
 	                	categoryMap=cce.findCampingCategoryData(item.getString("category_name"));
-	                	if(categoryMap.get("category2")==null || !categoryMap.get("category2").equals("야영,캠핑장")) {
-	                		continue; 
-	                	}
 	                	
 	                			
 	                	SightDTO sightDTO= new SightDTO();

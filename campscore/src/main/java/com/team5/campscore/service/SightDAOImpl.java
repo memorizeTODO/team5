@@ -12,7 +12,10 @@ public class SightDAOImpl {
 	@Autowired
 	private SightDAO dao;
 	
-	public void insertSight(SightDTO s){
-		dao.insertSight(s);
+	public int insertSight(SightDTO s){
+		int returnVal =1;
+		returnVal=dao.insertSight(s);
+		System.out.println(returnVal);
+		return returnVal;
 	};
 }

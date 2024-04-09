@@ -26,5 +26,5 @@ import com.team5.campscore.utilities.URLlib;
 
 @Mapper
 public interface SightDAO {
-	public void insertSight(SightDTO s);
+	public int insertSight(SightDTO s);
 }
