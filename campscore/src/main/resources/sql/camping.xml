@@ -13,7 +13,7 @@
 		SELECT place_id, place_name,COALESCE(road_address_name, address_name) AS address_name ,place_url,place_img,place_long,place_lat,place_category_detail 
 		FROM camping
 		WHERE COALESCE(road_address_name, address_name) LIKE concat('%', #{region}, '%')  
-		order by #{sort_type} #{order} limit #{start},10;
+		order by #{sort_type} #{order} limit #{start},10
 	
 	</select>
 	
@@ -21,7 +21,8 @@
 		SELECT place_id, place_name,COALESCE(road_address_name, address_name) AS address_name ,place_url,place_img,place_long,place_lat,place_category_detail 
 		FROM camping
 		WHERE COALESCE(road_address_name, address_name) LIKE concat('%', #{region}, '%') and place_name LiKE concat('%', #{place_name}, '%') and place_category_detail LiKE concat('%', #{place_category_detail}, '%')
-		order by #{sort_type} #{order} limit #{start},10;
+		order by <if test="order=='asc'">place_name COLLATE utf8mb4_0900_ai_ci asc</if> <if test="order=='desc'">place_name COLLATE utf8mb4_0900_ai_ci desc</if> limit  #{start},10
+			
 	</select>
 
 </mapper>

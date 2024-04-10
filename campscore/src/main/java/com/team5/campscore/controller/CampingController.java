@@ -136,8 +136,8 @@ public class CampingController {
 		if(params.get("region")!=null) {
 			region=params.get("region");
 		}
-		if(params.get("sort")!=null) {
-			switch(params.get("sort")) {
+		if(params.get("sort_type")!=null) {
+			switch(params.get("sort_type")) {
 				case "place_name": case "weather_score":
 					sortType = params.get("sort_type");
 			}
@@ -223,6 +223,7 @@ public class CampingController {
 			switch(params.get("sort_type")) {
 				case "place_name": case "weather_score":
 					sortType = params.get("sort_type");
+					
 			}
 		}
 		
@@ -240,7 +241,7 @@ public class CampingController {
 		
 		int start = (page-1)*10;
 		
-		System.out.println("region="+region);
+		System.out.println("region="+region+"sortType="+sortType);
 		
 		Map<String, Map<String, Object>> campingMaps= new HashMap<String, Map<String, Object>>();
 		List<CampingDTO> campingList;
