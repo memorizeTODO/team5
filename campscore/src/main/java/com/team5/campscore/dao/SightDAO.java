@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,5 +27,6 @@ import com.team5.campscore.utilities.URLlib;
 
 @Mapper
 public interface SightDAO {
-	public int insertSight(SightDTO s);
+	public int insertSight(SightDTO sightDTO);
+	public List<SightDTO> getSightList(@Param("region")String region,@Param("start")int  start);
 }

@@ -8,6 +8,13 @@
 		insert into sight values(#{placeID},#{placeName},#{addressName},#{roadAddressName},#{placeUrl},#{placeImg},#{placeLat},#{placeLong},#{placeCategoryDetail})
 	</insert>
 	
+	<select id="getSightList" resultType="sight" >
+		SELECT place_id, place_name, COALESCE(road_address_name, address_name) AS address_name , place_url, place_img, place_long, place_lat, place_category_detail 
+		FROM sight
+		WHERE COALESCE(road_address_name, address_name) LIKE concat( #{region}, '%')  
+		order by place_name asc limit #{start},8;
+	</select>
+	
 	
 	
 
