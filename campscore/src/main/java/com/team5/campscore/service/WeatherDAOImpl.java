@@ -22,17 +22,16 @@ public class WeatherDAOImpl implements WeatherDAO {
 	private WeatherDAO dao;
 	
 	public int insertWeather(WeatherDTO w) {
-		int result=1;
 	    try {
 	        // insert 쿼리 실행
-	        result = dao.insertWeather(w);
+	        dao.insertWeather(w);
 	        
 	    } catch (PersistenceException e) {
 	        // MyBatis의 PersistenceException 처리
 	    	
 	        return 0;
 	    }
-	    return result;
+	    return 1;
 	}
 	
 	public List<WeatherDTO> getWeatherList() {
@@ -48,16 +47,15 @@ public class WeatherDAOImpl implements WeatherDAO {
 	}
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED)
 	public int updateWeather(WeatherDTO w) {
-    	int result=1;
     	try {
 	        // insert 쿼리 실행
-    		result= dao.updateWeather(w);
+    		dao.updateWeather(w);
 	        
 	    } catch (PersistenceException e) {
 	        // MyBatis의 PersistenceException 처리
-	        return result=0;
+	        return 0;
 	    }
     	
-    	return result;
+    	return 1;
 	}
 }

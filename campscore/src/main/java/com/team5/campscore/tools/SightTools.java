@@ -7,6 +7,7 @@ import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,7 +18,7 @@ import com.team5.campscore.utilities.CampingCategoryExtrator;
 import com.team5.campscore.utilities.PlaceRcodeMapBuilder;
 import com.team5.campscore.utilities.URLlib;
 
-@RestController
+@Component
 public class SightTools {
 	@Autowired
 	public SightDAOImpl sightService;

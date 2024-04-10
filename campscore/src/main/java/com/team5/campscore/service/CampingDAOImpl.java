@@ -26,4 +26,9 @@ public class CampingDAOImpl  implements CampingDAO {
 		
 		return dao.getCampingListByRegion(start,region,sortType,order);
 	};
+	
+	public List<CampingDTO> getCampingListByPlaceName(int start, String region, String sortType, String order, String placeName) {
+		
+		return dao.getCampingListByPlaceName(start,region,sortType,order,placeName);
+	};
 }
