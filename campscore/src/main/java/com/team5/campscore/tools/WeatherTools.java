@@ -62,31 +62,29 @@ public class WeatherTools {
         String result = null;
         boolean isSuccess=false;
         
-        for (int i =0; i<3;i++) {
-	        try {        
-	        	urlCon=new URLlib(apiurl,params); // api 주소, 파라미터(get), 헤더 값을 넣어 httpURLConnection 객체 할당
-	      
-	        	//urlCon.setRequestContentType("json");// 응답받고자하는 콘텐츠 타입 지정
-	        	urlCon.setRequestMethod("GET");// get방식으로 요청하도록 세팅
-	        	
-	        	
-	        	isSuccess=urlCon.getNetworkConnection();// 요청 실행
-	        	
-	        	
-	       
-	            urlCon.readStreamToString("EUC-KR"); // 받아온 응답을 문자열로 저장
-	            result = urlCon.getResult(); // 응답 문자열을 가져옴
-	            
-	            if(isSuccess==true) {
-	        		break;
-	        	}
-	           
-	        } catch(IOException e) {
-	            e.printStackTrace();
-	        } finally {
-	            urlCon.disconnect();
-	        }
+        
+        try {        
+        	urlCon=new URLlib(apiurl,params); // api 주소, 파라미터(get), 헤더 값을 넣어 httpURLConnection 객체 할당
+      
+        	//urlCon.setRequestContentType("json");// 응답받고자하는 콘텐츠 타입 지정
+        	urlCon.setRequestMethod("GET");// get방식으로 요청하도록 세팅
+        	
+        	
+        	isSuccess=urlCon.getNetworkConnection();// 요청 실행
+        	
+            urlCon.readStreamToString("EUC-KR"); // 받아온 응답을 문자열로 저장
+            result = urlCon.getResult(); // 응답 문자열을 가져옴
+            
+           
+        } catch(IOException e) {
+        	e.printStackTrace();
+        } finally {
+            urlCon.disconnect();
+            if(isSuccess==false) {
+        		return null;
+        	}
         }
+        
           
 		/*
 		 * String filePath = "c:\\Temp\\weatherWC.json";
@@ -274,6 +272,62 @@ public class WeatherTools {
     	getWeatherAPIList("202404090600");
     }
     
+    public WeatherDTO getWeatherAPI(String regid,String tmfc_data){
+    	
+    	
+    	WeatherDTO weatherDTO=null;
+    	Map<String,String> weatherMap = null;
+    	Map<String,String> weatherWCMap=null;
+    	Map<String,String> weatherTPMap=null;
+    	
+    	try {
+    		for(int i=0; i<3;i++) {
+    			weatherWCMap=getWeatherWC(regid,tmfc_data);
+	    		if(weatherWCMap!=null ) {
+	    			Thread.sleep(2000);
+    				break;
+    			}
+    		}
+    		for(int i=0; i<3;i++) {
+    			weatherTPMap=getWeatherTP(regid,tmfc_data);
+    			if(weatherTPMap!=null ) {
+    				Thread.sleep(2000);
+    				break;
+    			}
+    		}
+    		
+    		if(weatherWCMap==null||weatherTPMap==null) {
+    			return null;
+    		}
+    		
+
+	    	weatherDTO = new WeatherDTO();
+	    	weatherMap = new HashMap<String,String>();
+	   
+	    	weatherMap.putAll(weatherTPMap);
+        	weatherMap.putAll(weatherWCMap);
+        	
+        	BeanUtils.populate(weatherDTO, weatherMap);
+    		
+	    	if(regid.equals("11B[0-9]{5}")) {weatherMap.put("addr","경기");}
+	    	else if(regid.equals("11C1[0-9]{4}")) {weatherMap.put("addr","충북");}
+	    	else if(regid.equals("11C2[0-9]{4}")) {weatherMap.put("addr","충남");}
+	    	else if(regid.equals("11D1[0-9]{4}")) {weatherMap.put("addr","강원");}
+	    	else if(regid.equals("11H1[0-9]{4}")) {weatherMap.put("addr","경북");}
+	    	else if(regid.equals("11H2[0-9]{4}")) {weatherMap.put("addr","경남");}
+	    	else if(regid.equals("11F1[0-9]{4}")) {weatherMap.put("addr","전북");}
+	    	else if(regid.equals("11F2[0-9]{4}")) {weatherMap.put("addr","전남");}
+	    	else if(regid.equals("11G0[0-9]{4}")) {weatherMap.put("addr","제주");}
+	    	
+    	
+    	}catch(Exception e) {
+    		e.printStackTrace();
+    		return null;
+    	}
+    
+    	return weatherDTO;
+    }
+    
     public Map<String, Map<String, String>> getWeatherAPIList(String tmfc_data){
     	
     	Map<String,Map<String,String>> weatherMaps=new HashMap<String,Map<String,String>>();
@@ -396,7 +450,26 @@ public class WeatherTools {
     	
     }
     
-    public int updateWeather(String tmfc_data) {
+    public int updateWeather(String regid, String tmfc_data) {
+    	int returnVal=1;
+    	
+    	WeatherDTO weatherDTO=null;
+    	try {
+    		weatherDTO=getWeatherAPI(regid, tmfc_data);
+    		returnVal=weatherService.updateWeather(weatherDTO);
+    		if (returnVal==0) {
+    			weatherService.insertWeather(weatherDTO);
+    		}
+    		
+    	}catch(Exception e) {
+    		e.printStackTrace();
+    		return 0;
+    	}
+    	
+    	return returnVal;
+    }
+    
+    public int updateWeatherList(String tmfc_data) {
     	int result = 1;
     	Map<String,Map<String,String>> weatherMaps;
     	try {
@@ -421,7 +494,27 @@ public class WeatherTools {
     	return result;
     }
     
-    public int insertWeather(String tmfc_data) {
+    
+    public int insertWeather(String regid,String tmfc_data){
+	int returnVal=1;
+    	
+    	WeatherDTO weatherDTO=null;
+    	try {
+    		weatherDTO=getWeatherAPI(regid, tmfc_data);
+    		returnVal=weatherService.insertWeather(weatherDTO);
+    		if (returnVal==0) {
+    			weatherService.updateWeather(weatherDTO);
+    		}
+    		
+    	}catch(Exception e) {
+    		e.printStackTrace();
+    		return 0;
+    	}
+    	
+    	return returnVal;
+    }
+    
+    public int insertWeatherList(String tmfc_data) {
     	int result=1;
     	Map<String,Map<String,String>> weatherMaps;
     	try {
@@ -444,4 +537,5 @@ public class WeatherTools {
     	
     	return result;
     }
+    
 }

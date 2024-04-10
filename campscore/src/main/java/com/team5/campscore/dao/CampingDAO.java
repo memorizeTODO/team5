@@ -13,6 +13,7 @@ public interface CampingDAO {
 	public int insertCamping(CampingDTO c); 
 	public List<CampingDTO> getCampingListByRegion(@Param("start")int start,  @Param("region")String region,
 												@Param("sort_type")String sortType, @Param("order")String order);
+	public List<CampingDTO> getCampingListByPlaceName(@Param("start")int start, @Param("region")String region, @Param("sort_type")String sortType,@Param("order") String order, @Param("place_name")String placeName);
 	
 	
 }

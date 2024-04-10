@@ -31,10 +31,11 @@ public class CampingController {
 	@Autowired
 	CampingDAOImpl campingService;
 	
-	@Mapper
-	@GetMapping(value ="get/campinglist")
+	
+	@GetMapping(value ="get/campinglist/region")
 	ResponseEntity<Map<String, Map<String, Object>>> getCampingToViewByRegion(@RequestParam Map<String,String> params){
 		int page; 
+		String placeName = ""; 
 		String region= "";
 		String sortType = "place_name"; 
 		String order = "asc";
@@ -49,6 +50,10 @@ public class CampingController {
 				page=1;
 			}
 		}
+		if(params.get("place")!=null) {
+			placeName= params.get("place_name");
+		}
+		
 		if(params.get("region")!=null) {
 			region=params.get("region");
 		}
@@ -104,6 +109,87 @@ public class CampingController {
 		
 		return new ResponseEntity<>(campingMaps, HttpStatus.OK);
 	}
+	
+	@GetMapping(value ="get/campinglist/place_name")
+	ResponseEntity<Map<String, Map<String, Object>>> getCampingToViewByPlaceName(@RequestParam Map<String,String> params){
+		int page; 
+		String placeName = ""; 
+		String region= "";
+		String sortType = "place_name"; 
+		String order = "asc";
+		if(params.get("page")==null) {
+			page=1;
+		}else{
+			try {
+				page=Integer.parseInt(params.get("page"));
+				
+			}
+			catch (NumberFormatException e) {
+				page=1;
+			}
+		}
+		if(params.get("place_name")!=null) {
+			placeName = params.get("place_name");
+		}
+		System.out.println(placeName);
+		
+		if(params.get("region")!=null) {
+			region=params.get("region");
+		}
+		if(params.get("sort")!=null) {
+			switch(params.get("sort")) {
+				case "place_name": case "weather_score":
+					sortType = params.get("sort_type");
+			}
+			
+		}
+		
+		if(params.get("order")!=null) {
+			switch(params.get("order")) {
+				case "asc":	case "desc":
+					order=params.get("order");
+			}
+			
+		}
+		
+		
+		
+		
+		int start = (page-1)*10 + 1;
+		
+		System.out.println("region="+region);
+		
+		Map<String, Map<String, Object>> campingMaps= new HashMap<String, Map<String, Object>>();
+		List<CampingDTO> campingList;
+		campingList=campingService.getCampingListByPlaceName(start,region,sortType,order,placeName);
+		
+	
+		for(int i=0;i<campingList.size();i++) {
+			Map<String, Object> campingMap = new HashMap<String, Object>();
+			
+			try {
+				BeanUtils.populate(campingMap, BeanUtils.describe(campingList.get(i)));
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NoSuchMethodException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			System.out.println(campingMap.toString());
+			
+			System.out.println(campingMap.get("placeID"));
+			
+			campingMaps.put("item"+i,campingMap);
+		}
+		
+		return new ResponseEntity<>(campingMaps, HttpStatus.OK);
+	}
+	
+	
 	
 	@RequestMapping("insert/camping")
 	public void insertCamping() {
