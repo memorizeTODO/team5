@@ -17,12 +17,11 @@
 	
 	</select>
 	
-	<select id="getCampingListByPlaceName" resultType="camping">
+	<select id="getCampingList" resultType="camping">
 		SELECT place_id, place_name,COALESCE(road_address_name, address_name) AS address_name ,place_url,place_img,place_long,place_lat,place_category_detail 
 		FROM camping
-		WHERE COALESCE(road_address_name, address_name) LIKE concat('%', #{region}, '%') and place_name LiKE concat('%', #{place_name}, '%')
+		WHERE COALESCE(road_address_name, address_name) LIKE concat('%', #{region}, '%') and place_name LiKE concat('%', #{place_name}, '%') and LiKE concat('%', #{place_category_detail}, '%')
 		order by #{sort_type} #{order} limit #{start},10;
-	
 	</select>
 
 </mapper>
