@@ -113,23 +113,23 @@
                         <ul class="w-48 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                             <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600">
                                 <div class="flex items-center ps-3">
-                                    <input id="vue-checkbox" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded 
+                                    <input id="caravan-checkbox" type="radio" value="caravan" name="type_checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded 
                                                                                              focus:ring-blue-500 dark:focus:ring-blue-600 ">
-                                    <label for="vue-checkbox" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">카라반</label>
+                                    <label for="caravan-checkbox" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">카라반</label>
                                 </div>
                             </li>
                             <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600">
                                 <div class="flex items-center ps-3">
-                                    <input id="react-checkbox" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded 
+                                    <input id="gramping-checkbox" type="radio" value="gramping" name="type_checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded 
                                                                                                focus:ring-blue-500 dark:focus:ring-blue-600 ">
-                                    <label for="react-checkbox" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">글램핑</label>
+                                    <label for="gramping-checkbox" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">글램핑</label>
                                 </div>
                             </li>
                             <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600">
                                 <div class="flex items-center ps-3">
-                                    <input id="angular-checkbox" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded 
+                                    <input id="autocamping-checkbox" type="radio" value="오토캠핑장" name="type_checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded 
                                                                                                  focus:ring-blue-500 dark:focus:ring-blue-600 ">
-                                    <label for="angular-checkbox" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">오토캠핑장</label>
+                                    <label for="autocamping-checkbox" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">오토캠핑장</label>
                                 </div>
                             </li>
                         </ul>
@@ -141,15 +141,15 @@
         <!--검색목록-->
             <div class="flex flex-col w-full pb-5"> 
                 <div class="flex relative flex-row-reverse w-10/12">
-                                        <select id="underline_select" class="py-2.5 px-0 text-sm text-gray-500 bg-[#F5F5F5] 
+                                        <select id="sort_type" class="py-2.5 px-0 text-sm text-gray-500 bg-[#F5F5F5] 
                                         focus:outline-none focus:ring-0 focus:border-gray-200 peer">
-                                            <option value="des" selected>내림차순</option>
+                                            <option value="desc" selected>내림차순</option>
                                             <option value="asc">오름차순</option>
                                             </select>  
-                                        <select id="chasun" class="py-2.5 px-0 text-sm text-gray-500   bg-[#F5F5F5]
+                                        <select id="order" class="py-2.5 px-0 text-sm text-gray-500   bg-[#F5F5F5]
                                                                             focus:outline-none focus:ring-0 focus:border-gray-200 peer">
-                                            <option value="US" selected>날씨점수순</option>
-                                            <option value="CA">가나다순</option>
+                                            <option value="score" selected>날씨점수순</option>
+                                            <option value="alp">이름순</option>
                                         </select>
                                         
                     </div>
@@ -180,119 +180,42 @@
         <script>
         async function campdata() {
             
-            const cres = await fetch('http://localhost:80/insert/camping');
+            const cres = await fetch('http://localhost:80/get/campinglist?page=1&region=경기&sort_type=place_names&order=desc');
             const campJson = await cres.json();
         	
-            alert(campJson.camp_name);
-        }
-        
-        const campdt = [
-        	{ 
-    			campname:'가평67빌리지',
-    			campaddressname:'경기 가평군 북면 도대리 284-16', 
-    			camproadaddressname:'경기도 가평군 북면 가화로 2159-59', 
-    			campurl:"https:67village.modoo.at",
-    			campimgl:'images/gapyung67.webp',
-        		
-        	},
-        	{ 
-    			campname:'가평67빌리지',
-    			campaddressname:'경기 가평군 북면 도대리 284-16', 
-    			camproadaddressname:'경기도 가평군 북면 가화로 2159-59', 
-    			campurl:"https:67village.modoo.at",
-    			campimgl:'images/gapyung67.webp',
-        		
-        	},
-        	{ 
-    			campname:'가평67빌리지',
-    			campaddressname:'경기 가평군 북면 도대리 284-16', 
-    			camproadaddressname:'경기도 가평군 북면 가화로 2159-59', 
-    			campurl:"https:67village.modoo.at",
-    			campimgl:'images/gapyung67.webp',
-        		
-        	},
-        	{ 
-    			campname:'가평67빌리지',
-    			campaddressname:'경기 가평군 북면 도대리 284-16', 
-    			camproadaddressname:'경기도 가평군 북면 가화로 2159-59', 
-    			campurl:"https:67village.modoo.at",
-    			campimgl:'images/gapyung67.webp',
-        		
-        	},
-        	{ 
-    			campname:'가평67빌리지',
-    			campaddressname:'경기 가평군 북면 도대리 284-16', 
-    			camproadaddressname:'경기도 가평군 북면 가화로 2159-59', 
-    			campurl:"https:67village.modoo.at",
-    			campimgl:'images/gapyung67.webp',
-        		
-        	},
-        	{ 
-    			campname:'가평67빌리지',
-    			campaddressname:'경기 가평군 북면 도대리 284-16', 
-    			camproadaddressname:'경기도 가평군 북면 가화로 2159-59', 
-    			campurl:"https:67village.modoo.at",
-    			campimgl:'images/gapyung67.webp',
-        		
-        	},
-        	{ 
-    			campname:'가평67빌리지',
-    			campaddressname:'경기 가평군 북면 도대리 284-16', 
-    			camproadaddressname:'경기도 가평군 북면 가화로 2159-59', 
-    			campurl:"https:67village.modoo.at",
-    			campimgl:'images/gapyung67.webp',
-        		
-        	},
-        	{ 
-    			campname:'가평67빌리지',
-    			campaddressname:'경기 가평군 북면 도대리 284-16', 
-    			camproadaddressname:'경기도 가평군 북면 가화로 2159-59', 
-    			campurl:"https:67village.modoo.at",
-    			campimgl:'images/gapyung67.webp',
-        		
-        	},
-        	{ 
-    			campname:'가평67빌리지',
-    			campaddressname:'경기 가평군 북면 도대리 284-16', 
-    			camproadaddressname:'경기도 가평군 북면 가화로 2159-59', 
-    			campurl:"https:67village.modoo.at",
-    			campimgl:'images/gapyung67.webp',
-        		
-        	},
-        ];
-        let innerHTML = ''; 
-        const campdataTag = document.getElementById("camp-list");
-        
-        
-        for(let i = 0; i<7;i++){ 
-        	const campdata = campdt[i]
-        	const camp_name = campdata.campname;
-        	const camp_address_name = campdata.campaddressname;
-        	const camp_road_address_name = campdata.camp_roadaddressname;
-        	const camp_url = campdata.campurl;
-        	const camp_imgl = campdata.campimgl;
-        	
-      
-        	innerHTML += ` 
-   		
-        		<div class="flex flex-row justify-start h-72 w-10/12 z-30 mr-10 px-5 py-5 rounded-lg bg-[#ffffff] border-2 border-black-100 mb-5 ">
-                <div class="h-64 w-64 absolute rounded-lg relative">
-                <img class="h-64 w-64 absolute rounded-lg" src=${camp_imgl} >
-                </div>
-                <div class="w-auto h-auto relative flex flex-col mx-5 px-5">
-                    <div class="">
-                        ${camp_address_name}
-                    </div>
-                    <div class="">
-                    	${camp_name}
-                    </div>
 
+            const keys = Object.keys(campJson);
+
+     
+            
+            const innerHtmlList = keys.map((key)=>{
+                const campdataList = campJson[key];
+                    const innerHTML = `
+                
+                        <div class="flex flex-row justify-start h-72 w-10/12 z-30 mr-10 px-5 py-5 rounded-lg bg-[#ffffff] border-2 border-black-100 mb-5 ">
+                        <div class="h-64 w-64 absolute rounded-lg relative">
+                            <img class="h-64 w-64 absolute rounded-lg" src=${campdataList.placeImg} >
+                            </div>
+                            <div class="w-auto h-auto relative flex flex-col mx-5 px-5">
+                        <div class="">
+                            ${campdataList.addressName}
+                        </div>
+                        <div class="">
+                        	${campdataList.placeName}
+                        </div>
+
+                    </div>
                 </div>
-            </div>
-        `;
-         }
-        campdataTag.innerHTML = innerHTML;
-        
+                    `;
+                    return innerHTML;
+             });
+           
+             const campdataList = document.getElementById("camp-list");
+                campdataList.innerHTML = innerHtmlList.join('');
+        }
+      	campdata();  
+       
+         
         /*const data = [
             {
                 weather: 'sunny',
