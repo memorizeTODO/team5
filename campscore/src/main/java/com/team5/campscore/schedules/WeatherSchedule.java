@@ -63,9 +63,6 @@ public class WeatherSchedule {
 				}
 	    	}
 		}
-    	
-    	
-		
 	}
 	
 	@Scheduled(cron = "0 0 0 * * *")

@@ -219,8 +219,8 @@ public class CampingController {
 		if(params.get("region")!=null) {
 			region=params.get("region");
 		}
-		if(params.get("sort")!=null) {
-			switch(params.get("sort")) {
+		if(params.get("sort_type")!=null) {
+			switch(params.get("sort_type")) {
 				case "place_name": case "weather_score":
 					sortType = params.get("sort_type");
 			}
@@ -238,7 +238,7 @@ public class CampingController {
 		
 		
 		
-		int start = (page-1)*10 + 1;
+		int start = (page-1)*10;
 		
 		System.out.println("region="+region);
 		
@@ -252,6 +252,36 @@ public class CampingController {
 			
 			try {
 				BeanUtils.populate(campingMap, BeanUtils.describe(campingList.get(i)));
+				
+					String tmp=(String)campingMap.get("addressName");
+					if(tmp.indexOf("경기")==0) {
+						campingMap.put("region", "경기" );
+					}
+					if(tmp.indexOf("강원")==0) {
+						campingMap.put("region", "강원" );
+					}
+					if(tmp.indexOf("전북")==0) {
+						campingMap.put("region", "전북" );
+					}
+					if(tmp.indexOf("전남")==0) {
+						campingMap.put("region", "전남" );
+					}
+					if(tmp.indexOf("경북")==0) {
+						campingMap.put("region", "경북" );
+					}
+					if(tmp.indexOf("경남")==0) {
+						campingMap.put("region", "경남" );
+					}
+					if(tmp.indexOf("충북")==0) {
+						campingMap.put("region", "충북" );
+					}
+					if(tmp.indexOf("충남")==0) {
+						campingMap.put("region", "충남" );
+					}
+					if(tmp.indexOf("제주")==0) {
+						campingMap.put("region", "제주" );
+					}
+				
 			} catch (IllegalAccessException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -268,7 +298,6 @@ public class CampingController {
 			
 			campingMaps.put("item"+i,campingMap);
 		}
-		
 		return new ResponseEntity<>(campingMaps, HttpStatus.OK);
 	}
 	
