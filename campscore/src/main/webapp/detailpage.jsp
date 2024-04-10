@@ -26,9 +26,9 @@
         <header 
             class="fixed flex justify-between p-5 w-full bg-white z-50 border-2 border-black-100"
         >   
-            <div>
+            <button type="submit" onclick=location.href="mainpage.jsp" class="ml-5">
                 <span class="text-4xl text-[#74cfca] font-bold">CAMP</span> <span class="text-2xl">*</span> <span class="text-4xl text-[#74cfca] font-bold">SCORE</span>
-            </div>
+            </button>
         <div class="flex justify-start">   
             <div date-rangepicker date="sysdate" class="flex items-center relative">
                 <div class="relative">
@@ -356,7 +356,7 @@
         		
         		placeCategoryDetail: campJson.item1.placeCategoryDetail,
         		
-        		placeID:campJson.item1.placeID,
+        		placeID:campJson.item0.placeID,
         		
         		placeImg:campJson.item1.placeImg,
         		
@@ -371,15 +371,13 @@
         	}
     	];
         const campListTag = document.getElementById("camp-list");
-		const name = campdata.placeName;
-		
 		
 	            const innerHTML = ` 
 			            	<div class="flex flex-col w-auto h-auto px-5 py-5 border-b-2 border-black-100 ">
 			                <div class="flex flex-row place-content-between">
 			                    <div class="flex flex-col">  
 			                        <div class="text-sm">
-			                            경기도/${"${placeCategoryDetail}"}
+			                            경기도/${"${campJson.item1.placeCategoryDetail}"}
 			                        </div>
 			                        <div class="mt-1  font-bold text-4xl">
 			                            ${"${campJson.item1.placeName}"}

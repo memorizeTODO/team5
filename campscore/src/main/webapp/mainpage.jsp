@@ -15,6 +15,9 @@
             rel="stylesheet"
             href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
         />
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
         <script src="https://cdn.tailwindcss.com"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/datepicker.min.js"></script>
@@ -26,12 +29,13 @@
             class="fixed flex justify-between p-5 w-full bg-white z-50"
         >
             <div>
+            	<button type="submit" onclick=location.href="mainpage.jsp" class="ml-5">
                 <span class="text-4xl text-[#74cfca] font-bold">CAMP</span> <span class="text-2xl">*</span> <span class="text-4xl text-[#74cfca] font-bold">SCORE</span>
+                </button>
             </div>
 
             <div class="flex justify-start">   
-                	
-            <div>
+            
                 <button class="bg-[#eeeeee] hover:bg-[#dddddd] w-full h-full px-10 rounded-lg">로그인</button>
             </div>
         </header>
@@ -71,18 +75,21 @@
                         </swiper-slide>
                     </swiper-container>
                 </div>
+                
+             <form name="searchdata" action="searchpage.jsp" method="get">
                 <div class="relative w-3/5 -translate-y-1/2 mx-auto bg-[#ffffff] border-2 border-black-100 z-30 flex justify-center p-10">
-                    <form class="flex justify-center flex-col 2xl:flex-row gap-5 w-full" action="" onsubmit="search()">
+                    <form class="flex justify-center flex-col 2xl:flex-row gap-5 w-full" action="" onsubmit="">
                         <input 
                             type="text"
                             id="campNameSearch"
+                            name="name"
                             placeholder="이름"
                             class="bg-[#E8E8E8] text-gray-900 rounded-lg p-5 focus:ring-blue-500 focus:border-blue-500"
                         >
 
-                        <div date-rangepicker class="flex w-full">
+                        <div class="flex w-full">
                             <input 
-                                id="startDate" 
+                                id="datepicker" 
                                 name="start" 
                                 type="text" 
                                 class="
@@ -95,7 +102,7 @@
                             >
 
                             <input 
-                                id="endDate"
+                                id="datepicker2"
                                 name="end"
                                 type="text"
                                 class="
@@ -109,7 +116,7 @@
                         </div> 
     
                         <div class="grid grid-cols-2 w-full">
-                            <select id="campingRegion" name="지역" type="text" class="bg-[#E8E8E8] rounded-lg  
+                            <select id="campingRegion" name="campregion" type="text" class="bg-[#E8E8E8] rounded-lg  
                                         border  border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 
                                         focus:border-blue-500 p-5 dark:bg-gray-700"
                                         placeholder="지역">
@@ -125,20 +132,19 @@
                                 <option value="제주		">제주</option>
                             </select>
 
-                            <select id="campingType" name="종류" type="text" class="bg-[#E8E8E8] rounded-lg
+                            <select id="campingType" name="camptype" type="text" class="bg-[#E8E8E8] rounded-lg
                                         border  border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 
                                         focus:border-blue-500 block w-30 p-5"
                                                     placeholder="종류">
                                 <option selected>종류</option>
-                                <option value="camp">캠핑</option>
-                                <option value="caravan">카라반</option>
-                                <option value="car">차박</option>
-                                <option value="gramping">글램핑</option>
+                                <option value="오토캠핑장">오토캠핑장</option>
+                                <option value="카라반">카라반</option>
+                                <option value="글램핑">글램핑</option>
                             </select> 
                         </div>
                         
                         <div>
-                            <button type="submit" class="bg-[#eeeeee] hover:bg-[#dddddd] w-full 2xl:w-16 h-16 rounded-full">
+                            <button type="submit" location.href="searchpage.jsp" class="bg-[#eeeeee] hover:bg-[#dddddd] w-full 2xl:w-16 h-16 rounded-full">
                                 <svg viewBox="-5 -5  36 36" fill="none" xmlns="http://www.w3.org/2000/svg" class="hidden 2xl:inline">
                                     <path d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z"
                                     stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -151,7 +157,7 @@
                 </div> 
                 
 	                <div id="selectRegion" name="선호지역" type="text" class="h-32 w-8/12 justifly-center relative flex my-auto mx-auto">
-			                <select class="w-1/4 1/4 items-center text-2xl font-bold" onChange="getWeatherByRegion(this.value) ">
+			                <select class="w-1/4 1/4 items-center text-2xl font-bold" onChange="getWeatherByRegion(this.value)">
 			                                <option value="경기" selected>경기도</option>
 			                                <option value="강원">강원도</option>
 			                                <option value="충북">충청남도</option>
@@ -222,7 +228,11 @@
             function campdate() {
             const startdate = document.getElementById("startDate").value;
             const enddate = document.getElementById("endDate").value;  
+            console.log(startdate);
+            console.log(enddate);
+            
             }
+            
             function search1() {
                const campname = document.getElementById("campNameSearch").value;
                const campregion = document.getElementById("campingRegion").value;
@@ -592,6 +602,48 @@
                     
             	}*/
             
+            	   $(function() {
+            	       //input을 datepicker로 선언
+            	       $("#datepicker").datepicker({
+            	           dateFormat: 'yy-mm-dd' //달력 날짜 형태
+            	           ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
+            	           ,showMonthAfterYear:true // 월- 년 순서가아닌 년도 - 월 순서
+            	           ,changeYear: true //option값 년 선택 가능
+            	           ,changeMonth: true //option값  월 선택 가능                
+            	           ,showOn: "both" //button:버튼을 표시하고,버튼을 눌러야만 달력 표시 ^ both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시  
+            	           ,yearSuffix: "년" //달력의 년도 부분 뒤 텍스트
+            	           ,monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 텍스트
+            	           ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip
+            	           ,dayNamesMin: ['일','월','화','수','목','금','토'] //달력의 요일 텍스트
+            	           ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 Tooltip
+            	           ,minDate: "0D" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
+            	           ,maxDate: "+7D" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)  
+            	       });                    
+            	       
+            	       //초기값을 오늘 날짜로 설정해줘야 합니다.
+            	       $('#datepicker').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)            
+            	   });
+            		
+            	 $(function() {
+          	       //input을 datepicker로 선언
+          	       $("#datepicker2").datepicker({
+          	           dateFormat: 'yy-mm-dd' //달력 날짜 형태
+          	           ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
+          	           ,showMonthAfterYear:true // 월- 년 순서가아닌 년도 - 월 순서
+          	           ,showOn: "both" //button:버튼을 표시하고,버튼을 눌러야만 달력 표시 ^ both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시  
+          	           ,yearSuffix: "년" //달력의 년도 부분 뒤 텍스트
+          	           ,monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 텍스트
+          	           ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip
+          	           ,dayNamesMin: ['일','월','화','수','목','금','토'] //달력의 요일 텍스트
+          	           ,dayNames: ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'] //달력의 요일 Tooltip
+          	           ,minDate: "0D" //최소 선택일자(-1D:하루전, -1M:한달전, -1Y:일년전)
+          	           ,maxDate: "+7D" //최대 선택일자(+1D:하루후, -1M:한달후, -1Y:일년후)  
+          	       });                    
+          	       
+          	       //초기값을 오늘 날짜로 설정해줘야 합니다.
+          	       $('#datepicker2').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)            
+          	   });
+            	
 	        </script>
     </body>
 </html>

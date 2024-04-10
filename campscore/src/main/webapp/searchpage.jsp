@@ -25,9 +25,9 @@
         <header 
             class="fixed flex justify-between p-5 w-full bg-white z-50 border-2 border-black-100"
         >
-            <div>
+            <button type="submit" onclick=location.href="mainpage.jsp" class="ml-5">
                 <span class="text-4xl text-[#74cfca] font-bold">CAMP</span> <span class="text-2xl">*</span> <span class="text-4xl text-[#74cfca] font-bold">SCORE</span>
-            </div>
+            </button>
         <div class="flex justify-start">   
             
             
@@ -106,6 +106,7 @@
                 
 
         <!--검색목록-->
+        <form action="" method="get" >
             <div class="flex flex-col w-full pb-5"> 
                 <div class="flex relative flex-row-reverse w-10/12">
                                         <select id="sort_type" class="py-2.5 px-0 text-sm text-gray-500 bg-[#F5F5F5] 
@@ -120,8 +121,14 @@
                                         </select>
                                         
                     </div>
+       </form>
                 <div id="camp-list">
-                    
+                <%
+					String region = request.getParameter("campregion");
+					String placename = request.getParameter("name");
+					String type = request.getParameter("camptype");
+
+				%>    
 
                 
                 </div>
@@ -143,14 +150,16 @@
 
 
         <script>
+        
+        
         async function campdata() {
             
-            const cres = await fetch('http://localhost:80/get/campinglist?');
+            const cres = await fetch('http://localhost:80/get/campinglist?region=경기&sort_type=place_name&order=asc');
             const campJson = await cres.json();
         	
 
             const keys = Object.keys(campJson);
-
+			console.log(keys);
      
             
             const innerHtmlList = keys.map((key)=>{
@@ -167,7 +176,10 @@
                         </div>
                         <div class="">
                         	${"${campdataList.placeName}"}
+                        	<input name=${"${campdataList.placeID}"}>${"${campdataList.placeID}"}</input>
                         </div>
+
+                        
 
                     </div>
                 </div>
