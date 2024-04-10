@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -27,43 +29,8 @@
                 <span class="text-4xl text-[#74cfca] font-bold">CAMP</span> <span class="text-2xl">*</span> <span class="text-4xl text-[#74cfca] font-bold">SCORE</span>
             </div>
         <div class="flex justify-start">   
-            <div date-rangepicker date="sysdate" class="flex items-center relative">
-                <div class="relative">
-                  <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-
-                  </div>
-                  <div>
-                  <input name="start" inline-datepicker datepicker-format="mm/dd/yyyy" type="text" class="bg-gray-50 border rounded-l-lg border-gray-300 text-gray-900 text-sm
-                                                          focus:ring-blue-500 focus:border-blue-500 
-                                                            block w-full ps-10 p-2.5  
-                                                        " 
-                            placeholder="">
-                        </input>
-                </div>         
-                </div>
-                <div class="relative">
-                  <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                  </div>
-                  <input name="end" type="text"  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 
-                                                        focus:border-blue-500 block w-full ps-10 p-2.5" 
-                            placeholder="">
-              </div>
-              <div>
-                <input name="지역" type="text" class="bg-gray-50 border rounded-r-lg border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 
-                focus:border-blue-500 block w-full ps-10 p-2.5">
-            </div> 
             
-              </div>
-              <div class= "flex relative items-center">   
-                <button id="headerSearchButton" type="submit" onclick="campdata()" class="bg-[#eeeeee] hover:bg-[#dddddd] 
-                                                                w-10 h-10    rounded-full
-                                                                ">
-                    <svg viewBox="-5 -5  36 36" fill="none" xmlns="http://www.w3.org/2000/svg" class="">
-                        <path d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z"
-                        stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                                                        </svg> 
-                </button>
-            </div>
+            
         </div>                                                                 
             <div>
                 <button class="bg-[#eeeeee] hover:bg-[#dddddd] w-full h-full px-10 rounded-lg">로그인</button>
@@ -79,7 +46,7 @@
             <div class="relative w-full">
                    <div class="relative w-full">
                 <div class="  h-96 w-10/12 mx-auto bg-[#ffffff] border-2 border-black-100 z-30 py-5 rounded-lg px-5 block">
-                          <div id="weather-list" class="flex flex-row justify-center block">     
+                          <div id="weather-list" class="flex flex-row justify-center ">     
                        </div>
                 </div>
             </div>
@@ -113,21 +80,21 @@
                         <ul class="w-48 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                             <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600">
                                 <div class="flex items-center ps-3">
-                                    <input id="caravan-checkbox" type="radio" value="caravan" name="type_checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded 
+                                    <input id="caravan-checkbox" type="radio" value="카라반" name="placeCategoryDetail" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded 
                                                                                              focus:ring-blue-500 dark:focus:ring-blue-600 ">
                                     <label for="caravan-checkbox" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">카라반</label>
                                 </div>
                             </li>
                             <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600">
                                 <div class="flex items-center ps-3">
-                                    <input id="gramping-checkbox" type="radio" value="gramping" name="type_checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded 
+                                    <input id="gramping-checkbox" type="radio" value="글램핑" name="placeCategoryDetail" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded 
                                                                                                focus:ring-blue-500 dark:focus:ring-blue-600 ">
                                     <label for="gramping-checkbox" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">글램핑</label>
                                 </div>
                             </li>
                             <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600">
                                 <div class="flex items-center ps-3">
-                                    <input id="autocamping-checkbox" type="radio" value="오토캠핑장" name="type_checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded 
+                                    <input id="autocamping-checkbox" type="radio" value="오토캠핑장" name="placeCategoryDetail" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded 
                                                                                                  focus:ring-blue-500 dark:focus:ring-blue-600 ">
                                     <label for="autocamping-checkbox" class="w-full py-3 ms-2 text-sm font-medium text-gray-900">오토캠핑장</label>
                                 </div>
@@ -163,7 +130,6 @@
                     </div>  
                 </div>
             </div>  
-        </div>             
        
                 
 
@@ -176,7 +142,6 @@
 
 
 
-        </div>
         <script>
         async function campdata() {
             
@@ -194,14 +159,14 @@
                 
                         <div class="flex flex-row justify-start h-72 w-10/12 z-30 mr-10 px-5 py-5 rounded-lg bg-[#ffffff] border-2 border-black-100 mb-5 ">
                         <div class="h-64 w-64 absolute rounded-lg relative">
-                            <img class="h-64 w-64 absolute rounded-lg" src=${campdataList.placeImg} >
+                            <img class="h-64 w-64 absolute rounded-lg" src=${"${campdataList.placeImg}"} >
                             </div>
                             <div class="w-auto h-auto relative flex flex-col mx-5 px-5">
                         <div class="">
-                            ${campdataList.addressName}
+                            ${"${campdataList.addressName}"}
                         </div>
                         <div class="">
-                        	${campdataList.placeName}
+                        	${"${campdataList.placeName}"}
                         </div>
 
                     </div>
@@ -214,132 +179,190 @@
                 campdataList.innerHTML = innerHtmlList.join('');
         }
       	campdata();  
-       
-         
-        /*const data = [
-            {
-                weather: 'sunny',
-                temp: 10,
-                temp2:70,
-                prec:20,
-                prec2:30,
-            },
-            {
-                weather: 'rainy',
-                temp: 20,
-                temp2:60,
-                prec:80,
-                prec2:90,
-            },
-            {
-                weather: 'cloudy',
-                temp: 30,
-                temp2:50,
-                prec:40,
-                prec2:40,
-            },
-            {
-                weather: 'sunny',
-                temp: 40,
-                temp2:40,
-                prec:20,
-                prec2:30,
-            },
-            {
-                weather: 'rainy',
-                temp: 50,
-                temp2:30,
-                prec:80,
-                prec2:70,
-            },
-            {
-                weather: 'cloudy',
-                temp: 60,
-                temp2:20,
-                prec:30,
-                prec2:40,
-            },
-            {
-                weather: 'sunny',
-                temp: 70,
-                temp2:10,
-                prec:20,
-                prec2:10,
-            }
-        ];
-		let innerHTML = ''; 	
-        const weatherListTag = document.getElementById("weather-list");
+      	async function getWeatherByRegion(){
+        	const res = await fetch(`http://localhost:80/get/weather?region=충남`);
+        	const resJson = await res.json();
+        	const weathers = Object.values(resJson);
+        	
+        	 const data = [
+                 {
+                	 weather: resJson.wc0,
+                     temp:resJson.tp0,
+                     prec:resJson.rp0,
+					 rain:resJson.wcd0,
+                	 
+          
+                 },
+                 {
+                	 weather: resJson.wc1,
+                     temp: resJson.tp1,
+                     prec:resJson.rp1,
+                     rain:resJson.wcd1,
+                 },
+                 {
+                	 weather: resJson.wc2,
+                     temp:resJson.tp2,
+                     prec:resJson.rp2,
+                     rain:resJson.wcd2,
+                 },
+                 {
+                	 weather: resJson.wc3,
+                     temp: resJson.tp3,
+                     prec:resJson.rp3,
+                     rain:resJson.wcd3,
+                 },
+                 {
+                	 weather: resJson.wc4,
+                     temp: resJson.tp4,
+                     prec:resJson.rp4,
+                     rain:resJson.wcd4,
+                 },
+                 {
+                	 weather: resJson.wc5,
+                     temp: resJson.tp5,
+                     prec:resJson.rp5,
+                     rain:resJson.wcd5,
+                 },
+                 {
+                     weather: resJson.wc6,
+                     temp: resJson.tp6,
+                     rain:resJson.wcd6,
+                     prec:resJson.rp6,
+ 
+                 },
+                 {
+                     weather: resJson.wc7,
+                     temp:resJson.tp7,
+                     prec:resJson.rp7,
+                     rain:resJson.wcd7,
+                 }
+             ];
+        	 const weatherListTag = document.getElementById("weather-list");
+             let innerHTML = '';
+             var datetoday = new Date();
+             var startdate = datetoday;
+             var month = ('0' + (datetoday.getMonth() + 1)).slice(-2);
+             var date = ('0' + datetoday.getDate()).slice(-2);
+             
+             var arrDayStr = ['일','월','화','수','목','금','토']; 
+             var today = datetoday.getDay()
+             let zerodate = 0;
+             
+        	 for(let i = 0; i<8;i++){
+        		const weatherData = data[i];
+        		const precarray = (weatherData.prec).split('|',2);
+        		const temparray = (weatherData.temp).split('|',2);
+        		
+        		const temp = temparray[0];
+        		const temp2 = temparray[1];
+            	const prec = temparray[0];
+            	const prec2 = temparray[1];
+            	;
+            	const rainarray = (weatherData.rain).split('|',2);
+            	const rain = rainarray[0];
+            	const rain2 = rainarray[1];
+            	const weatherarray = (weatherData.weather).split('|',2);
+            	const weather1 = (rain == "WB09") ? rain :weatherarray[0];
+            	const weather2 = (rain2 == "WB09") ? rain2 :weatherarray[1]
+            	const imgSrc = getImgSrc(weather1);
+        		const imgSrc2 = getImgSrc(weather2);
+        		
+        		
+        		
+        		
+            	var dt = ("0" + (datetoday.getDate()+i)).slice(-2);
+            	var arraydate = today+i;
+      			
+            	var td = (arraydate > 6) ? zerodate++ : arraydate;
+            	
+            	var weatherscore = (weather1 == "WB01") ? 9 :
+            					   (weather1 == "WB02") ? 8 : 
+            				       (weather1 == "WB03") ? 7.5 : 
+            				       (weather1 == "WB04") ? 7 : 
+            				       (weather1 == "WB09") ? 5 : 
+            				        "error" ;
+            	weatherscore =(weatherscore == "error") ? "error" : 
+            			      (weather2 == "WB01") ? weatherscore+1 :
+            			      (weather2 == "WB02") ? weatherscore : 
+            			      (weather2 == "WB03") ? weatherscore -0.5 : 
+            			      (weather2 == "WB04") ? weatherscore -1 : 
+            			      (weather2 == "WB09") ? weatherscore -3: 
+            			       error ;
         
-		
-        
-        var dtoday = new Date();
-        
-        var month = ('0' + (dtoday.getMonth() + 1)).slice(-2);
-        var date = ('0' + dtoday.getDate()).slice(-2);
-        
-        var arrDayStr = ['일','월','화','수','목','금','토']; 
-        var tday = dtoday.getDay();	
-       
-        
-         for(let i = 0; i<7;i++){ 
-        	const weatherData = data[i];
-        	const imgSrc = getImgSrc(weatherData.weather);
-        	const temp = weatherData.temp;
-        	const temp2 = weatherData.temp2;
-        	const prec = weatherData.prec;
-        	const prec2 = weatherData.prec2;
-        	var dt = ("0" + (dtoday.getDate()+i)).slice(-2); 
-        	var td = tday + i;	 
-
-      	 if(td > 6){
-      		 
-      			td =0;
-      		}
-
-      
-        	 innerHTML += ` 
-   		
-            <div class="flex flex-row  h-full w-40 mr-10 pt-10 items-center ">
-        		<div class="flex flex-col">
-	               <label for="" class="block text-lg font-bold text-gray-900 mx-auto"><span class="ml-2 text-xl"><span class="ml-1">${arrDayStr[td]}</span><br>${month}.${dt}</label>
-	                <div class="h-20 w-40 flex flex-row items-center mt-5 ">
-	                    <img src="${imgSrc}" class="w-16 h-16 mx-auto">
-	                    <img src="${imgSrc}" class="w-16 h-16 mx-auto">
+	       		console.log(i+"일차"+weatherscore);
+	      		
+	      		
+          	 	innerHTML += ` 
+               		
+          	 		<div class="flex flex-row  h-full w-32 mr-10 pt-10 items-center justify-center ">
+            		<div class="flex flex-col w-32">
+		               <label for="" class="block text-lg font-bold text-gray-900 mx-auto"><span class="mx-auto text-xl"><span class="flex justify-center">${"${arrDayStr[td]}"}</span><br>${"${month}.${dt}"}</label>
+		                <div class="h-auto w-auto flex flex-row items-center mt-5 justify-center ">
+		                    <img src=${"${imgSrc}"} class="w-16 h-16">
+		                    <img src=${"${imgSrc2}"} class="w-16 h-16">
+		                </div>
+		                <div class="flex flex-row mx-auto items-center mt-3 justify-center">
+		                    <span class="text-[#45A6FF] font-md text-2xl">${"${temp}"}°</span>
+		                    <span class="text-[#959FA9] text-2xl">/</span>
+		                    <span class="text-[#F42E2E] font-bold text-2xl">${"${temp2}"}°</span>
+		                </div>
+		                <div class="flex flex-row mx-auto items-center mt-5 font-bold justify-center">
+		                    <span class="text-[#3B9DE3] mr-2">${"${prec}%"}</span>
+		              	      <span class="text-[#3B9DE3]">${"${prec2}%"}</span>
+		                </div>
 	                </div>
-	                <div class="flex flex-row mx-auto items-center mt-3">
-	                    <span class="text-[#45A6FF] font-md text-2xl">${temp}°</span>
-	                    <span class="text-[#959FA9] text-2xl">/</span>
-	                    <span class="text-[#F42E2E] font-bold text-2xl">${temp2}°</span>
-	                </div>
-	                <div class="flex flex-row mx-auto items-center mt-5 font-bold">
-	                    <span class="text-[#3B9DE3] mr-2">${prec}%</span>
-	                    <span class="text-[#3B9DE3]">${prec2}%</span>
-	                </div>
-                </div>
-             </div>
-        `;
-         }
+	             </div>
+            `;
+              
+        	 }
+          	
+             weatherListTag.innerHTML = innerHTML
+        	 
+        	 function getImgSrc(weather){	
+                 switch(weather){
+                 	case 'WB01':
+                 		return 'images/sunny.png';
+                 		break;
+                 	case 'WB02':
+                 		return 'images/partly-cloudy.png';
+                 		break;
+                 	case 'WB03':
+                 		return 'images/cloudy(2).png';
+                 		break;
+                 	case 'WB04':
+                 		return 'images/cloudy.png';
+                 		break;
+                 	case 'WB09':
+                 		return 'images/rain.png';
+                 		break;
+                     default :
+                         return 'images/raindrop.png';
+              	}
+                 
+             }
+             
+             function getImgSrc2(weather2){	
+                 switch(weather2){
+                 	case 'WB01':
+                 		return 'images/sunny.png';
+                 		break;
+                 	case 'WB02':
+                 		return 'images/partly-cloudy.png';
+                 		break;
+                 	case 'WB03':
+                 		return 'images/cloudy(2).png';
+                 		break;
+                 	case 'WB04':
+                 		return 'images/cloudy.png';
+                 		break;
+                     default :
+                         return 'images/raindrop.png';
+              	}
+                 
+             }
+      	}
+        	 getWeatherByRegion();
         
-        
-        weatherListTag.innerHTML = innerHTML;
-
-        function getImgSrc(weather){	
-            switch(weather){
-                case 'sunny' : 
-                    return 'images/sunny.png';
-                    break;
-                case 'rainy': 
-                    return 'images/rain.png';
-                    break;
-                case 'cloudy': 
-                    return 'images/cloudy.png';
-                    break;
-                default :
-                    return 'error';
-         	}
-       
-                
-        }*/
         
         </script>
     </body>

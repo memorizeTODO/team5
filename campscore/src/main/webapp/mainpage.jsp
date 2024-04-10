@@ -30,44 +30,7 @@
             </div>
 
             <div class="flex justify-start">   
-                <div date-rangepicker date="sysdate" class="flex items-center relative">
-                    <div class="relative">
-                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-
-                    </div>
-                    <div>
-                    <input name="start" inline-datepicker datepicker-format="mm/dd/yyyy" type="text" class="bg-gray-50 border rounded-l-lg border-gray-300 text-gray-900 text-sm
-                                                            focus:ring-blue-500 focus:border-blue-500 
-                                                                block w-full ps-10 p-2.5  
-                                                            " 
-                                placeholder="">
-                            </input>
-                    </div>         
-                    </div>
-                    <div class="relative">
-                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-                    </div>
-                    <input name="end" type="text"  class="bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 
-                                                            focus:border-blue-500 block w-full ps-10 p-2.5" 
-                                placeholder="">
-                </div>
-                <div>
-                    <input name="지역" type="text" class="bg-gray-50 border rounded-r-lg border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 
-                    focus:border-blue-500 block w-full ps-10 p-2.5">
-                </div> 
-                
-                </div>
-                <div class= "flex relative items-center">   
-                    <button id="headerSearchButton" type="submit" onclick="search()" class="bg-[#eeeeee] hover:bg-[#dddddd] 
-                                                                    w-10 h-10    rounded-full
-                                                                    ">
-                        <svg viewBox="-5 -5  36 36" fill="none" xmlns="http://www.w3.org/2000/svg" class="">
-                            <path d="M15.7955 15.8111L21 21M18 10.5C18 14.6421 14.6421 18 10.5 18C6.35786 18 3 14.6421 3 10.5C3 6.35786 6.35786 3 10.5 3C14.6421 3 18 6.35786 18 10.5Z"
-                            stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                                                            </svg> 
-                    </button>
-                </div>
-            </div>                                                                 
+                	
             <div>
                 <button class="bg-[#eeeeee] hover:bg-[#dddddd] w-full h-full px-10 rounded-lg">로그인</button>
             </div>
@@ -108,9 +71,8 @@
                         </swiper-slide>
                     </swiper-container>
                 </div>
-              
                 <div class="relative w-3/5 -translate-y-1/2 mx-auto bg-[#ffffff] border-2 border-black-100 z-30 flex justify-center p-10">
-                    <form class="flex justify-center flex-col 2xl:flex-row gap-5 w-full" onsubmit="search(e)">
+                    <form class="flex justify-center flex-col 2xl:flex-row gap-5 w-full" action="" onsubmit="search()">
                         <input 
                             type="text"
                             id="campNameSearch"
@@ -152,15 +114,15 @@
                                         focus:border-blue-500 p-5 dark:bg-gray-700"
                                         placeholder="지역">
                                 <option value="" selected>지역</option>
-                                <option value="gyeonggi">경기도</option>
-                                <option value="gangwon">강원도</option>
-                                <option value="chungcheongnam">충청남도</option>
-                                <option value="chungcheongbuk">충청북도</option>
-                                <option value="jeollanam">전라남도</option>
-                                <option value="jeollabuk">전라북도</option>
-                                <option value="gyeongsangnam">경상남도</option>
-                                <option value="gyeongsangbuk">경상북도</option>
-                                <option value="jeju">제주</option>
+                                <option value="경기">경기도</option>
+                                <option value="강원">강원도</option>
+                                <option value="충남">충청남도</option>
+                                <option value="충북">충청북도</option>
+                                <option value="전남">전라남도</option>
+                                <option value="전북">전라북도</option>
+                                <option value="경남">경상남도</option>
+                                <option value="경북">경상북도</option>
+                                <option value="제주		">제주</option>
                             </select>
 
                             <select id="campingType" name="종류" type="text" class="bg-[#E8E8E8] rounded-lg
@@ -174,6 +136,7 @@
                                 <option value="gramping">글램핑</option>
                             </select> 
                         </div>
+                        
                         <div>
                             <button type="submit" class="bg-[#eeeeee] hover:bg-[#dddddd] w-full 2xl:w-16 h-16 rounded-full">
                                 <svg viewBox="-5 -5  36 36" fill="none" xmlns="http://www.w3.org/2000/svg" class="hidden 2xl:inline">
@@ -185,8 +148,8 @@
                         </div>
                         
                     </form>
-
                 </div> 
+                
 	                <div id="selectRegion" name="선호지역" type="text" class="h-32 w-8/12 justifly-center relative flex my-auto mx-auto">
 			                <select class="w-1/4 1/4 items-center text-2xl font-bold" onChange="getWeatherByRegion(this.value) ">
 			                                <option value="경기" selected>경기도</option>

@@ -1,5 +1,6 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-
 <html>
     <head>
         <meta charset="utf-8">
@@ -262,25 +263,25 @@
 	      		
           	 	innerHTML += ` 
                		
-    	            <div class="flex flex-row  h-full w-32 mr-10 pt-10 items-center justify-center ">
-                		<div class="flex flex-col w-32">
-    		               <label for="" class="block text-lg font-bold text-gray-900 mx-auto"><span class="mx-auto text-xl"><span class="flex justify-center">${arrDayStr[td]}</span><br>${month}.${dt}</label>
-    		                <div class="h-auto w-auto flex flex-row items-center mt-5 justify-center ">
-    		                    <img src="${imgSrc}" class="w-16 h-16">
-    		                    <img src="${imgSrc2}" class="w-16 h-16">
-    		                </div>
-    		                <div class="flex flex-row mx-auto items-center mt-3 justify-center">
-    		                    <span class="text-[#45A6FF] font-md text-2xl">${temp}°</span>
-    		                    <span class="text-[#959FA9] text-2xl">/</span>
-    		                    <span class="text-[#F42E2E] font-bold text-2xl">${temp2}°</span>
-    		                </div>
-    		                <div class="flex flex-row mx-auto items-center mt-5 font-bold justify-center">
-    		                    <span class="text-[#3B9DE3] mr-2">${prec}%</span>
-    		              	      <span class="text-[#3B9DE3]">${prec2}%</span>
-    		                </div>
-    	                </div>
-    	             </div>
-                `;
+          	 		<div class="flex flex-row  h-full w-32 mr-10 pt-10 items-center justify-center ">
+            		<div class="flex flex-col w-32">
+		               <label for="" class="block text-lg font-bold text-gray-900 mx-auto"><span class="mx-auto text-xl"><span class="flex justify-center">${"${arrDayStr[td]}"}</span><br>${"${month}.${dt}"}</label>
+		                <div class="h-auto w-auto flex flex-row items-center mt-5 justify-center ">
+		                    <img src=${"${imgSrc}"} class="w-16 h-16">
+		                    <img src=${"${imgSrc2}"} class="w-16 h-16">
+		                </div>
+		                <div class="flex flex-row mx-auto items-center mt-3 justify-center">
+		                    <span class="text-[#45A6FF] font-md text-2xl">${"${temp}"}°</span>
+		                    <span class="text-[#959FA9] text-2xl">/</span>
+		                    <span class="text-[#F42E2E] font-bold text-2xl">${"${temp2}"}°</span>
+		                </div>
+		                <div class="flex flex-row mx-auto items-center mt-5 font-bold justify-center">
+		                    <span class="text-[#3B9DE3] mr-2">${"${prec}%"}</span>
+		              	      <span class="text-[#3B9DE3]">${"${prec2}%"}</span>
+		                </div>
+	                </div>
+	             </div>
+            `;
               
         	 }
             	
@@ -378,12 +379,13 @@
 			                <div class="flex flex-row place-content-between">
 			                    <div class="flex flex-col">  
 			                        <div class="text-sm">
+			                            경기도/${"${placeCategoryDetail}"}
 			                        </div>
 			                        <div class="mt-1  font-bold text-4xl">
-			                            ${campJson.item1.placeName}
+			                            ${"${campJson.item1.placeName}"}
 			                        </div>
 			                        <div class="text-sm font-sm mb-10">
-			                        	${campJson.item1.addressName}
+			                        	${"${campJson.item1.addressName}"}
 			                        </div>
 			                         <div>
 			                        <button type="button" onclick ="location.href='${campJson.item1.placeUrl}'"
@@ -396,7 +398,7 @@
 			                            총날씨점수
 			                        </div>
 			                        <div class="text-8xl items-center flex justify-center">
-			                        	${weatherScoreArray_avg}
+			                        	${"${weatherScoreArray_avg}"}
 				                    </div>                                                
 			                </div>
 			                
