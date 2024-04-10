@@ -1,6 +1,7 @@
 package com.team5.campscore.controller;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,19 +15,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.team5.campscore.model.SightDTO;
+import com.team5.campscore.service.SightDAOImpl;
 
 
 @RestController
 public class SightController {
 	
-	//@Autowired
+	@Autowired
+	public SightDAOImpl sightService;
 	
 	@GetMapping(value ="get/sightlist")
-	ResponseEntity<Map<String, Map<String, Object>>> getCampingToViewByRegion(@RequestParam Map<String,String> params){
+	ResponseEntity<Map<String, Map<String, Object>>> getSightToView(@RequestParam Map<String,String> params){
 		int page; 
-		String region= "";
-		String sortType = "place_name"; 
+		String region= null;
+		String placeID = null;
 		String order = "asc";
+		
 		if(params.get("page")==null) {
 			page=1;
 		}else{
@@ -41,13 +45,7 @@ public class SightController {
 		if(params.get("region")!=null) {
 			region=params.get("region");
 		}
-		if(params.get("sort")!=null) {
-			switch(params.get("sort")) {
-				case "place_name": case "weather_score":
-					sortType = params.get("sort_type");
-			}
-			
-		}
+		
 		
 		if(params.get("order")!=null) {
 			switch(params.get("order")) {
@@ -56,34 +54,43 @@ public class SightController {
 			}
 			
 		}
+		/*
+		 * if (params.get("placeID") == null){ return null; }
+		 */
 		
 		
-		
-		
-		int start = (page-1)*10 + 1;
+		int start = (page-1)*8 ;
 		
 		System.out.println("region="+region);
 		
-		Map<String, Map<String, Object>> campingMaps= new HashMap<String, Map<String, Object>>();
-		List<SightDTO> SightList;
-		//campingList=campingService.getCampingListByRegion(start,region,sortType,order);
+		Map<String, Map<String, Object>> sightMaps= new HashMap<String, Map<String, Object>>();
+		List<SightDTO> sightList= new ArrayList<SightDTO>();
 		
-		/*
-		 * for(int i=0;i<campingList.size();i++) { Map<String, Object> campingMap = new
-		 * HashMap<String, Object>();
-		 * 
-		 * try { BeanUtils.populate(campingMap, BeanUtils.describe(campingList.get(i)));
-		 * } catch (IllegalAccessException e) { // TODO Auto-generated catch block
-		 * e.printStackTrace(); } catch (InvocationTargetException e) { // TODO
-		 * Auto-generated catch block e.printStackTrace(); } catch
-		 * (NoSuchMethodException e) { // TODO Auto-generated catch block
-		 * e.printStackTrace(); } System.out.println(campingMap.toString());
-		 * 
-		 * System.out.println(campingMap.get("placeID"));
-		 * 
-		 * campingMaps.put("item"+i,campingMap); }
-		 */
+		sightList=sightService.getSightList(region,start);
 		
-		return new ResponseEntity<>(campingMaps, HttpStatus.OK);
-	}
+		
+		  for(int i=0;i<sightList.size();i++) { 
+			  
+			  Map<String, Object> sightMap = new HashMap<String, Object>();
+		  
+			  try { 
+				  BeanUtils.populate(sightMap, BeanUtils.describe(sightList.get(i)));
+			  } 
+			  catch (IllegalAccessException e) {
+				  e.printStackTrace(); 
+			  } catch (InvocationTargetException e) { 
+				  e.printStackTrace();
+			  } catch (NoSuchMethodException e) { 
+				  e.printStackTrace(); 
+			  } 
+			  System.out.println(sightMap.toString());
+			  
+			  System.out.println(sightMap.get("placeID"));
+			  
+			  sightMaps.put("item"+i,sightMap); 
+		  }
+		 
+		
+		return new ResponseEntity<>(sightMaps, HttpStatus.OK);
+	}	
 }
