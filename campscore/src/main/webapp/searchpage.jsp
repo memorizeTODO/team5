@@ -150,11 +150,28 @@
 
 
         <script>
-        
-        
+        Date.prototype.getInterval = function (otherDate) {
+        	    var interval;
+        	 
+        	    if(this > otherDate)
+        	        interval = this.getTime() - otherDate.getTime();
+        	    else
+        	        interval = otherDate.getTime() - this.getTime();
+        	 
+        	    return Math.floor(interval / (1000*60*60*24));
+        	}
+		var dt0 = new Date();
+        var dt1 = new Date('2024-04-11');
+        var dt2 = new Date('2024-04-16');
+        var result_date = dt1.getInterval(dt2);
+        var result_date0 = dt0.getInterval(dt1);
+		console.log(result_date);       
+		console.log(result_date0);  
+		
         async function campdata() {
             
-            const cres = await fetch('http://localhost:80/get/campinglist?region=경기&sort_type=place_name&order=asc');
+        
+            const cres = await fetch('http://localhost:80/get/campinglist?region=경기&sort_type="place_name"&order=asc');
             const campJson = await cres.json();
         	
 
@@ -259,8 +276,9 @@
              var arrDayStr = ['일','월','화','수','목','금','토']; 
              var today = datetoday.getDay()
              let zerodate = 0;
-             
-        	 for(let i = 0; i<8;i++){
+            
+				             
+        	 for(let i = (result_date0); i <= result_date0+result_date;i++){
         		const weatherData = data[i];
         		const precarray = (weatherData.prec).split('|',2);
         		const temparray = (weatherData.temp).split('|',2);
