@@ -173,98 +173,106 @@
         
             const cres = await fetch('http://localhost:80/get/campinglist?page=1&region=경기&sort_type="place_name"&order=asc');
             const campJson = await cres.json();
-            const keys = Object.keys(campJson);
-			console.log(keys);
-     
-			const campdata = [
+     		console.log(campJson.item0.addressName);
+     		
+			
+     		const campingdata = [
                 {
-                 addressName:campJson.item0.addressName,
-               	 placeID:campJson.item0.placeID,
-               	 placeName:campJson.item0.placeName,
-		         placeUrl:campJson.item0.placeUrl,
-        		 placeCategoryDetail: campJson.item0placeCategoryDetail,
-                 placeRegion:campJson.item0.region,
+                	 placeaddress:campJson.item0.addressName,
+	               	 placeid:campJson.item0.placeID,
+	               	 placename:campJson.item0.placeName,
+			         placeurl:campJson.item0.placeUrl,
+	        		 placecategory: campJson.item0placeCategoryDetail,
+	                 placeregion:campJson.item0.region,
          
                 },
                 {
-                	 addressName:campJson.item1.addressName,
-                   	 placeID:campJson.item1.placeID,
-                   	 placeName:campJson.item1.placeName,
-    		         placeUrl:campJson.item1.placeUrl,
-            		 placeCategoryDetail: campJson.item1.placeCategoryDetail,
-                     placeRegion:campJson.item1.region,
+                	 placeaddress:campJson.item1.addressName,
+                   	 placeid:campJson.item1.placeID,
+                   	 placename:campJson.item1.placeName,
+    		         placeurl:campJson.item1.placeUrl,
+            		 placecategory: campJson.item1.placeCategoryDetail,
+                     placeregion:campJson.item1.region,
                 },
                 {
-                	 addressName:campJson.item2.addressName,
-                   	 placeID:campJson.item2.placeID,
-                   	 placeName:campJson.item2.placeName,
-    		         placeUrl:campJson.item2.placeUrl,
-            		 placeCategoryDetail: campJson.item2.placeCategoryDetail,
-                     placeRegion:campJson.item2.region,
+                	 placeaddress:campJson.item2.addressName,
+                   	 placeid:campJson.item2.placeID,
+                   	 placename:campJson.item2.placeName,
+    		         placeurl:campJson.item2.placeUrl,
+            		 placeuategory: campJson.item2.placeCategoryDetail,
+                     placeregion:campJson.item2.region,
                 },
                 {
-                	 addressName:campJson.item3.addressName,
-                   	 placeID:campJson.item3.placeID,
-                   	 placeName:campJson.item3.placeName,
-    		         placeUrl:campJson.item4.placeUrl,
-            		 placeCategoryDetail: campJson.item4.placeCategoryDetail,
-                     placeRegion:campJson.item4.region,
+                	 placeaddress:campJson.item.3addressName,
+                   	 placeid:campJson.item.3placeID,
+                   	 placename:campJson.item.3placeName,
+    		         placeurl:campJson.item.3placeUrl,
+            		 placeuategory: campJson.item.3placeCategoryDetail,
+                     placeregion:campJson.item.3region,
                 },
                 {
-                	 addressName:campJson.item5.addressName,
-                   	 placeID:campJson.item5.placeID,
-                   	 placeName:campJson.item5.placeName,
-    		         placeUrl:campJson.item5.placeUrl,
-            		 placeCategoryDetail: campJson.item5.placeCategoryDetail,
-                     placeRegion:campJson.item5.region,
+                	 placeaddress:campJson.item4.addressName,
+                   	 placeid:campJson.item4.placeID,
+                   	 placename:campJson.item4.placeName,
+    		         placeurl:campJson.item4.placeUrl,
+            		 placecategory:campJson.item4.placeCategoryDetail,
+                     placeregion:campJson.item4.region,
                 },
                 {
-                	 addressName:campJson.item6.addressName,
-                   	 placeID:campJson.item6.placeID,
-                   	 placeName:campJson.item6.placeName,
-    		         placeUrl:campJson.item6.placeUrl,
-            		 placeCategoryDetail: campJson.item6.placeCategoryDetail,
-                     placeRegion:campJson.item6.region,
+                	 placeaddress:campJson.item5.addressName,
+                   	 placeid:campJson.item5.placeID,
+                   	 placename:campJson.item5.placeName,
+    		         placeurl:campJson.item5.placeUrl,
+            		 placecategory: campJson.item5.placeCategoryDetail,
+                     placeregion:campJson.item5.region,
                 },
                 {
-                	 addressName:campJson.item7.addressName,
-                   	 placeID:campJson.item7.placeID,
-                   	 placeName:campJson.item7.placeName,
-    		         placeUrl:campJson.item7.placeUrl,
-            		 placeCategoryDetail:campJson.item7.placeCategoryDetail,
-                     placeRegion:campJson.item7.region,
+                	placeaddress:campJson.item6.addressName,
+                   	 placeid:campJson.item6.placeID,
+                   	 placename:campJson.item6.placeName,
+    		         placeurl:campJson.item6.placeUrl,
+            		 placecategory: campJson.item6.placeCategoryDetail,
+                     placeregion:campJson.item6.region,
+                },
+                {
+                	 placeaddress:campJson.item7.addressName,
+                   	 placeid:campJson.item7.placeID,
+                   	 placename:campJson.item7.placeName,
+    		         placeurl:campJson.item7.placeUrl,
+            		 placecategory:campJson.item7.placeCategoryDetail,
+                     placeregion:campJson.item7.region,
 
                 },
                 {
-                	 addressName:campJson.item8.addressName,
-                   	 placeID:campJson.item8.placeID,
-                   	 placeName:campJson.item8.placeName,
-    		         placeUrl:campJson.item8.placeUrl,
-            		 placeCategoryDetail: campJson.item8.placeCategoryDetail,
-                     placeRegion:campJson.item8.region,
+                	 placeaddress:campJson.item8.addressName,
+                   	 placeid:campJson.item8.placeID,
+                   	 placename:campJson.item8.placeName,
+    		         placeurl:campJson.item8.placeUrl,
+            		 placecategory: campJson.item8.placeCategoryDetail,
+                     placeregion:campJson.item8.region,
                 },
                 {
-               	 addressName:campJson.item9.addressName,
-                 placeID:campJson.item9.placeID,
-                 placeName:campJson.item9.placeName,
-   		         placeUrl:campJson.item9.placeUrl,
-           		 placeCategoryDetail: campJson.item9.placeCategoryDetail,
-                 placeRegion:campJson.item9.region,
-               },
+                	 placeaddress:campJson.item9.addressName,
+	                 placeid:campJson.item9.placeID,
+	                 placename:campJson.item9.placeName,
+	   		         placeurl:campJson.item9.placeUrl,
+	           		 placecategory:campJson.item9.placeCategoryDetail,
+	                 placeregion:campJson.item9.region,
+               }
             ];
 			const campdataListTag = document.getElementById("camp-list");
             let innerHTML = '';
-             
+            console.log(campingdata);
             
-            for(let i = 0;i<10;i++){
-            	
-			             const campData = campdata[i];	
-			             const addressName = campData.addressName;
-			             const placeID = campData.placeID;
-			             const placeName = campData.placeName;
-			             const placeUrl = campData.placeUrl;
-			             const placeCategoryDetail = campData.placeCategoryDetail;
-			             const placeRegion = campData.region;
+            
+            	for(let i = 0;i<10;i++){
+            			 const data = campingdata[i];
+			             const address = data.placeaddress;
+			             const iD = data.placeid;
+			             const name = data.placename;
+			             const url = data.placeurl;
+			             const category = data.placecategory;
+			             const region = data.placeregion;
 			            	
             	
                    innerHTML += `
@@ -275,11 +283,11 @@
                             </div>
                             <div class="w-auto h-auto relative flex flex-col mx-5 px-5">
                         <div class="">
-                            ${"${addressName}"}
+                            ${"${name}"}
                         </div>
                         <div class="">
-                        	${"${placeName}"}
-                        	${"${placeID}"}	
+                        	${"${name}"}
+                        	${"${iD}"}	
                         </div>
 
                               
@@ -290,6 +298,11 @@
            }
              
                campdataListTag.innerHTML = innerHTML;
+               
+               
+               
+               
+               
         }
       	campdata();  
       	async function getWeatherByRegion(){
