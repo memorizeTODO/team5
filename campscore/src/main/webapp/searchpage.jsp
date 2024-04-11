@@ -185,7 +185,9 @@
         var dt2 = new Date(`${"${urldata[2]}"}`);
         var result_date = (dt1.getInterval(dt2))+1;
         var result_date0 = (dt0.getInterval(dt1))+1;
-       
+        var regiondt = (`${"${urldata[3]}"}`);
+        
+        
 		console.log(dt1);       
 		console.log(dt2);  
 		var categorydata = (`${"${urldata[4]}"}`	);
@@ -490,15 +492,22 @@
 	      		}
 	      		const avg = (sum/result_date);
 	      		weatherScoreArray_avg = Math.round(avg * 100) / 100;
+	      		
+	      		var regionWeatherScore = {
+	      			score : weatherScoreArray_avg, 
+	      			region : regiondt
+	      		};
+	      		
+	      		console.log(regionWeatherScore);
 	      		//ajax전달
 	      		$.ajax({
 	      		　　type:'post'
 	      		　　, contentType:'application/json'
-	      		　　, data: JSON.stringify(weatherScoreArray_avg)
+	      		　　, data: JSON.stringify(regionWeatherScore)
 	      		　　, url: '/post/weatherscore'
 	      		　　, success: function(data) {
 	      		　　　　console.log(data);
-	      		　　}, error:function(e	) {
+	      		　　}, error:function(e) {
 	      		　　　　console("error: " + e);
 	      		　　}
 	      		});
