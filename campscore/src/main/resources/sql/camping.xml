@@ -18,9 +18,19 @@
 	</select>
 	
 	<select id="getCampingList" resultType="camping">
-		SELECT place_id, place_name,COALESCE(road_address_name, address_name) AS address_name ,place_url,place_img,place_long,place_lat,place_category_detail 
-		FROM camping
-		WHERE COALESCE(road_address_name, address_name) LIKE concat('%', #{region}, '%') and place_name LiKE concat('%', #{place_name}, '%') and place_category_detail LiKE concat('%', #{place_category_detail}, '%')
+		SELECT c2.place_id, c2.place_name,IF(c2.road_address_name IS NOT NULL AND c2.road_address_name != '', c2.road_address_name, c2.address_name) AS address_name ,c2.place_url,c2.place_img,c2.place_long,c2.place_lat,c2.place_category_detail 
+		FROM camping as c2
+		WHERE address_name LIKE concat('%', #{region}, '%') and 
+		address_name NOT LIKE concat('서울', '%') and
+		address_name NOT LIKE concat('대구', '%') and
+		address_name NOT LIKE concat('대전', '%') and
+		address_name NOT LIKE concat('부산', '%') and
+		address_name NOT LIKE concat('울산', '%') and
+		address_name NOT LIKE concat('부산', '%') and
+		address_name NOT LIKE concat('광주', '%') and
+		address_name NOT LIKE concat('세종', '%') and
+		place_name LiKE concat('%', #{place_name}, '%') 
+		and place_category_detail LiKE concat('%', #{place_category_detail}, '%')
 		order by <if test="order=='asc'">place_name COLLATE utf8mb4_0900_ai_ci asc</if> <if test="order=='desc'">place_name COLLATE utf8mb4_0900_ai_ci desc</if> limit  #{start},10
 			
 	</select>
