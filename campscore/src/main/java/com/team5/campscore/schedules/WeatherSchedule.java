@@ -17,7 +17,7 @@ public class WeatherSchedule {
 	@Autowired
 	private WeatherTools wTools;
 
-	@Scheduled(cron = "0 10 6 * * *")
+	@Scheduled(cron = "0 0 6 * * *")
 	public void autoUpdateScheduleAt6() {
 		Map<String,Integer> isSuccess;
 		Date date=new Date();

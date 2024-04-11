@@ -281,8 +281,13 @@ public class WeatherTools {
     	Map<String,String> weatherTPMap=null;
     	
     	try {
+    		
     		for(int i=0; i<3;i++) {
-    			weatherWCMap=getWeatherWC(regid,tmfc_data);
+    			if (regid=="11B20503") {
+    				weatherWCMap=getWeatherWC(regid.substring(0,3)+"00000",tmfc_data);
+    			}else {
+    				weatherWCMap=getWeatherWC(regid.substring(0,4)+"0000",tmfc_data);
+    			}
 	    		if(weatherWCMap!=null ) {
 	    			Thread.sleep(2000);
     				break;
