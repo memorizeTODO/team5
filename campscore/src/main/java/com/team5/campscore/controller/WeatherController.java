@@ -58,7 +58,9 @@ public class WeatherController {
 
     	}
     	return weatherMaps;
+    	
     }
+    
     
     @RequestMapping("get/weather")
     public Map<String,Object> getWeatherToView(@RequestParam Map<String,String> params){
@@ -87,4 +89,6 @@ public class WeatherController {
 			}
     	return weatherMap;
     }
+    
+    
 }

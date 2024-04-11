@@ -35,4 +35,15 @@ public class CampingDAOImpl  implements CampingDAO {
 		
 		return dao.getCampingList(start,region,sortType,order,placeName,category);
 	};
+	
+	public int selectByPlaceID(int placeID) {
+		int returnVal=0;
+		try {
+			returnVal=dao.selectByPlaceID(placeID);
+		}catch(Exception e) {
+			e.printStackTrace();
+			returnVal=0;
+		}
+		return returnVal;
+	}
 }
