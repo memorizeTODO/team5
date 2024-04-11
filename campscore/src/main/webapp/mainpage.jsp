@@ -29,7 +29,7 @@
             class="fixed flex justify-between p-5 w-full bg-white z-50"
         >
             <div>
-            	<button type="submit" onclick=location.href="mainpage.jsp" class="ml-5">
+            	<button onclick=location.href="mainpage.jsp"onclick=location.href="mainpage.jsp"onclick=location.href="mainpage.jsp" class="ml-5">
                 <span class="text-4xl text-[#74cfca] font-bold">CAMP</span> <span class="text-2xl">*</span> <span class="text-4xl text-[#74cfca] font-bold">SCORE</span>
                 </button>
             </div>
@@ -136,7 +136,7 @@
                                         border  border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 
                                         focus:border-blue-500 block w-30 p-5"
                                                     placeholder="종류">
-                                <option selected>종류</option>
+                                <option value="" selected>종류</option>
                                 <option value="오토캠핑장">오토캠핑장</option>
                                 <option value="카라반">카라반</option>
                                 <option value="글램핑">글램핑</option>

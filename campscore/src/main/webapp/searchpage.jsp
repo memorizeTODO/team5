@@ -20,7 +20,8 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/datepicker.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-
+		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
         <header 
             class="fixed flex justify-between p-5 w-full bg-white z-50 border-2 border-black-100"
@@ -75,12 +76,12 @@
                         </form>
                     </div>
 
-                        
+                    <form id="radioGroup">    
                         <h3 class="mb-4 font-semibold text-gray-900 dark:text-white">캠핑장 종류</h3>
                         <ul class="w-48 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
                             <li class="w-full border-b border-gray-200 rounded-t-lg dark:border-gray-600">
                                 <div class="flex items-center ps-3">
-                                    <input id="caravan-checkbox" type="radio" value="카라반" name="placeCategoryDetail" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded 
+                                    <input onc id="caravan-checkbox" type="radio" value="카라반" name="placeCategoryDetail" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded 
                                                                                              focus:ring-blue-500 dark:focus:ring-blue-600 ">
                                     <label for="caravan-checkbox" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">카라반</label>
                                 </div>
@@ -100,7 +101,7 @@
                                 </div>
                             </li>
                         </ul>
-                    
+                  </form>  
                     
                 </div>
                 
@@ -111,7 +112,7 @@
             <form action="" method="get" >
                 <div class="flex relative flex-row-reverse w-10/12">
                                         <select id="sort_type" class="py-2.5 px-0 text-sm text-gray-500 bg-[#F5F5F5] 
-                                        focus:outline-none focus:ring-0 focus:border-gray-200 peer" onChange="sortselect(this.value)">
+                                        focus:outline-none focus:ring-0 focus:border-gray-200 peer" onChange="campdata()">
                                             <option value="desc" selected>내림차순</option>
                                             <option value="asc">오름차순</option>
                                             </select>  
@@ -145,9 +146,9 @@
 
 
         <script charset="UTF-8">
-        const order = "";
-        const sort_type = "";
         var urldata = new Array();
+        
+        
         function param() {
         	   var url = window.location.href;
         	   if(url.indexOf("?") > -1) {
@@ -179,23 +180,35 @@
         	 
         	    return Math.floor(interval / (1000*60*60*24));
         	}
-		var dt0 = new Date();
+		var dt0 = new Date();	
         var dt1 = new Date(`${"${urldata[1]}"}`);
         var dt2 = new Date(`${"${urldata[2]}"}`);
-        var result_date = dt1.getInterval(dt2);
-        var result_date0 = dt0.getInterval(dt1);
+        var result_date = (dt1.getInterval(dt2))+1;
+        var result_date0 = (dt0.getInterval(dt1))+1;
+       
 		console.log(dt1);       
 		console.log(dt2);  
-		
-		
+		var categorydata = (`${"${urldata[4]}"}`	);
+        
+        const element = document.querySelector('#radioGroup');
+        element.addEventListener('change', handleChange);
+        function handleChange(event) {
+        	  // 현재 선택 상태를 가져오기
+        	  const detailTypeValue = element.placeCategoryDetail.value;
+        	  
+        	  categorydata = (`${"${detailTypeValue}"}`);
+        	  campdata();
+        	}
 		
 		
         async function campdata() {
             var sortdata =	document.getElementById("sort_type").value;
 			var orderdata = document.getElementById("order").value;
+			var typedata = document.getElementById("order").value;
         	
-        	
-            const cres = await fetch(`http://localhost:80/get/campinglist?page=1&region=${"${urldata[3]}"}&sort_type=${"${sortdata}"}&order=${"${orderdata}"}&placeName=${"${urldata[0]}"}&category${"${urldata[4]}"}`);
+			console.log(categorydata);
+			
+            const cres = await fetch(`http://localhost:80/get/campinglist?page=1&region=${"${urldata[3]}"}&sort_type=${"${orderdata}"}&order=${"${sortdata}"}&placeName=${"${urldata[0]}"}&category=${"${categorydata}"}`);
             const campJson = await cres.json();
      		console.log(campJson.item0.addressName);
      		
@@ -206,7 +219,7 @@
 	               	 placeid:campJson.item0.placeID,
 	               	 placename:campJson.item0.placeName,
 			         placeurl:campJson.item0.placeUrl,
-	        		 placecategory: campJson.item0placeCategoryDetail,
+	        		 placecategory: campJson.item0.placeCategoryDetail,
 	                 placeregion:campJson.item0.region,
          
                 },
@@ -223,7 +236,7 @@
                    	 placeid:campJson.item2.placeID,
                    	 placename:campJson.item2.placeName,
     		         placeurl:campJson.item2.placeUrl,
-            		 placeuategory: campJson.item2.placeCategoryDetail,
+            		 placecategory: campJson.item2.placeCategoryDetail,
                      placeregion:campJson.item2.region,
                 },
                 {
@@ -231,7 +244,7 @@
                    	 placeid:campJson.item3.placeID,
                    	 placename:campJson.item3.placeName,
     		         placeurl:campJson.item3.placeUrl,
-            		 placeuategory: campJson.item3.placeCategoryDetail,
+            		 placecategory: campJson.item3.placeCategoryDetail,
                      placeregion:campJson.item3.region,
                 },
                 {
@@ -309,13 +322,10 @@
                         <div class="">
                             ${"${address}"}
                         </div>
-                        <div class="">
-                        	${"${name}"}
-                        	${"${iD}"}	
-                        </div>
-
-                              
-
+                        <button onclick=location.href="detailpage.jsp" class="flex justify-start font-bold text-4xl">   
+	                    ${"${name}"}
+	                    </button>    
+                       		${"${category}"}	
                     </div>
                 </div>
                     `;
@@ -328,7 +338,10 @@
                
                
         }
-      	campdata();  
+        let weatherScoreArray = new Array();
+        let sum = 0;
+    	var weatherScoreArray_avg =0;
+    	
       	async function getWeatherByRegion(){
         	const res = await fetch(`http://localhost:80/get/weather?region=${"${urldata[3]}"}`);
         	const resJson = await res.json();
@@ -399,7 +412,7 @@
              let zerodate = 0;
             
 				             
-        	 for(let i = (result_date0); i <= result_date0+result_date;i++){
+        	 for(let i = (result_date0); i < result_date0+result_date;i++){
         		const weatherData = data[i];
         		const precarray = (weatherData.prec).split('|',2);
         		const temparray = (weatherData.temp).split('|',2);
@@ -439,12 +452,14 @@
             			      (weather2 == "WB04") ? weatherscore -1 : 
             			      (weather2 == "WB09") ? weatherscore -3: 
             			       error ;
-        
+        		
 	       		console.log(i+"일차"+weatherscore);
-	      		
-	      		
+	       		weatherScoreArray[i] = weatherscore;
+	       		
           	 	innerHTML += ` 
                		
+          	 	
+          	 	<form name="detaildata" action="detailpage.jsp" method="get">
           	 		<div class="flex flex-row  h-full w-32 mr-10 pt-10 items-center justify-center ">
             		<div class="flex flex-col w-32">
 		               <label for="" class="block text-lg font-bold text-gray-900 mx-auto"><span class="mx-auto text-xl"><span class="flex justify-center">${"${arrDayStr[td]}"}</span><br>${"${month}.${dt}"}</label>
@@ -463,9 +478,30 @@
 		                </div>
 	                </div>
 	             </div>
+	          </form>  
             `;
               
         	 }
+        	 
+        	 for(let i = 0; i < weatherScoreArray.length; i++){
+     		 	if(weatherScoreArray[i] != null){
+	      			sum += weatherScoreArray[i];
+	      			}
+	      		}
+	      		const avg = (sum/result_date);
+	      		weatherScoreArray_avg = Math.round(avg * 100) / 100;
+	      		//ajax전달
+	      		$.ajax({
+	      		　　type:'post'
+	      		　　, contentType:'application/json'
+	      		　　, data: JSON.stringify(weatherScoreArray_avg)
+	      		　　, url: '/post/weatherscore'
+	      		　　, success: function(data) {
+	      		　　　　console.log(data);
+	      		　　}, error:function(e	) {
+	      		　　　　console("error: " + e);
+	      		　　}
+	      		});
           	
              weatherListTag.innerHTML = innerHTML
         	 
@@ -503,18 +539,23 @@
                  	case 'WB03':
                  		return 'images/cloudy(2).png';
                  		break;
-                 	case 'WB04':
+                 	case 'WB04':	
                  		return 'images/cloudy.png';
+                 		break;
+                	case 'WB09':
+                 		return 'images/rain.png';
                  		break;
                      default :
                          return 'images/raindrop.png';
               	}
                  
              }
-      	}
-        	 getWeatherByRegion();
-        
-        
+    	
+        	 
+        	
+	      	}
+      	getWeatherByRegion();
+      	campdata();
         </script>
     </body>
 </html>    

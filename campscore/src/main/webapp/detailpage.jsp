@@ -158,8 +158,6 @@
                      temp:resJson.tp0,
                      prec:resJson.rp0,
 					 rain:resJson.wcd0,
-                	 
-          
                  },
                  {
                 	 weather: resJson.wc1,
@@ -346,27 +344,18 @@
 		async function campdata() {
 				 
         	
-        const cres = await fetch('http://localhost:80/get/campinglist?region=경기');
+        const cres = await fetch('http://localhost:80/get/campinglist?place_name=');
         const campJson = await cres.json();
         
         
     	const campdata = [
         	{
-        		addressName: campJson.item1.addressName,
-        		
-        		placeCategoryDetail: campJson.item1.placeCategoryDetail,
-        		
-        		placeID:campJson.item0.placeID,
-        		
-        		placeImg:campJson.item1.placeImg,
-        		
-        		placeLat:campJson.item1.placeLat,
-        		
-        		placeLong:campJson.item1.placeLong,
-        	
-        		placeName:campJson.item1.placeName,
-        	
-        		placeUrl:campJson.item1.placeUrl,
+        		placeaddress:campJson.item0.addressName,
+              	placeid:campJson.item0.placeID,
+              	placename:campJson.item0.placeName,
+		        placeurl:campJson.item0.placeUrl,
+       			placecategory: campJson.item0.placeCategoryDetail,
+                placeregion:campJson.item0.region,
       
         	}
     	];
