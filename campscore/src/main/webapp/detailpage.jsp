@@ -143,6 +143,32 @@
 			</div>
                                                               
         <script>
+ var urldata = new Array();
+        
+        
+        function param() {
+        	   var url = window.location.href;
+        	   if(url.indexOf("?") > -1) {
+
+        	      var splits = url.split("?"); //split("구분자"):tokenizer와 다른점은 split는 공백도 하나의 값을 가진다.
+        	      var gets = splits[1];
+        	      var para = gets.split("&");
+        	      var len  = para.length;
+				  
+        	      
+        	      for(var i=0; i<len; i++) {
+        	         var param = para[i].split("=");
+                	 var urlname  = param[0];
+                	 var urlvalue = param[1];
+                	 urldata[i] = urlvalue;
+        	   }
+        	        
+        	}
+        }
+        param();
+      	console.log(urldata);
+      	const mm = object.value(urldata);
+      	console.log(mm);
 		let weatherScoreArray = new Array();
 		let sum = 0;
     	let weatherScoreArray_avg =0;

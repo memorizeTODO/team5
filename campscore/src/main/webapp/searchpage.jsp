@@ -180,13 +180,18 @@
         	 
         	    return Math.floor(interval / (1000*60*60*24));
         	}
+        
 		var dt0 = new Date();	
         var dt1 = new Date(`${"${urldata[1]}"}`);
         var dt2 = new Date(`${"${urldata[2]}"}`);
+        
         var result_date = (dt1.getInterval(dt2))+1;
         var result_date0 = (dt0.getInterval(dt1))+1;
         var regiondt = (`${"${urldata[3]}"}`);
-        
+        var scoredate = {
+        	start : result_date,
+        	end : result_date0
+        };
         
 		console.log(dt1);       
 		console.log(dt2);  
@@ -315,21 +320,26 @@
 			            	
             	
                    innerHTML += `
-                
+                   
+                	<form name="detaildata" action="detailpage.jsp" method="get">
                         <div class="flex flex-row justify-start h-72 w-10/12 z-30 mr-10 px-5 py-5 rounded-lg bg-[#ffffff] border-2 border-black-100 mb-5 ">
                         	<div class="h-64 w-64 absolute rounded-lg relative">
                             	<img class="h-64 w-64 absolute rounded-lg" src="images/camp2.jpg" >
                             </div>
-                      <div class="w-full h-full relative flex flex-col mx-5 px-5">
-                        <div class="">
+                      	<div class="w-full h-full relative flex flex-col mx-5 px-5">
+                        <div class="" name = "scoredate" value="${"${scoredate}"}">
+                        <input type = "hidden" name = "scoredate" value="${"${scoredate}"}"></input>
                             ${"${address}"}
                         </div>
-                        <button onclick=location.href="detailpage.jsp" class="flex justify-start font-bold text-4xl">   
-	                    ${"${name}"}
+                        <button type= "submit" name = "campname" value="${"${name}"}" onclick=location.href="detailpage.jsp" class="flex justify-start font-bold text-4xl">   
+	              			 ${"${name}"}
 	                    </button>    
-                       		${"${category}"}	
-                    </div>
-                </div>
+                       		 ${"${category}"}
+                        
+		                    </div>
+		                </div>
+               		</form>
+		                
                     `;
            }
              
@@ -461,7 +471,6 @@
           	 	innerHTML += ` 
                		
           	 	
-          	 	<form name="detaildata" action="detailpage.jsp" method="get">
           	 		<div class="flex flex-row  h-full w-32 mr-10 pt-10 items-center justify-center ">
             		<div class="flex flex-col w-32">
 		               <label for="" class="block text-lg font-bold text-gray-900 mx-auto"><span class="mx-auto text-xl"><span class="flex justify-center">${"${arrDayStr[td]}"}</span><br>${"${month}.${dt}"}</label>
@@ -480,7 +489,6 @@
 		                </div>
 	                </div>
 	             </div>
-	          </form>  
             `;
               
         	 }
@@ -504,15 +512,16 @@
 	      		　　type:'post'
 	      		　　, contentType:'application/json'
 	      		　　, data: JSON.stringify(regionWeatherScore)
-	      		　　, url: '/post/weatherscore'
+	      		　　, url:'/post/weatherscore'
 	      		　　, success: function(data) {
 	      		　　　　console.log(data);
 	      		　　}, error:function(e) {
-	      		　　　　console("error: " + e);
+	      		　　　　console.log("error: " + e);
 	      		　　}
 	      		});
+	      		
           	
-             weatherListTag.innerHTML = innerHTML
+             weatherListTag.innerHTML = innerHTML;
         	 
         	 function getImgSrc(weather){	
                  switch(weather){

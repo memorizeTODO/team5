@@ -129,7 +129,7 @@
                                 <option value="전북">전라북도</option>
                                 <option value="경남">경상남도</option>
                                 <option value="경북">경상북도</option>
-                                <option value="제주		">제주</option>
+                                <option value="제주">제주</option>
                             </select>
 
                             <select id="campingType" name="camptype" type="text" class="bg-[#E8E8E8] rounded-lg
