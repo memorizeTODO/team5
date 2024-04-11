@@ -106,38 +106,33 @@
                 
 
         <!--검색목록-->
-        <form action="" method="get" >
+       		 
             <div class="flex flex-col w-full pb-5"> 
+            <form action="" method="get" >
                 <div class="flex relative flex-row-reverse w-10/12">
                                         <select id="sort_type" class="py-2.5 px-0 text-sm text-gray-500 bg-[#F5F5F5] 
-                                        focus:outline-none focus:ring-0 focus:border-gray-200 peer">
+                                        focus:outline-none focus:ring-0 focus:border-gray-200 peer" onChange="sortselect(this.value)">
                                             <option value="desc" selected>내림차순</option>
                                             <option value="asc">오름차순</option>
                                             </select>  
                                         <select id="order" class="py-2.5 px-0 text-sm text-gray-500   bg-[#F5F5F5]
-                                                                            focus:outline-none focus:ring-0 focus:border-gray-200 peer">
-                                            <option value="score" selected>날씨점수순</option>
-                                            <option value="alp">이름순</option>
+                                                                            focus:outline-none focus:ring-0 focus:border-gray-200 peer" 
+                                                                            onChange="campdata()">
+                                            <option value="weather_score" selected>날씨점수순</option>
+                                            <option value="place_name">이름순</option>
                                         </select>
                                         
                     </div>
-       </form>
-                <div id="camp-list">
-                <%
-					String region = request.getParameter("campregion");
-					String placename = request.getParameter("name");
-					String type = request.getParameter("camptype");
-
-				%>    
-
-                
-                </div>
+       				</form>
+       
+                <div id="camp-list" >
+            </div>
           
                         
-                    </div>  
+          </div>  
                 </div>
             </div>  
-       
+       </div>
                 
 
 
@@ -150,7 +145,8 @@
 
 
         <script charset="UTF-8">
-        console.log();
+        const order = "";
+        const sort_type = "";
         var urldata = new Array();
         function param() {
         	   var url = window.location.href;
@@ -191,10 +187,15 @@
 		console.log(dt1);       
 		console.log(dt2);  
 		
+		
+		
+		
         async function campdata() {
-            
-        
-            const cres = await fetch(`http://localhost:80/get/campinglist?page=1&region=${"${urldata[3]}"}&sort_type="place_name"&order=asc&placeName=${"${urldata[0]}"}&category${"${urldata[4]}"}`);
+            var sortdata =	document.getElementById("sort_type").value;
+			var orderdata = document.getElementById("order").value;
+        	
+        	
+            const cres = await fetch(`http://localhost:80/get/campinglist?page=1&region=${"${urldata[3]}"}&sort_type=${"${sortdata}"}&order=${"${orderdata}"}&placeName=${"${urldata[0]}"}&category${"${urldata[4]}"}`);
             const campJson = await cres.json();
      		console.log(campJson.item0.addressName);
      		
@@ -301,10 +302,10 @@
                    innerHTML += `
                 
                         <div class="flex flex-row justify-start h-72 w-10/12 z-30 mr-10 px-5 py-5 rounded-lg bg-[#ffffff] border-2 border-black-100 mb-5 ">
-                        <div class="h-64 w-64 absolute rounded-lg relative">
-                            <img class="h-64 w-64 absolute rounded-lg" src="images/camp2.jpg" >
+                        	<div class="h-64 w-64 absolute rounded-lg relative">
+                            	<img class="h-64 w-64 absolute rounded-lg" src="images/camp2.jpg" >
                             </div>
-                            <div class="w-auto h-auto relative flex flex-col mx-5 px-5">
+                      <div class="w-full h-full relative flex flex-col mx-5 px-5">
                         <div class="">
                             ${"${address}"}
                         </div>

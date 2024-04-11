@@ -156,8 +156,8 @@
                     </form>
                 </div> 
                 
-	                <div id="selectRegion" name="선호지역" type="text" class="h-32 w-8/12 justifly-center relative flex my-auto mx-auto">
-			                <select class="w-1/4 1/4 items-center text-2xl font-bold" onChange="getWeatherByRegion(this.value)">
+	                <div name="선호지역" type="text" class="h-32 w-8/12 justifly-center relative flex my-auto mx-auto">
+			                <select id="selectRegion" class="w-1/4 1/4 items-center text-2xl font-bold" onChange="getWeatherByRegion(this.value)">
 			                                <option value="경기" selected>경기도</option>
 			                                <option value="강원">강원도</option>
 			                                <option value="충북">충청남도</option>
@@ -180,7 +180,7 @@
         
             <!-- 날씨 -->
             <div class="relative w-full">
-                <div class="  h-96 w-10/12 mx-auto bg-[#ffffff] border-2 border-black-100 z-30 py-5 rounded-lg px-5">
+                <div class="  h-96 w-10/12 mx-auto bg-[#ffffff] border-2 border-black-100 z-30 py-5 rounded-lg px-5 flex justify-center ">
                             <div id="weather-list" class="flex flex-row">     
                             </div>
                 </div>
@@ -227,9 +227,6 @@
         <script>
             function campdate() {
             const startdate = document.getElementById("startDate").value;
-            const enddate = document.getElementById("endDate").value;  
-            console.log(startdate);
-            console.log(enddate);
             
             }
             
@@ -239,13 +236,11 @@
                const camptype = document.getElementById("campingType").value; 
                alert(campname);
             }
-            function weatherdata(){
-            	     const campname = document.getElementById("campNameSearch").value;
-                const campregion = document.getElementById("campingRegion").value;
-                const camptype = document.getElementById("campingType").value; 
-            	
+            function regiondata(){
+              const defaultRegionData = document.getElementById("selectRegion").value;
+              getWeatherByRegion(defaultRegionData);
             }
-            
+            regiondata();
             
             
             async function getWeatherByRegion(value){
@@ -363,7 +358,7 @@
     	       		
               	 	innerHTML += ` 
                    		
-        	            <div class="flex flex-row  h-full w-32 mr-10 pt-10 items-center justify-center ">
+        	            <div class="flex flex-row  h-full w-32 mr-10 items-center justify-center ">
                     		<div class="flex flex-col w-32">
         		               <label for="" class="block text-lg font-bold text-gray-900 mx-auto"><span class="mx-auto text-xl"><span class="flex justify-center">${"${arrDayStr[td]}"}</span><br>${"${month}.${dt}"}</label>
         		                <div class="h-auto w-auto flex flex-row items-center mt-5 justify-center ">
@@ -433,7 +428,7 @@
                     
                 }
             		 
-            		
+       	
             		 
             		 
             	
