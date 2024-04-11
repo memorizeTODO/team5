@@ -161,7 +161,7 @@
         	    return Math.floor(interval / (1000*60*60*24));
         	}
 		var dt0 = new Date();
-        var dt1 = new Date('2024-04-11');
+        var dt1 = new Date('2024-04-13');
         var dt2 = new Date('2024-04-16');
         var result_date = dt1.getInterval(dt2);
         var result_date0 = dt0.getInterval(dt1);
@@ -171,41 +171,125 @@
         async function campdata() {
             
         
-            const cres = await fetch('http://localhost:80/get/campinglist?region=경기&sort_type="place_name"&order=asc');
+            const cres = await fetch('http://localhost:80/get/campinglist?page=1&region=경기&sort_type="place_name"&order=asc');
             const campJson = await cres.json();
-        	
-
             const keys = Object.keys(campJson);
 			console.log(keys);
      
+			const campdata = [
+                {
+                 addressName:campJson.item0.addressName,
+               	 placeID:campJson.item0.placeID,
+               	 placeName:campJson.item0.placeName,
+		         placeUrl:campJson.item0.placeUrl,
+        		 placeCategoryDetail: campJson.item0placeCategoryDetail,
+                 placeRegion:campJson.item0.region,
+         
+                },
+                {
+                	 addressName:campJson.item1.addressName,
+                   	 placeID:campJson.item1.placeID,
+                   	 placeName:campJson.item1.placeName,
+    		         placeUrl:campJson.item1.placeUrl,
+            		 placeCategoryDetail: campJson.item1.placeCategoryDetail,
+                     placeRegion:campJson.item1.region,
+                },
+                {
+                	 addressName:campJson.item2.addressName,
+                   	 placeID:campJson.item2.placeID,
+                   	 placeName:campJson.item2.placeName,
+    		         placeUrl:campJson.item2.placeUrl,
+            		 placeCategoryDetail: campJson.item2.placeCategoryDetail,
+                     placeRegion:campJson.item2.region,
+                },
+                {
+                	 addressName:campJson.item3.addressName,
+                   	 placeID:campJson.item3.placeID,
+                   	 placeName:campJson.item3.placeName,
+    		         placeUrl:campJson.item4.placeUrl,
+            		 placeCategoryDetail: campJson.item4.placeCategoryDetail,
+                     placeRegion:campJson.item4.region,
+                },
+                {
+                	 addressName:campJson.item5.addressName,
+                   	 placeID:campJson.item5.placeID,
+                   	 placeName:campJson.item5.placeName,
+    		         placeUrl:campJson.item5.placeUrl,
+            		 placeCategoryDetail: campJson.item5.placeCategoryDetail,
+                     placeRegion:campJson.item5.region,
+                },
+                {
+                	 addressName:campJson.item6.addressName,
+                   	 placeID:campJson.item6.placeID,
+                   	 placeName:campJson.item6.placeName,
+    		         placeUrl:campJson.item6.placeUrl,
+            		 placeCategoryDetail: campJson.item6.placeCategoryDetail,
+                     placeRegion:campJson.item6.region,
+                },
+                {
+                	 addressName:campJson.item7.addressName,
+                   	 placeID:campJson.item7.placeID,
+                   	 placeName:campJson.item7.placeName,
+    		         placeUrl:campJson.item7.placeUrl,
+            		 placeCategoryDetail:campJson.item7.placeCategoryDetail,
+                     placeRegion:campJson.item7.region,
+
+                },
+                {
+                	 addressName:campJson.item8.addressName,
+                   	 placeID:campJson.item8.placeID,
+                   	 placeName:campJson.item8.placeName,
+    		         placeUrl:campJson.item8.placeUrl,
+            		 placeCategoryDetail: campJson.item8.placeCategoryDetail,
+                     placeRegion:campJson.item8.region,
+                },
+                {
+               	 addressName:campJson.item9.addressName,
+                 placeID:campJson.item9.placeID,
+                 placeName:campJson.item9.placeName,
+   		         placeUrl:campJson.item9.placeUrl,
+           		 placeCategoryDetail: campJson.item9.placeCategoryDetail,
+                 placeRegion:campJson.item9.region,
+               },
+            ];
+			const campdataListTag = document.getElementById("camp-list");
+            let innerHTML = '';
+             
             
-            const innerHtmlList = keys.map((key)=>{
-                const campdataList = campJson[key];
-                    const innerHTML = `
+            for(let i = 0;i<10;i++){
+            	
+			             const campData = campdata[i];	
+			             const addressName = campData.addressName;
+			             const placeID = campData.placeID;
+			             const placeName = campData.placeName;
+			             const placeUrl = campData.placeUrl;
+			             const placeCategoryDetail = campData.placeCategoryDetail;
+			             const placeRegion = campData.region;
+			            	
+            	
+                   innerHTML += `
                 
                         <div class="flex flex-row justify-start h-72 w-10/12 z-30 mr-10 px-5 py-5 rounded-lg bg-[#ffffff] border-2 border-black-100 mb-5 ">
                         <div class="h-64 w-64 absolute rounded-lg relative">
-                            <img class="h-64 w-64 absolute rounded-lg" src=${"${campdataList.placeImg}"} >
+                            <img class="h-64 w-64 absolute rounded-lg" src="images/camp1" >
                             </div>
                             <div class="w-auto h-auto relative flex flex-col mx-5 px-5">
                         <div class="">
-                            ${"${campdataList.addressName}"}
+                            ${"${addressName}"}
                         </div>
                         <div class="">
-                        	${"${campdataList.placeName}"}
-                        	<input name=${"${campdataList.placeID}"}>${"${campdataList.placeID}"}</input>
+                        	${"${placeName}"}
+                        	${"${placeID}"}	
                         </div>
 
-                        
+                              
 
                     </div>
                 </div>
                     `;
-                    return innerHTML;
-             });
-           
-             const campdataList = document.getElementById("camp-list");
-                campdataList.innerHTML = innerHtmlList.join('');
+           }
+             
+               campdataListTag.innerHTML = innerHTML;
         }
       	campdata();  
       	async function getWeatherByRegion(){

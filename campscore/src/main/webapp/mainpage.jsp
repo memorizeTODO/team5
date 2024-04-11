@@ -327,7 +327,6 @@
             		const temp2 = temparray[1];
                 	const prec = temparray[0];
                 	const prec2 = temparray[1];
-                	;
                 	const rainarray = (weatherData.rain).split('|',2);
                 	const rain = rainarray[0];
                 	const rain2 = rainarray[1];

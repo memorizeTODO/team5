@@ -338,7 +338,7 @@
                 
             }
       		
-      		
+      	const weatherListTag = document.getElementById("weather-list");
 			
 			
   		
