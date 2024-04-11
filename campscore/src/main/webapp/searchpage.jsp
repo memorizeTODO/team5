@@ -149,7 +149,30 @@
 
 
 
-        <script>
+        <script charset="UTF-8">
+        console.log();
+        var urldata = new Array();
+        function param() {
+        	   var url = window.location.href;
+        	   if(url.indexOf("?") > -1) {
+
+        	      var splits = url.split("?"); //split("구분자"):tokenizer와 다른점은 split는 공백도 하나의 값을 가진다.
+        	      var gets = splits[1];
+        	      var para = gets.split("&");
+        	      var len  = para.length;
+				  
+        	      
+        	      for(var i=0; i<len; i++) {
+        	         var param = para[i].split("=");
+                	 var urlname  = param[0];
+                	 var urlvalue = param[1];
+                	 urldata[i] = urlvalue;
+        	   }
+        	        
+        	}
+        }
+      console.log(urldata);
+        param();
         Date.prototype.getInterval = function (otherDate) {
         	    var interval;
         	 
@@ -161,17 +184,17 @@
         	    return Math.floor(interval / (1000*60*60*24));
         	}
 		var dt0 = new Date();
-        var dt1 = new Date('2024-04-13');
-        var dt2 = new Date('2024-04-16');
+        var dt1 = new Date(`${"${urldata[1]}"}`);
+        var dt2 = new Date(`${"${urldata[2]}"}`);
         var result_date = dt1.getInterval(dt2);
         var result_date0 = dt0.getInterval(dt1);
-		console.log(result_date);       
-		console.log(result_date0);  
+		console.log(dt1);       
+		console.log(dt2);  
 		
         async function campdata() {
             
         
-            const cres = await fetch('http://localhost:80/get/campinglist?page=1&region=경기&sort_type="place_name"&order=asc');
+            const cres = await fetch(`http://localhost:80/get/campinglist?page=1&region=${"${urldata[3]}"}&sort_type="place_name"&order=asc&placeName=${"${urldata[0]}"}&category${"${urldata[4]}"}`);
             const campJson = await cres.json();
      		console.log(campJson.item0.addressName);
      		
@@ -203,12 +226,12 @@
                      placeregion:campJson.item2.region,
                 },
                 {
-                	 placeaddress:campJson.item.3addressName,
-                   	 placeid:campJson.item.3placeID,
-                   	 placename:campJson.item.3placeName,
-    		         placeurl:campJson.item.3placeUrl,
-            		 placeuategory: campJson.item.3placeCategoryDetail,
-                     placeregion:campJson.item.3region,
+                	 placeaddress:campJson.item3.addressName,
+                   	 placeid:campJson.item3.placeID,
+                   	 placename:campJson.item3.placeName,
+    		         placeurl:campJson.item3.placeUrl,
+            		 placeuategory: campJson.item3.placeCategoryDetail,
+                     placeregion:campJson.item3.region,
                 },
                 {
                 	 placeaddress:campJson.item4.addressName,
@@ -279,11 +302,11 @@
                 
                         <div class="flex flex-row justify-start h-72 w-10/12 z-30 mr-10 px-5 py-5 rounded-lg bg-[#ffffff] border-2 border-black-100 mb-5 ">
                         <div class="h-64 w-64 absolute rounded-lg relative">
-                            <img class="h-64 w-64 absolute rounded-lg" src="images/camp1" >
+                            <img class="h-64 w-64 absolute rounded-lg" src="images/camp2.jpg" >
                             </div>
                             <div class="w-auto h-auto relative flex flex-col mx-5 px-5">
                         <div class="">
-                            ${"${name}"}
+                            ${"${address}"}
                         </div>
                         <div class="">
                         	${"${name}"}
@@ -306,7 +329,7 @@
         }
       	campdata();  
       	async function getWeatherByRegion(){
-        	const res = await fetch(`http://localhost:80/get/weather?region=충남`);
+        	const res = await fetch(`http://localhost:80/get/weather?region=${"${urldata[3]}"}`);
         	const resJson = await res.json();
         	const weathers = Object.values(resJson);
         	
