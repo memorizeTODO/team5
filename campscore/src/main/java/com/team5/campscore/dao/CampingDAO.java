@@ -15,6 +15,6 @@ public interface CampingDAO {
 												@Param("sort_type")String sortType, @Param("order")String order);
 	public List<CampingDTO> getCampingListByPlaceName(@Param("start")int start, @Param("region")String region, @Param("sort_type")String sortType,@Param("order") String order, @Param("place_name")String placeName);
 	public List<CampingDTO> getCampingList(@Param("start")int start, @Param("region")String region, @Param("sort_type")String sortType,@Param("order") String order, @Param("place_name")String placeName, @Param("place_category_detail")String category );
-	public int selectByPlaceID(int placeID)
+	
 	
 }
