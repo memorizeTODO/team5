@@ -29,14 +29,9 @@
             class="fixed flex justify-between p-5 w-full bg-white z-50"
         >
             <div>
-            	<button onclick=location.href="mainpage.jsp"onclick=location.href="mainpage.jsp"onclick=location.href="mainpage.jsp" class="ml-5">
+            	<button type="submit" onclick=location.href="mainpage.jsp" class="ml-5">
                 <span class="text-4xl text-[#74cfca] font-bold">CAMP</span> <span class="text-2xl">*</span> <span class="text-4xl text-[#74cfca] font-bold">SCORE</span>
                 </button>
-            </div>
-
-            <div class="flex justify-start">   
-            
-                <button class="bg-[#eeeeee] hover:bg-[#dddddd] w-full h-full px-10 rounded-lg">로그인</button>
             </div>
         </header>
 
@@ -45,33 +40,24 @@
             <div class="w-full">
                 <div class="swiper">
                     <swiper-container class="mySwiper" pagination="true" pagination-clickable="true" navigation="true" space-between="0"
-                    centered-slides="true" autoplay-delay="2500" autoplay-disable-on-interaction="false">
+                    centered-slides="true" autoplay-delay="5000" autoplay-disable-on-interaction="false">
                         <swiper-slide>
-                            <img src="images/gapyung67.png" class="w-full">
+                            <img src="images/제주/cam3.jpg" class="w-full">
                         </swiper-slide>
                         <swiper-slide>
-                            <img src="images/gapyung67.png" class="w-full">
+                            <img src="images/경북/cam4.jpg" class="w-full">
                         </swiper-slide>
                         <swiper-slide>
-                            <img src="images/gapyung67.png" class="w-full">
+                            <img src="images/경기/cam2.jpg" class="w-full">
                         </swiper-slide>
                         <swiper-slide>
-                            <img src="images/gapyung67.png" class="w-full">
+                            <img src="images/main1.jpg" class="w-full">
                         </swiper-slide>
                         <swiper-slide>
-                            <img src="images/gapyung67.png" class="w-full">
+                            <img src="images/main2.jpg" class="w-full">
                         </swiper-slide>
                         <swiper-slide>
-                            <img src="images/gapyung67.png" class="w-full">
-                        </swiper-slide>
-                        <swiper-slide>
-                            <img src="images/gapyung67.png" class="w-full">
-                        </swiper-slide>
-                        <swiper-slide>
-                            <img src="images/gapyung67.png" class="w-full">
-                        </swiper-slide>
-                        <swiper-slide>
-                            <img src="images/gapyung67.png" class="w-full">
+                            <img src="images/main3.jpg" class="w-full">
                         </swiper-slide>
                     </swiper-container>
                 </div>
@@ -186,43 +172,8 @@
                 </div>
             </div>
             <!-- 추천 캠핑장 / 추천 관광지 -->
-            <div class>
-                <label for="recmdCamp" class="justify-start block mb-2 text-4xl font-bold text-gray-900 dark:text-white pt-10">추천 캠핑장</label>
-                <div class="grid md:grid-cols-4 gap-4 px-20 ">
-                    <div>
-                        <img class="h-auto max-w-full rounded-lg" src="images/gapyung67.webp" alt="">
-                        <label for="campExp1" class="text-center block mb-2 text-md  font-bold text-gray-900 dark:text-white px-10 py-5">가평67캠핑장</label>
-                    </div>
-                    <div>
-                        <img class="h-auto max-w-full rounded-lg" src="images/camp2.jpg" alt="">
-                        <label for="campExp1" class="text-center block mb-2 text-md  font-bold text-gray-900 dark:text-white px-10 py-5">가평67캠핑장</label>
-                    </div>
-                    <div>
-                        <img class="h-auto max-w-full rounded-lg" src="images/camp3.webp.jpg" alt="">
-                        <label for="campExp1" class="text-center block mb-2 text-md  font-bold text-gray-900 dark:text-white px-10 py-5">가평67캠핑장</label>
-                    </div>
-                    <div>
-                        <img class="h-auto max-w-full rounded-lg" src="images/camp4.jpg" alt="">
-                        <label for="campExp1" class="text-center block mb-2 text-md  font-bold text-gray-900 dark:text-white px-10 py-5">가평67캠핑장</label>
-                    </div>
-                </div>
-             <div>
-                    <label for="recmdTour" class="block mb-2 text-4xl font-bold text-gray-900 dark:text-white px-10 pt-40 py-5" >추천 관광지</label>
-                    <div class="grid md:grid-cols-4 gap-4 px-20">
-                        <div>
-                            <img class="h-auto max-w-full rounded-lg" src="images/tour1.jpg" alt="">
-                        </div>
-                        <div>
-                            <img class="h-auto max-w-full rounded-lg" src="images/tour2.bmp" alt="">
-                        </div>
-                        <div>
-                            <img class="h-auto max-w-full rounded-lg" src="images/tour3.jpg" alt="">
-                        </div>
-                        <div>
-                            <img class="h-auto max-w-full rounded-lg" src="images/tour4.jpg" alt="">
-                        </div>
-                    </div>     
-            </div>
+            <div id="tour-list">
+                
         </div>
         <script>
             function campdate() {
@@ -244,7 +195,9 @@
             
             
             async function getWeatherByRegion(value){
-				console.log(value);
+				
+				const changeregion = value;
+				console.log(changeregion);
             	const res = await fetch(`http://localhost:80/get/weather?region=${"${value}"}`);
             	const resJson = await res.json();
             	const weathers = Object.values(resJson);
@@ -426,176 +379,137 @@
                         
                     }
                     
-                }
-            		 
-       	
-            		 
-            		 
-            	
-            	 
-            		 
-			
-            	/*const weatherListTag = document.getElementById("weather-list");
-            	let innerHTML = '';
-            	const imgSrc = getImgSrc(resJson.wc4)
-	            var dtoday = new Date();
-	            
-	            var month = ('0' + (dtoday.getMonth() + 1)).slice(-2);
-	            var date = ('0' + dtoday.getDate()).slice(-2);
-	            
-	            var arrDayStr = ['일','월','화','수','목','금','토']; 
-	            var tday = dtoday.getDay();	
-            	
-	            innerHTML += ` 
-	           		
-		            <div class="flex flex-row  h-full w-32 mr-10 pt-10 items-center ">
-	            		<div class="flex flex-col w-32">
-			               <label for="" class="block text-lg font-bold text-gray-900 mx-auto"><span class="ml-2 text-xl"><span class="ml-1">${arrDayStr[td]}</span><br>${month}.${dt}</label>
-			                <div class="h-20 w-40 flex flex-row items-center mt-5 ">
-			                    <img src="${imgSrc}" class="w-16 h-16 mx-auto">
-			                    <img src="${imgSrc}" class="w-16 h-16 mx-auto">
-			                </div>
-			                <div class="flex flex-row mx-auto items-center mt-3">
-			                    <span class="text-[#45A6FF] font-md text-2xl">${temp}°</span>
-			                    <span class="text-[#959FA9] text-2xl">/</span>
-			                    <span class="text-[#F42E2E] font-bold text-2xl">${temp2}°</span>
-			                </div>
-			                <div class="flex flex-row mx-auto items-center mt-5 font-bold">
-			                    <span class="text-[#3B9DE3] mr-2">${prec}%</span>
-			                    <span class="text-[#3B9DE3]">${prec2}%</span>
-			                </div>
+                    function tourChange(){
+            		
+                    	 const cpnamedata = [
+                             {
+                            	 camp1:"청계산골든밸리글램핑&캠핑장",
+                            	 camp2:"광릉해오름캠핑장",
+                            	 camp3:"자라섬캠핑장",
+                                 camp4:"그라티아글램핑",
+                             },
+                             {
+                            	 camp1:"동강전망휴양림오토캠핑장",
+                            	 camp2:"홍천 어울림 글램핑펜션",
+                            	 camp3:"행복휴양림&아우라지글램핑",
+                                 camp4:"홍천강오토캠핑장",
+                             },
+                             {
+                            	 camp1:"경상북도포항산누리오토캠핑장",
+                            	 camp2:"생림 오토캠핑장",
+                            	 camp3:"80 SS 오토캠핑장",
+                                 camp4:"위정약수오토캠핑장",
+                             },
+                             {
+                            	 camp1:"김녕해수욕장야영장",
+                            	 camp2:"대정읍 화순 해수욕장",
+                            	 camp3:"비양도 연평리 야영지",
+                                 camp4:"돌하르방 캠핑장",
+                             }
+                    	 ];	 
+                    	
+                    	 const tournamedata = [
+                             {
+                            	 tour1:"화담숲",
+                            	 tour2:"포천아트밸리",
+                            	 tour3:"수원화성",
+                                 tour4:"아침고요수목원",
+                             },
+                             {
+                            	 tour1:"남이섬",
+                            	 tour2:"추암 촛대바위",
+                            	 tour3:"대관령양떼목장",
+                                 tour4:"설악산국립공원",
+                             },
+                             {
+                            	 tour1:"불국사",
+                            	 tour2:"동궁과 월지",
+                            	 tour3:"첨성대",
+                                 tour4:"국립경주박물관",
+                             },
+                             {
+                            	 tour1:"한라산",
+                            	 tour2:"섭지코지",
+                            	 tour3:"주상절리대",
+                                 tour4:"만창굴",
+                             }
+                    	 ];	 
+                    	 
+                    	 function campImgSrc(cregion){	
+                             switch(cregion){
+                             	case '경기':
+                             		return "0";
+                             		break;
+                             	case '강원':
+                             		return '1';
+                             		break;
+                             	case '경북':
+                             		return '2';
+                             		break;
+                             	case '제주':
+                             		return '3';
+                             		break;
+                                 default : 
+                                     return '1';
+                          	}
+                    	 }  
+		            var cregion = (`${"${changeregion}"}`);
+		            var tourListTag = document.getElementById("tour-list");	
+		            var cam	= campImgSrc(cregion);
+		            var cam_name = cpnamedata[cam];
+		            var tour_name = tournamedata[cam];
+		            console.log(cam_name.camp1); 
+		            
+		            
+		            
+		            innerHTML = ` 
+		            	<label for="recmdCamp" class="block mb-2 text-4xl font-bold text-gray-900 dark:text-white px-10 pt-40 py-5">추천 캠핑장</label>
+		                <div class="grid md:grid-cols-4 gap-4 px-20 ">
+		                    <div>
+		                        <img class="h-auto max-w-full rounded-lg" src="images/${"${changeregion}"}/camp1.jpg" alt="">
+		                        <label for="campExp1" class="text-center block mb-2 text-md  font-bold text-gray-900 dark:text-white px-10 py-5">${"${cam_name.camp1}"}</label>
+		                    </div>
+		                    <div>
+		                        <img class="h-auto max-w-full rounded-lg" src="images/${"${changeregion}"}/camp2.jpg" alt="">
+		                        <label for="campExp1" class="text-center block mb-2 text-md  font-bold text-gray-900 dark:text-white px-10 py-5">${"${cam_name.camp2}"}</label>
+		                    </div>
+		                    <div>
+		                        <img class="h-auto max-w-full rounded-lg" src="images/${"${changeregion}"}/camp3.jpg" alt="">
+		                        <label for="campExp1" class="text-center block mb-2 text-md  font-bold text-gray-900 dark:text-white px-10 py-5">${"${cam_name.camp3}"}</label>
+		                    </div>
+		                    <div>
+		                        <img class="h-auto max-w-full rounded-lg" src="images/${"${changeregion}"}/camp4.jpg" alt="">
+		                        <label for="campExp1" class="text-center block mb-2 text-md  font-bold text-gray-900 dark:text-white px-10 py-5">${"${cam_name.camp4}"}</label>
+		                    </div>
 		                </div>
-		             </div>
-	            `;
-	             }
-	            
-			
-			
-	            weatherListTag.innerHTML = innerHTML;
-
-	            function getImgSrc(weather){	
-	                switch(weather){
-	                	case 'WB01|WB01':
-	                		return 'images/sunny.png';
-	                		break;
-	                	case 'WB02|WB02':
-	                		return 'images/partly-cloudy.png';
-	                		break;
-	                	case 'WB03|WB03':
-	                		return 'images/cloudy(2).png';
-	                		break;
-	                	case 'WB04|WB04':
-	                		return 'images/cloudy.png';
-	                		break;
-	                    case 'sunny' : 
-	                        return 'images/sunny.png';
-	                        break;
-	                    case 'rainy': 
-	                        return 'images/rain.png';
-	                        break;
-	                    case 'cloudy': 
-	                        return 'images/cloudy.png';
-	                        break;
-	                    default :
-	                        return 'images/raindrop.png';
-	             	}
-	           
+	               		<div>
+			            	<label for="recmdTour" class="block mb-2 text-4xl font-bold text-gray-900 dark:text-white px-10 pt-40 py-5" >추천 관광지</label>
+		                    <div class="grid md:grid-cols-4 gap-4 px-20">
+		                        <div>
+		                            <img class="h-auto max-w-full rounded-lg" src="images/${"${changeregion}"}/tour1.jpg" alt="">
+		                            <label for="tourpExp1" class="text-center block mb-2 text-md  font-bold text-gray-900 dark:text-white px-10 py-5">${"${tour_name.tour1}"}</label>
+		                        </div>
+		                        <div>
+		                            <img class="h-auto max-w-full rounded-lg" src="images/${"${changeregion}"}/tour2.jpg" alt="">
+		                            <label for="tourpExp1" class="text-center block mb-2 text-md  font-bold text-gray-900 dark:text-white px-10 py-5">${"${tour_name.tour2}"}</label>
+		                        </div>
+		                        <div>
+		                            <img class="h-auto max-w-full rounded-lg" src="images/${"${changeregion}"}/tour3.jpg" alt="">
+		                            <label for="tourpExp1" class="text-center block mb-2 text-md  font-bold text-gray-900 dark:text-white px-10 py-5">${"${tour_name.tour3}"}</label>
+		                        </div>
+		                        <div>
+		                            <img class="h-auto max-w-full rounded-lg" src="images/${"${changeregion}"}/tour4.jpg" alt="">
+		                            <label for="tourpExp1" class="text-center block mb-2 text-md  font-bold text-gray-900 dark:text-white px-10 py-5">${"${tour_name.tour4}"}</label>
+		                        </div>
+		                    </div>
+		               </div> 
+	                  `;  
 	                    
-	            	}
-           
-            
-            
-            /*async function search() {
-                
-                const res = await fetch('http://localhost:80/get/weather);
-				const resJson = await res.json();
-                
-				console.log(resJson);*/
-           
-    
-            
-		
-            
-
-        /*    const weatherListTag = document.getElementById("weather-list");
-            let innerHTML = '';
-			
-            
-            
-           
-            
-             for(let i = 0; i<7;i++){ 
-         	const weatherData = data[i];
-            	const imgSrc = getImgSrc(weatherData.weather);
-            	const temp = weatherData.temp;
-            	const temp2 = weatherData.temp2;
-            	const prec = weatherData.prec;
-            	const prec2 = weatherData.prec2;
-            	var dt = ("0" + (dtoday.getDate()+i)).slice(-2); 
-            	var td = tday + i;	 
-
-          	 if(td > 6){
-          		 
-          			td =0;
-          		}
-   
-          
-            	 innerHTML += ` 
-       		
-	            <div class="flex flex-row  h-full w-32 mr-10 pt-10 items-center ">
-            		<div class="flex flex-col w-32">
-		               <label for="" class="block text-lg font-bold text-gray-900 mx-auto"><span class="ml-2 text-xl"><span class="ml-1">${arrDayStr[td]}</span><br>${month}.${dt}</label>
-		                <div class="h-20 w-40 flex flex-row items-center mt-5 ">
-		                    <img src="${imgSrc}" class="w-16 h-16 mx-auto">
-		                    <img src="${imgSrc}" class="w-16 h-16 mx-auto">
-		                </div>
-		                <div class="flex flex-row mx-auto items-center mt-3">
-		                    <span class="text-[#45A6FF] font-md text-2xl">${temp}°</span>
-		                    <span class="text-[#959FA9] text-2xl">/</span>
-		                    <span class="text-[#F42E2E] font-bold text-2xl">${temp2}°</span>
-		                </div>
-		                <div class="flex flex-row mx-auto items-center mt-5 font-bold">
-		                    <span class="text-[#3B9DE3] mr-2">${prec}%</span>
-		                    <span class="text-[#3B9DE3]">${prec2}%</span>
-		                </div>
-	                </div>
-	             </div>
-            `;
-             }
-            
-            
-            weatherListTag.innerHTML = innerHTML;
-
-            function getImgSrc(weather){	
-                switch(weather){
-                	case 'WB01|WB01':
-                		return 'images/sunny.png';
-                		break;
-                	case 'WB02|WB02':
-                		return 'images/partly-cloudy.png';
-                		break;
-                	case 'WB03|WB03':
-                		return 'images/cloudy(2).png';
-                		break;
-                	case 'WB04|WB04':
-                		return 'images/cloudy.png';
-                		break;
-                    case 'sunny' : 
-                        return 'images/sunny.png';
-                        break;
-                    case 'rainy': 
-                        return 'images/rain.png';
-                        break;
-                    case 'cloudy': 
-                        return 'images/cloudy.png';
-                        break;
-                    default :
-                        return 'images/raindrop.png';
-             	}
-           
+		            tourListTag.innerHTML = innerHTML;	
+                    }
                     
-            	}*/
-            
+                    tourChange();
+                }
             	   $(function() {
             	       //input을 datepicker로 선언
             	       $("#datepicker").datepicker({
@@ -603,7 +517,8 @@
             	           ,showOtherMonths: true //빈 공간에 현재월의 앞뒤월의 날짜를 표시
             	           ,showMonthAfterYear:true // 월- 년 순서가아닌 년도 - 월 순서
             	           ,changeYear: true //option값 년 선택 가능
-            	           ,changeMonth: true //option값  월 선택 가능                
+            	           ,changeMonth: true //option값  월 선택 가능 
+            	           ,buttonText: null
             	           ,showOn: "both" //button:버튼을 표시하고,버튼을 눌러야만 달력 표시 ^ both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시  
             	           ,yearSuffix: "년" //달력의 년도 부분 뒤 텍스트
             	           ,monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 텍스트
@@ -626,6 +541,7 @@
           	           ,showMonthAfterYear:true // 월- 년 순서가아닌 년도 - 월 순서
           	           ,showOn: "both" //button:버튼을 표시하고,버튼을 눌러야만 달력 표시 ^ both:버튼을 표시하고,버튼을 누르거나 input을 클릭하면 달력 표시  
           	           ,yearSuffix: "년" //달력의 년도 부분 뒤 텍스트
+          	           ,buttonText: null
           	           ,monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 텍스트
           	           ,monthNames: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] //달력의 월 부분 Tooltip
           	           ,dayNamesMin: ['일','월','화','수','목','금','토'] //달력의 요일 텍스트
@@ -638,6 +554,6 @@
           	       $('#datepicker2').datepicker('setDate', 'today'); //(-1D:하루전, -1M:한달전, -1Y:일년전), (+1D:하루후, -1M:한달후, -1Y:일년후)            
           	   });
             	
-	        </script>
+	       </script>
     </body>
 </html>
