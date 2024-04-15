@@ -33,11 +33,15 @@
             
             
         </div>                                                                 
+            <div>
+                <button class="bg-[#eeeeee] hover:bg-[#dddddd] w-full h-full px-10 rounded-lg">로그인</button>
+            </div>
         </header>
         <div class="pt-20 z-10">
         <!--날씨-->
             <div class="w-full h-1/4">
                 <div class="items-center font-bold text-4xl text-center my-28">  
+                    경기도
                 </div>
             </div>
             <div class="relative w-full">
@@ -56,12 +60,12 @@
                 <div class="mx-10 w-80 flex flex-col top-0">
                     <div class="py-10 rounded-lg ">
                         <form class="w-80">   
-                            <label for="name_search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+                            <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
                             <div class="relative">
-                                <input type="search" id="name_search" onchange="nameinput(this.value)" class="block w-full p-4 text-sm text-gray-900
+                                <input type="search" id="default-search" class="block w-full p-4 text-sm text-gray-900
                                                                                  border border-gray-300 rounded-lg bg-white 
                                                                                  focus:ring-gray-500 focus:border-gay-500" placeholder="이름" required />
-                                <button type="submit" onclick="nameinput()"class="text-white absolute end-2.5 bottom-2.5 
+                                <button type="submit" class="text-white absolute end-2.5 bottom-2.5 
                                                              bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 
                                                              font-sm rounded-lg text-sm px-4 py-2">
                                     <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -109,15 +113,14 @@
                 <div class="flex relative flex-row-reverse w-10/12">
                                         <select id="sort_type" class="py-2.5 px-0 text-sm text-gray-500 bg-[#F5F5F5] 
                                         focus:outline-none focus:ring-0 focus:border-gray-200 peer" onChange="campdata()">
-                                            <option value="asc"selected>오름차순</option>
-                                            <option value="desc">내림차순</option>
+                                            <option value="desc" selected>내림차순</option>
+                                            <option value="asc">오름차순</option>
                                             </select>  
                                         <select id="order" class="py-2.5 px-0 text-sm text-gray-500   bg-[#F5F5F5]
                                                                             focus:outline-none focus:ring-0 focus:border-gray-200 peer" 
                                                                             onChange="campdata()">
-                                            <option value="place_name" selected>이름순</option>
-                                             <option value="weather_score">날씨점수순</option>
-                                           
+                                            <option value="weather_score" selected>날씨점수순</option>
+                                            <option value="place_name">이름순</option>
                                         </select>
                                         
                     </div>
@@ -177,19 +180,17 @@
         	 
         	    return Math.floor(interval / (1000*60*60*24));
         	}
-        
 		var dt0 = new Date();	
         var dt1 = new Date(`${"${urldata[1]}"}`);
         var dt2 = new Date(`${"${urldata[2]}"}`);
-        
         var result_date = (dt1.getInterval(dt2))+1;
         var result_date0 = (dt0.getInterval(dt1))+1;
         var regiondt = (`${"${urldata[3]}"}`);
         
+        
 		console.log(dt1);       
 		console.log(dt2);  
-		var categorydata = (`${"${urldata[4]}"}`);
-        var campingname = (`${"${urldata[3]}"}`);
+		var categorydata = (`${"${urldata[4]}"}`	);
         
         const element = document.querySelector('#radioGroup');
         element.addEventListener('change', handleChange);
@@ -201,10 +202,6 @@
         	  campdata();
         	}
 		
-        function nameinput() {
-        	campingname = document.getElementById("name_search").value;
-        	campdata();
-        }
 		
         async function campdata() {
             var sortdata =	document.getElementById("sort_type").value;
@@ -213,8 +210,9 @@
         	
 			console.log(categorydata);
 			
-            const cres = await fetch(`http://localhost:80/get/campinglist?page=2&region=${"${campingname}"}&sort_type=${"${orderdata}"}&order=${"${sortdata}"}&placeName=${"${urldata[0]}"}&category=${"${categorydata}"}`);
+            const cres = await fetch(`http://localhost:80/get/campinglist?page=1&region=${"${urldata[3]}"}&sort_type=${"${orderdata}"}&order=${"${sortdata}"}&placeName=${"${urldata[0]}"}&category=${"${categorydata}"}`);
             const campJson = await cres.json();
+     		console.log(campJson.item0.addressName);
      		
 			
      		const campingdata = [
@@ -314,35 +312,33 @@
 			             const url = data.placeurl;
 			             const category = data.placecategory;
 			             const region = data.placeregion;
-			             const img = "images/"+region+"/thumbnail/"+name+".jpg";
-			             console.log(img);
+			            	
+            	
                    innerHTML += `
-                   
-                	<form name="detaildata" action="detailpage.jsp" method="get">
+                
                         <div class="flex flex-row justify-start h-72 w-10/12 z-30 mr-10 px-5 py-5 rounded-lg bg-[#ffffff] border-2 border-black-100 mb-5 ">
                         	<div class="h-64 w-64 absolute rounded-lg relative">
-                            	<img class="h-64 w-64 absolute rounded-lg" src="${"${img}"}" >
+                            	<img class="h-64 w-64 absolute rounded-lg" src="images/camp2.jpg" >
                             </div>
-                      	<div class="w-full h-full relative flex flex-col mx-5 px-5">
-                        <div class="" >
-                        <input type = "hidden" name = "sdt" value="${"${result_date0}"}"></input>
-                        <input type = "hidden" name = "edt" value="${"${result_date}"}"></input>
+                      <div class="w-full h-full relative flex flex-col mx-5 px-5">
+                        <div class="">
                             ${"${address}"}
                         </div>
-                        <button type= "submit" name = "campname" value="${"${name}"}" onclick=location.href="detailpage.jsp" class="flex justify-start font-bold text-4xl">   
-	              			 ${"${name}"}
+                        <button onclick=location.href="detailpage.jsp" class="flex justify-start font-bold text-4xl">   
+	                    ${"${name}"}
 	                    </button>    
-                       		 ${"${category}"}
-                       		<input type = "hidden" name = "region" value="${"${region}"}"></input>
-		                    </div>
-		                </div>
-               		</form>
-		                
+                       		${"${category}"}	
+                    </div>
+                </div>
                     `;
            }
              
                campdataListTag.innerHTML = innerHTML;
-               getWeatherByRegion();
+               
+               
+               
+               
+               
         }
         let weatherScoreArray = new Array();
         let sum = 0;
@@ -416,10 +412,9 @@
              var arrDayStr = ['일','월','화','수','목','금','토']; 
              var today = datetoday.getDay()
              let zerodate = 0;
-             
-             
-				
-        	 for(let i = result_date0; i < result_date0+result_date;i++){
+            
+				             
+        	 for(let i = (result_date0); i < result_date0+result_date;i++){
         		const weatherData = data[i];
         		const precarray = (weatherData.prec).split('|',2);
         		const temparray = (weatherData.temp).split('|',2);
@@ -428,6 +423,7 @@
         		const temp2 = temparray[1];
             	const prec = temparray[0];
             	const prec2 = temparray[1];
+            	;
             	const rainarray = (weatherData.rain).split('|',2);
             	const rain = rainarray[0];
             	const rain2 = rainarray[1];
@@ -465,6 +461,7 @@
           	 	innerHTML += ` 
                		
           	 	
+          	 	<form name="detaildata" action="detailpage.jsp" method="get">
           	 		<div class="flex flex-row  h-full w-32 mr-10 pt-10 items-center justify-center ">
             		<div class="flex flex-col w-32">
 		               <label for="" class="block text-lg font-bold text-gray-900 mx-auto"><span class="mx-auto text-xl"><span class="flex justify-center">${"${arrDayStr[td]}"}</span><br>${"${month}.${dt}"}</label>
@@ -483,6 +480,7 @@
 		                </div>
 	                </div>
 	             </div>
+	          </form>  
             `;
               
         	 }
@@ -502,20 +500,19 @@
 	      		
 	      		console.log(regionWeatherScore);
 	      		//ajax전달
-	      		/*$.ajax({
+	      		$.ajax({
 	      		　　type:'post'
 	      		　　, contentType:'application/json'
 	      		　　, data: JSON.stringify(regionWeatherScore)
-	      		　　, url:'/post/weatherscore'
+	      		　　, url: '/post/weatherscore'
 	      		　　, success: function(data) {
 	      		　　　　console.log(data);
 	      		　　}, error:function(e) {
-	      		　　　　console.log("error: " + e);
+	      		　　　　console("error: " + e);
 	      		　　}
-	      		});*/	
-	      		
+	      		});
           	
-             weatherListTag.innerHTML = innerHTML;
+             weatherListTag.innerHTML = innerHTML
         	 
         	 function getImgSrc(weather){	
                  switch(weather){
@@ -562,7 +559,7 @@
               	}
                  
              }
-    		
+    	
         	 
         	
 	      	}
