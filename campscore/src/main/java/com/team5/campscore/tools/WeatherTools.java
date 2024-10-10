@@ -311,19 +311,18 @@ public class WeatherTools {
 	   
 	    	weatherMap.putAll(weatherTPMap);
         	weatherMap.putAll(weatherWCMap);
-        	
-        	BeanUtils.populate(weatherDTO, weatherMap);
-    		
-	    	if(regid.equals("11B[0-9]{5}")) {weatherMap.put("addr","경기");}
-	    	else if(regid.equals("11C1[0-9]{4}")) {weatherMap.put("addr","충북");}
-	    	else if(regid.equals("11C2[0-9]{4}")) {weatherMap.put("addr","충남");}
-	    	else if(regid.equals("11D1[0-9]{4}")) {weatherMap.put("addr","강원");}
-	    	else if(regid.equals("11H1[0-9]{4}")) {weatherMap.put("addr","경북");}
-	    	else if(regid.equals("11H2[0-9]{4}")) {weatherMap.put("addr","경남");}
-	    	else if(regid.equals("11F1[0-9]{4}")) {weatherMap.put("addr","전북");}
-	    	else if(regid.equals("11F2[0-9]{4}")) {weatherMap.put("addr","전남");}
-	    	else if(regid.equals("11G0[0-9]{4}")) {weatherMap.put("addr","제주");}
-	    	
+            		
+	    	if(regid.matches("11B[0-9]{5}")) {weatherMap.put("addr","경기");}
+	    	else if(regid.matches("11C1[0-9]{4}")) {weatherMap.put("addr","충북");}
+	    	else if(regid.matches("11C2[0-9]{4}")) {weatherMap.put("addr","충남");}
+	    	else if(regid.matches("11D1[0-9]{4}")) {weatherMap.put("addr","강원");}
+	    	else if(regid.matches("11H1[0-9]{4}")) {weatherMap.put("addr","경북");}
+	    	else if(regid.matches("11H2[0-9]{4}")) {weatherMap.put("addr","경남");}
+	    	else if(regid.matches("11F1[0-9]{4}")) {weatherMap.put("addr","전북");}
+	    	else if(regid.matches("11F2[0-9]{4}")) {weatherMap.put("addr","전남");}
+	    	else if(regid.matches("11G0[0-9]{4}")) {weatherMap.put("addr","제주");}
+
+	    	BeanUtils.populate(weatherDTO, weatherMap);
     	
     	}catch(Exception e) {
     		e.printStackTrace();
